@@ -5,149 +5,273 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>مدقّق نسب الخلطة — أسمنت / رمل</title>
   <style>
-    body { font-family: system-ui, Arial; direction: rtl; padding: 20px; max-width: 800px; margin: auto; }
-    .card { border: 1px solid #ddd; border-radius: 8px; padding: 16px; margin-top: 12px; background: #fff; }
-    label { display:block; margin-top:8px; }
-    input[type=number] { width: 100%; padding:8px; box-sizing:border-box; margin-top:4px; }
-    .result { display:flex; gap:12px; margin-top:12px; flex-wrap:wrap; }
-    .pill { padding:10px 14px; border-radius:999px; background:#f2f2f8; }
-    .status-ok { background: #e6ffef; color:#03543f; border:1px solid #b7f5d4; }
-    .status-bad { background: #fff0f0; color:#7f1d1d; border:1px solid #f5b7b7; }
-    .reason { margin-top:10px; }
-    .hint { font-size:0.9em; color:#666; margin-top:6px; }
-    button { margin-top:12px; padding:10px 14px; border-radius:6px; border:none; background:#0366d6; color:#fff; cursor:pointer; }
-    small.config { display:block; margin-top:8px; color:#444 }
+    :root{
+      --bg:#f7fafc; --card:#fff; --muted:#6b7280; --accent:#0366d6;
+      --ok-bg:#e6ffef; --ok-border:#b7f5d4; --bad-bg:#fff0f0; --bad-border:#f5b7b7;
+      --pill-bg:#f2f2f8;
+    }
+    *{box-sizing:border-box}
+    body { font-family: system-ui, "Segoe UI", Roboto, "Helvetica Neue", Arial; direction: rtl; padding: 20px; max-width: 980px; margin: auto; background:var(--bg); color:#0f172a; }
+    h1,h2{margin:0}
+    .card { background:var(--card); border:1px solid #e6e9ef; border-radius:10px; padding:16px; margin-top:12px; box-shadow: 0 1px 2px rgba(15,23,42,0.03); }
+    label { display:block; margin-top:10px; font-weight:600; }
+    .row{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+    input[type=number], select { padding:8px 10px; border:1px solid #d1d5db; border-radius:8px; width:140px; }
+    input[type=number].wide{width:100%}
+    .hint { font-size:0.9em; color:var(--muted); margin-top:6px; }
+    .controls { margin-top:12px; display:flex; gap:8px; flex-wrap:wrap; }
+    button { padding:10px 14px; border-radius:8px; border:none; background:var(--accent); color:#fff; cursor:pointer; font-weight:600; }
+    .pill { padding:10px 14px; border-radius:999px; background:var(--pill-bg); font-weight:600; }
+    .status-ok { background:var(--ok-bg); color:#03543f; border:1px solid var(--ok-border); }
+    .status-bad { background:var(--bad-bg); color:#7f1d1d; border:1px solid var(--bad-border); }
+    ul{margin:6px 0 0 0;padding-left:18px}
+    .small { font-size:0.9em; color:var(--muted) }
+    .config-inputs { display:flex; gap:8px; flex-wrap:wrap; margin-top:8px; align-items:center }
+    .result-area { margin-top:12px; }
+    .print-only{ display:none }
+    @media print{
+      body{background:#fff}
+      .no-print{display:none}
+      .print-only{display:block}
+    }
   </style>
 </head>
 <body>
-  <h2>مدقّق نسب الخلطة — أسمنت و رمل</h2>
+  <h1>مدقّق نسب الخلطة — أسمنت و رمل</h1>
   <div class="card">
-    <label>نسبة الأسمنت (٪): <input id="cement" type="number" min="0" max="100" step="0.1" placeholder="أدخل نسبة الأسمنت"></label>
-    <label>نسبة الرمل (٪): <input id="sand" type="number" min="0" max="100" step="0.1" placeholder="أدخل نسبة الرمل"></label>
+    <div class="row">
+      <div style="flex:1; min-width:220px;">
+        <label for="cement">نسبة الأسمنت (٪)</label>
+        <input id="cement" type="number" min="0" max="100" step="0.1" class="wide" placeholder="مثال: 20">
+      </div>
 
-    <div class="hint">الحسابات تقوم على مجموع 100% (الجزء المتبقي يعتبر ركام/حبيبات أخرى). القواعد الافتراضية قابلة للتعديل أدناه.</div>
+      <div style="min-width:220px;">
+        <label for="sand">نسبة الرمل (٪)</label>
+        <input id="sand" type="number" min="0" max="100" step="0.1" placeholder="مثال: 60">
+      </div>
 
-    <div style="margin-top:10px;">
-      <button id="checkBtn">تحقق من الخلطة</button>
+      <div style="min-width:200px;">
+        <label for="preset">نوع الخلطة (Preset)</label>
+        <select id="preset">
+          <option value="default">افتراضي</option>
+          <option value="mortar">مونة (Mortar) — شائع: أسمنت 10-25%, رمل 30-70%</option>
+          <option value="concrete">خرسانة (Concrete) — شائع: أسمنت 8-15%, رمل 25-45%</option>
+        </select>
+      </div>
     </div>
 
-    <div id="output" style="margin-top:12px;"></div>
+    <div class="hint">الحسابات تعتمد على أن مجموع النِسب ≤ 100%. الجزء المتبقي يُعتبر ركام (حبيبات أكبر) أو فراغات.</div>
 
-    <div class="card" style="margin-top:12px;">
-      <strong>الإعدادات (قابلة للتعديل)</strong>
-      <small class="config">نطاق الأسمنت الموصى به: <input id="minC" type="number" value="10" style="width:60px"> - <input id="maxC" type="number" value="30" style="width:60px">٪</small>
-      <small class="config">نطاق الرمل الموصى به: <input id="minS" type="number" value="30" style="width:60px"> - <input id="maxS" type="number" value="70" style="width:60px">٪</small>
-      <small class="config">أقصى مجموع مسموح (٪): <input id="maxTotal" type="number" value="100" style="width:70px"></small>
-      <div style="margin-top:8px;"><button id="saveConfig">حفظ الإعدادات</button></div>
+    <div class="controls no-print">
+      <button id="checkBtn">تحقق الآن</button>
+      <button id="printBtn">طباعة البطاقة</button>
+      <button id="resetBtn" style="background:#6b7280">إعادة ضبط</button>
     </div>
 
-    <div class="hint" style="margin-top:8px;">ملاحظة: حدد ما إذا كانت الخلطة للمونة (mortar) أو للخرسانة لأن حدود النسب تختلف؛ أرسِل لي استخدامك (مونة/خرسانة/آخر) لأضبط القيم تلقائيًا.</div>
+    <div id="output" class="result-area"></div>
+
+    <div class="card no-print" style="margin-top:12px;">
+      <strong>الإعدادات المتقدّمة</strong>
+      <div class="small">يمكن تعديل الحدود يدويًا أو استخدام الـ Preset أعلاه.</div>
+      <div class="config-inputs">
+        <div>
+          <label>نطاق الأسمنت (min - max)٪</label>
+          <input id="minC" type="number" value="10" style="width:80px"> —
+          <input id="maxC" type="number" value="30" style="width:80px">
+        </div>
+        <div>
+          <label>نطاق الرمل (min - max)٪</label>
+          <input id="minS" type="number" value="30" style="width:80px"> —
+          <input id="maxS" type="number" value="70" style="width:80px">
+        </div>
+        <div>
+          <label>أقصى مجموع مسموح (٪)</label>
+          <input id="maxTotal" type="number" value="100" style="width:100px">
+        </div>
+      </div>
+      <div style="margin-top:10px;">
+        <button id="saveConfig">حفظ إعداد الواجهة</button>
+        <span class="small" style="margin-right:8px">(الحفظ مؤقت - لا يخزن للخادم)</span>
+      </div>
+    </div>
+
+    <div class="hint no-print" style="margin-top:8px;">ملاحظة: لتعديل التفاصيل العلمية (مثل نسبة الماء/الأسمنت أو نوع الركام) أرسل متطلبات المشروع وسأضيفها.</div>
   </div>
 
   <script>
-    // Default config (تُقرأ من الحقول القابلة للتعديل)
-    function readConfig() {
+    // قراءة العناصر
+    const cementEl = document.getElementById('cement');
+    const sandEl = document.getElementById('sand');
+    const presetEl = document.getElementById('preset');
+    const outputEl = document.getElementById('output');
+    const minCEl = document.getElementById('minC');
+    const maxCEl = document.getElementById('maxC');
+    const minSEl = document.getElementById('minS');
+    const maxSEl = document.getElementById('maxS');
+    const maxTotalEl = document.getElementById('maxTotal');
+    const checkBtn = document.getElementById('checkBtn');
+    const saveConfigBtn = document.getElementById('saveConfig');
+    const printBtn = document.getElementById('printBtn');
+    const resetBtn = document.getElementById('resetBtn');
+
+    // Preset configurations
+    const PRESETS = {
+      default: { minC:10, maxC:30, minS:30, maxS:70, maxTotal:100 },
+      mortar:  { minC:10, maxC:25, minS:30, maxS:70, maxTotal:100 },
+      concrete:{ minC:8,  maxC:15, minS:25, maxS:45, maxTotal:100 }
+    };
+
+    function applyPreset(key){
+      const p = PRESETS[key] || PRESETS.default;
+      minCEl.value = p.minC;
+      maxCEl.value = p.maxC;
+      minSEl.value = p.minS;
+      maxSEl.value = p.maxS;
+      maxTotalEl.value = p.maxTotal;
+    }
+
+    // initialize with default preset
+    applyPreset('default');
+
+    function readConfig(){
       return {
-        minC: parseFloat(document.getElementById('minC').value),
-        maxC: parseFloat(document.getElementById('maxC').value),
-        minS: parseFloat(document.getElementById('minS').value),
-        maxS: parseFloat(document.getElementById('maxS').value),
-        maxTotal: parseFloat(document.getElementById('maxTotal').value),
+        minC: parseFloat(minCEl.value),
+        maxC: parseFloat(maxCEl.value),
+        minS: parseFloat(minSEl.value),
+        maxS: parseFloat(maxSEl.value),
+        maxTotal: parseFloat(maxTotalEl.value)
       };
     }
 
     function scientificReason(c, s, remaining, cfg) {
       const reasons = [];
-      // Cement checks
-      if (isNaN(c) || isNaN(s)) return ["أدخل قيمًا صحيحة للأسمنت والرمل."];
-      if (c < cfg.minC) reasons.push("كمية الأسمنت منخفضة جداً: سيكون هناك نقص في الملاط/الملاط لا يكفي لربط الركام → مقاومة وانخفاض قوة الضغط.");
-      if (c > cfg.maxC) reasons.push("كمية الأسمنت مرتفعة: يزيد احتمال الانكماش والتشقق، ويزيد التكلفة، وقد يؤثر على قابلية التشغيل.");
-      // Sand checks
-      if (s < cfg.minS) reasons.push("قليل من الرمل: الخلطة ستكون خشنة وصعبة التشغيل وقد تؤدي إلى فراغات هوائية.");
-      if (s > cfg.maxS) reasons.push("كثرة الرمل: تقليل محتوى الملاط (الأسمنت والماء) يؤدي إلى ضعف الروابط وتقليل القوة النهائية.");
-      // Total checks
-      const total = c + s;
-      if (total > cfg.maxTotal) reasons.push("النِّسب التي أدخلتها تتجاوز 100% → قيم متضاربة؛ يجب أن يكون مجموع المواد المئوية ≤ " + cfg.maxTotal + "%.");
-      if (remaining < 0) reasons.push("لا يوجد نسبة كافية للركام/حبيبات الأخرى — قلل من الأسمنت أو الرمل.");
-      // If none triggered, give positive reason
-      if (reasons.length === 0) reasons.push("النسب ضمن النطاقات الموصى بها: من المتوقع أن تكون الخلطة متوازنة من حيث القوة والعملانية. راجع نسبة المياه/الأسمنت لمزيد من الضبط.");
+      if (isNaN(c) || isNaN(s)) return ["أدخل قيمًا صحيحة للأسمنت والرمل (أرقام)."];
+
+      // Basic material science checks
+      if (c < 0 || s < 0) reasons.push("القيم يجب أن تكون موجبة أو صفر.");
+      if (c < cfg.minC) reasons.push("كمية الأسمنت منخفضة جداً: قد ينتج عن ذلك ضعف في الترابط والقوة الانضغاطية النهائية لأن الأسمنت مسؤول عن تماسك المصفوفة.");
+      if (c > cfg.maxC) reasons.push("كمية الأسمنت مرتفعة: قد تؤدي إلى زيادة الانكماش والتشقق مع الوقت، بالإضافة إلى تكلفة أعلى.");
+      if (s < cfg.minS) reasons.push("قليل من الرمل: قد تصبح الخلطة أكثر لزوجة وصعبة التشغيل، وتزداد احتمالية وجود فراغات.");
+      if (s > cfg.maxS) reasons.push("كثرة الرمل: تقليل محتوى الملاط (أسمنت/ماء) يقلل من ربط الركام ويضعف القوة النهائية.");
+      const total = +(c + s);
+      if (total > cfg.maxTotal) reasons.push("المجموع أكبر من " + cfg.maxTotal + "% → قيم متضاربة؛ يجب أن يكون مجموع المكونات المئوية ≤ " + cfg.maxTotal + "%.");
+      if (remaining < 0) reasons.push("لا توجد نسبة كافية للركام/الحبيبات الأخرى — قلل من الأسمنت أو الرمل.");
+      // If none triggered, positive comment
+      if (reasons.length === 0) reasons.push("النسب ضمن النطاقات الموصى بها وفق الإعدادات: من المتوقع أن تكون الخلطة متوازنة من حيث القوة و易 التشغيل. راجع نسبة الماء/الأسمنت للحصول على قابلية العمل المطلوبة.");
       return reasons;
     }
 
     function evaluate() {
-      const cement = parseFloat(document.getElementById('cement').value);
-      const sand = parseFloat(document.getElementById('sand').value);
+      const cement = parseFloat(cementEl.value);
+      const sand = parseFloat(sandEl.value);
       const cfg = readConfig();
-      const output = document.getElementById('output');
-      output.innerHTML = '';
+      outputEl.innerHTML = '';
 
-      // Basic validation
+      // Validations
       if (isNaN(cement) || isNaN(sand)) {
-        output.innerHTML = '<div class="card status-bad">أدخل نسباً صحيحة للأسمنت والرمل (أرقام).</div>';
+        outputEl.innerHTML = `<div class="card status-bad">أدخل نسباً صحيحة للأسمنت والرمل (أرقام).</div>`;
         return;
       }
       if (cement < 0 || sand < 0) {
-        output.innerHTML = '<div class="card status-bad">النسب يجب أن تكون صفر أو أكبر.</div>';
+        outputEl.innerHTML = `<div class="card status-bad">النسب يجب أن تكون صفر أو أكبر.</div>`;
         return;
       }
 
-      const total = +(cement + sand).toFixed(2);
-      const remaining = +(100 - total).toFixed(2);
+      const total = +((cement + sand).toFixed(2));
+      const remaining = +((100 - total).toFixed(2));
 
-      // Build results block
-      const rDiv = document.createElement('div');
-      rDiv.className = 'card';
-      rDiv.innerHTML = `
-        <div style="display:flex;gap:12px;flex-wrap:wrap;">
+      // Result summary
+      const summaryCard = document.createElement('div');
+      summaryCard.className = 'card';
+      summaryCard.innerHTML = `
+        <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center">
           <div class="pill">أسمنت: <strong>${cement}%</strong></div>
           <div class="pill">رمل: <strong>${sand}%</strong></div>
-          <div class="pill">باقي (ركام / حبيبات أخرى): <strong>${remaining}%</strong></div>
+          <div class="pill">باقي (ركام/آخر): <strong>${remaining}%</strong></div>
           <div class="pill">مجموع: <strong>${total}%</strong></div>
+          <div style="margin-left:auto" class="small">المعيار: أسمنت ${cfg.minC}-${cfg.maxC}%, رمل ${cfg.minS}-${cfg.maxS}%</div>
         </div>
       `;
 
-      // Determine status
+      // Reasons and status
       const reasons = scientificReason(cement, sand, remaining, cfg);
-      const isOk = reasons.length === 1 && reasons[0].startsWith("النسب ضمن"); // heuristic
+      const isOk = (reasons.length === 1 && reasons[0].startsWith("النسب ضمن"));
 
       const statusDiv = document.createElement('div');
-      statusDiv.className = isOk ? 'card status-ok' : 'card status-bad';
+      statusDiv.className = 'card ' + (isOk ? 'status-ok' : 'status-bad');
       statusDiv.style.marginTop = '12px';
       statusDiv.innerHTML = `<strong>الحكم: ${isOk ? 'صالحة' : 'غير صالحة'}</strong>`;
 
-      // Detailed reasons list
       const reasonBlock = document.createElement('div');
-      reasonBlock.className = 'card reason';
-      reasonBlock.innerHTML = '<strong>السبب العلمي:</strong><ul>' + reasons.map(r => `<li>${r}</li>`).join('') + '</ul>';
+      reasonBlock.className = 'card';
+      reasonBlock.innerHTML = `<strong>الشرح العلمي:</strong><ul>${reasons.map(r => `<li>${r}</li>`).join('')}</ul>`;
 
       // Suggestions
-      const sug = document.createElement('div');
-      sug.className = 'hint';
-      let suggestions = [];
+      const suggestions = [];
       if (total > cfg.maxTotal) suggestions.push("قلل من إحدى النسب حتى يصبح المجموع ≤ " + cfg.maxTotal + "%.");
-      if (cement < cfg.minC) suggestions.push("زيادة نسبة الأسمنت للمساعدة على الحصول على قوة أعلى.");
-      if (cement > cfg.maxC) suggestions.push("تقليل الأسمنت لتقليل الانكماش والتكلفة والاعتماد على الركام.");
+      if (cement < cfg.minC) suggestions.push("زيادة نسبة الأسمنت لرفع القوة والتماسك.");
+      if (cement > cfg.maxC) suggestions.push("تقليل الأسمنت لتقليل الانكماش والتكلفة.");
       if (sand > cfg.maxS) suggestions.push("تقليل الرمل أو زيادة الملاط (أسمنت/ماء) لتحسين الترابط.");
-      if (sand < cfg.minS) suggestions.push("زيادة الرمل لتحسين هيكلية الخلطة إن كانت خشنة جداً.");
+      if (sand < cfg.minS) suggestions.push("زيادة الرمل لتحسين بنية الخلطة إن كانت لزجة جداً.");
 
-      if (suggestions.length === 0) suggestions.push("لا حاجة لتعديل النسب الآن. تأكد من ضبط نسبة الماء/الأسمنت ومحتوى الركام للحصول على قابلية العمل المطلوبة.");
+      if (suggestions.length === 0) suggestions.push("لا حاجة لتعديل النسب الآن. تحقق من نسبة الماء/الأسمنت ومحتوى الركام للحصول على قابلية العمل المطلوبة.");
 
-      sug.innerHTML = '<strong>اقتراحات عملية:</strong><ul>' + suggestions.map(s => `<li>${s}</li>`).join('') + '</ul>';
+      const sugBlock = document.createElement('div');
+      sugBlock.className = 'card';
+      sugBlock.innerHTML = `<strong>اقتراحات عملية:</strong><ul>${suggestions.map(s => `<li>${s}</li>`).join('')}</ul>`;
 
-      output.appendChild(rDiv);
-      output.appendChild(statusDiv);
-      output.appendChild(reasonBlock);
-      output.appendChild(sug);
+      // Descriptive card (طباعة)
+      const printable = document.createElement('div');
+      printable.className = 'card print-only';
+      printable.style.marginTop = '12px';
+      printable.innerHTML = `
+        <h2 style="margin-bottom:6px">بطاقة الخلطة</h2>
+        <div style="display:flex;gap:12px;flex-wrap:wrap">
+          <div>أسمنت: <strong>${cement}%</strong></div>
+          <div>رمل: <strong>${sand}%</strong></div>
+          <div>باقي: <strong>${remaining}%</strong></div>
+          <div>حكم: <strong>${isOk ? 'صالحة' : 'غير صالحة'}</strong></div>
+        </div>
+        <div style="margin-top:8px"><strong>ملاحظات:</strong><ul>${reasons.map(r=>`<li>${r}</li>`).join('')}</ul></div>
+      `;
+
+      outputEl.appendChild(summaryCard);
+      outputEl.appendChild(statusDiv);
+      outputEl.appendChild(reasonBlock);
+      outputEl.appendChild(sugBlock);
+      outputEl.appendChild(printable);
     }
 
-    document.getElementById('checkBtn').addEventListener('click', evaluate);
-    document.getElementById('saveConfig').addEventListener('click', () => {
-      alert('حُفظت الإعدادات مؤقتًا في الواجهة (تحديث الصفحة يرجعها للقيّم الافتراضية). أخبرني إذا تحب حفظها في الملف أو المسار الخاص بك.');
+    // Events
+    checkBtn.addEventListener('click', evaluate);
+    cementEl.addEventListener('input', () => evaluate());
+    sandEl.addEventListener('input', () => evaluate());
+    presetEl.addEventListener('change', (e) => {
+      const key = e.target.value;
+      applyPreset(key);
+      evaluate();
     });
 
-    // Example: live-evaluate when changing inputs (اختياري)
-    document.getElementById('cement').addEventListener('input', () => { /* could call evaluate() for live */ });
-    document.getElementById('sand').addEventListener('input', () => { /* could call evaluate() for live */ });
+    saveConfigBtn.addEventListener('click', () => {
+      alert('الإعدادات محفوظة مؤقتًا في الواجهة. تحديث الصفحة يعيد القيم الافتراضية.');
+    });
+
+    printBtn.addEventListener('click', () => {
+      // Ensure there's an up-to-date evaluation before print
+      evaluate();
+      window.print();
+    });
+
+    resetBtn.addEventListener('click', () => {
+      cementEl.value = '';
+      sandEl.value = '';
+      presetEl.value = 'default';
+      applyPreset('default');
+      outputEl.innerHTML = '';
+    });
+
+    // initialize live
+    evaluate();
   </script>
 </body>
 </html>
