@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🏭 CEMOTECH / CELOTECH - نظام Vinabond المتقدم</title>
+    <title>🏭 CEMOTECH - نظام تقييم الخلطات TDS</title>
 
     <!-- Three.js -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -48,7 +48,6 @@
             align-items: center;
             flex-wrap: wrap;
             border: 1px solid rgba(0, 200, 150, 0.15);
-            box-shadow: 0 0 40px rgba(0, 200, 150, 0.05);
         }
 
         .header .logo {
@@ -139,6 +138,124 @@
             color: #888;
         }
 
+        /* ===== TDS VALIDATION STATUS ===== */
+        .tds-status {
+            background: rgba(0, 0, 0, 0.25);
+            border-radius: 12px;
+            padding: 12px 16px;
+            margin-top: 8px;
+            border-right: 4px solid #888;
+            transition: 0.5s;
+        }
+
+        .tds-status.valid {
+            border-right-color: #00c896;
+            background: rgba(0, 200, 150, 0.05);
+        }
+
+        .tds-status.warning {
+            border-right-color: #f5a623;
+            background: rgba(245, 166, 35, 0.05);
+        }
+
+        .tds-status.invalid {
+            border-right-color: #e94560;
+            background: rgba(233, 69, 96, 0.05);
+        }
+
+        .tds-status .status-title {
+            font-weight: 700;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .tds-status .status-title .icon {
+            font-size: 1.4rem;
+        }
+
+        .tds-status .status-title .valid-text {
+            color: #00c896;
+        }
+        .tds-status .status-title .warning-text {
+            color: #f5a623;
+        }
+        .tds-status .status-title .invalid-text {
+            color: #e94560;
+        }
+
+        .tds-status .status-details {
+            font-size: 0.8rem;
+            color: #888;
+            margin-top: 6px;
+            line-height: 1.6;
+        }
+
+        .tds-status .status-details .highlight-valid {
+            color: #00c896;
+        }
+        .tds-status .status-details .highlight-warning {
+            color: #f5a623;
+        }
+        .tds-status .status-details .highlight-invalid {
+            color: #e94560;
+        }
+
+        .tds-status .tds-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4px;
+            margin-top: 8px;
+        }
+
+        .tds-status .tds-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 3px 8px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 6px;
+            font-size: 0.75rem;
+        }
+
+        .tds-status .tds-item .tds-name {
+            color: #888;
+        }
+
+        .tds-status .tds-item .tds-result {
+            font-weight: 600;
+        }
+
+        .tds-status .tds-item .tds-result.pass {
+            color: #00c896;
+        }
+        .tds-status .tds-item .tds-result.fail {
+            color: #e94560;
+        }
+        .tds-status .tds-item .tds-result.warn {
+            color: #f5a623;
+        }
+
+        .tds-status .recommendations {
+            margin-top: 8px;
+            padding-top: 8px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            font-size: 0.8rem;
+            color: #aaa;
+        }
+
+        .tds-status .recommendations .rec-item {
+            padding: 2px 0;
+            padding-right: 16px;
+            position: relative;
+        }
+
+        .tds-status .recommendations .rec-item::before {
+            content: '💡';
+            position: absolute;
+            right: -4px;
+        }
+
         /* ===== FORM ELEMENTS ===== */
         .form-group {
             margin-bottom: 12px;
@@ -188,13 +305,6 @@
             color: #00c896;
             text-align: center;
             margin-top: 2px;
-        }
-
-        .form-group .range-labels {
-            display: flex;
-            justify-content: space-between;
-            font-size: 0.6rem;
-            color: #666;
         }
 
         .form-row {
@@ -257,6 +367,20 @@
             display: block;
         }
 
+        .vinabond-summary {
+            background: rgba(0, 200, 150, 0.05);
+            border-radius: 8px;
+            padding: 8px 12px;
+            margin-top: 4px;
+            border-right: 3px solid #00c896;
+            font-size: 0.8rem;
+            color: #aaa;
+        }
+
+        .vinabond-summary strong {
+            color: #00c896;
+        }
+
         /* ===== ADDITIVES LIST ===== */
         .additive-item {
             display: flex;
@@ -272,10 +396,6 @@
 
         .additive-item:hover {
             background: rgba(255, 255, 255, 0.06);
-        }
-
-        .additive-item.active {
-            border-right-color: #00c896;
         }
 
         .additive-item .add-name {
@@ -315,6 +435,23 @@
             color: #888;
             min-width: 50px;
             text-align: center;
+        }
+
+        .additive-item .tds-indicator {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            margin-right: 6px;
+        }
+
+        .additive-item .tds-indicator.pass {
+            background: #00c896;
+        }
+        .additive-item .tds-indicator.warn {
+            background: #f5a623;
+        }
+        .additive-item .tds-indicator.fail {
+            background: #e94560;
         }
 
         /* ===== TEMPLATE CARDS ===== */
@@ -373,7 +510,7 @@
         /* ===== 3D CONTAINER ===== */
         #threeContainer {
             width: 100%;
-            height: 300px;
+            height: 280px;
             border-radius: 14px;
             background: #0d0d1a;
             overflow: hidden;
@@ -433,20 +570,6 @@
             font-weight: 700;
         }
 
-        .vinabond-summary {
-            background: rgba(0, 200, 150, 0.05);
-            border-radius: 8px;
-            padding: 8px 12px;
-            margin-top: 4px;
-            border-right: 3px solid #00c896;
-            font-size: 0.8rem;
-            color: #aaa;
-        }
-
-        .vinabond-summary strong {
-            color: #00c896;
-        }
-
         /* ===== BUTTONS ===== */
         .btn {
             border: none;
@@ -483,26 +606,6 @@
             background: rgba(0, 200, 150, 0.1);
         }
 
-        .btn-danger {
-            background: #e94560;
-            color: white;
-        }
-
-        .btn-danger:hover {
-            background: #c0392b;
-        }
-
-        .btn-outline {
-            background: transparent;
-            border: 2px solid rgba(255, 255, 255, 0.1);
-            color: #888;
-        }
-
-        .btn-outline:hover {
-            border-color: #00c896;
-            color: #00c896;
-        }
-
         .flex-row {
             display: flex;
             gap: 8px;
@@ -511,10 +614,6 @@
 
         .mt-2 {
             margin-top: 10px;
-        }
-
-        .mb-2 {
-            margin-bottom: 10px;
         }
 
         /* ===== STEPS ===== */
@@ -563,7 +662,7 @@
                 grid-template-columns: 1fr;
             }
             #threeContainer {
-                height: 220px;
+                height: 200px;
             }
             .vinabond-selector {
                 gap: 4px;
@@ -571,6 +670,12 @@
             .vinabond-option {
                 padding: 4px 10px;
                 font-size: 0.7rem;
+            }
+            .tds-status .tds-grid {
+                grid-template-columns: 1fr;
+            }
+            .template-cards {
+                grid-template-columns: 1fr;
             }
         }
 
@@ -592,11 +697,8 @@
             .result-total .total-val {
                 color: #000 !important;
             }
-            .additive-item .add-controls .add-value {
-                color: #000 !important;
-            }
             #threeContainer {
-                height: 200px !important;
+                height: 180px !important;
             }
         }
     </style>
@@ -607,22 +709,22 @@
     <header class="header">
         <div class="logo">
             🏭 CEMOTECH
-            <span>| CELOTECH Drymix Lab · Vinabond Multi-Select</span>
+            <span>| TDS Validation System</span>
         </div>
         <div class="badge">
             <span class="dot"></span>
-            النظام متصل · v13.0
+            النظام متصل · v14.0
         </div>
     </header>
 
     <!-- ===== MAIN GRID ===== -->
     <div class="main-grid">
 
-        <!-- ===== PANEL LEFT: FORMULATION ===== -->
+        <!-- ===== PANEL LEFT ===== -->
         <div class="panel">
             <h2>
                 🧪 آلة الخلطات المتقدمة
-                <span class="badge-count">Vinabond Multi</span>
+                <span class="badge-count">TDS Check</span>
             </h2>
 
             <!-- Base Materials -->
@@ -652,36 +754,18 @@
                 </select>
             </div>
 
-            <!-- ===== VINABOND MULTI-SELECT ===== -->
+            <!-- Vinabond Multi-Select -->
             <div class="form-group">
                 <label>🧪 Vinabond RDP <span class="unit">(اختر مادة أو أكثر)</span></label>
                 <div class="vinabond-selector" id="vinabondSelector">
-                    <div class="vinabond-option" data-value="511">
-                        <span class="check">✅</span> 511
-                        <span class="vinabond-desc">رابط عام</span>
-                    </div>
-                    <div class="vinabond-option" data-value="514">
-                        <span class="check">✅</span> 514
-                        <span class="vinabond-desc">مرن - عازل</span>
-                    </div>
-                    <div class="vinabond-option" data-value="515">
-                        <span class="check">✅</span> 515
-                        <span class="vinabond-desc">لاصق عالي</span>
-                    </div>
-                    <div class="vinabond-option" data-value="516">
-                        <span class="check">✅</span> 516
-                        <span class="vinabond-desc">مقاوم للرطوبة</span>
-                    </div>
-                    <div class="vinabond-option" data-value="517">
-                        <span class="check">✅</span> 517
-                        <span class="vinabond-desc">مقاوم للعوامل الجوية</span>
-                    </div>
-                    <div class="vinabond-option" data-value="518">
-                        <span class="check">✅</span> 518
-                        <span class="vinabond-desc">مقوي فائق</span>
-                    </div>
+                    <div class="vinabond-option active" data-value="511"><span class="check">✅</span> 511 <span class="vinabond-desc">رابط عام</span></div>
+                    <div class="vinabond-option" data-value="514"><span class="check">✅</span> 514 <span class="vinabond-desc">مرن - عازل</span></div>
+                    <div class="vinabond-option" data-value="515"><span class="check">✅</span> 515 <span class="vinabond-desc">لاصق عالي</span></div>
+                    <div class="vinabond-option" data-value="516"><span class="check">✅</span> 516 <span class="vinabond-desc">مقاوم للرطوبة</span></div>
+                    <div class="vinabond-option" data-value="517"><span class="check">✅</span> 517 <span class="vinabond-desc">مقاوم للجو</span></div>
+                    <div class="vinabond-option" data-value="518"><span class="check">✅</span> 518 <span class="vinabond-desc">مقوي فائق</span></div>
                 </div>
-                <div class="vinabond-summary" id="vinabondSummary">
+                <div class="vinabond-summary">
                     <strong>المختار:</strong> <span id="vinabondSelected">511</span>
                     <span style="color:#666; margin-right:10px;">|</span>
                     <span style="color:#888;" id="vinabondEffect">تأثير: رابط عام</span>
@@ -692,35 +776,21 @@
             <div class="form-group">
                 <label>📋 قوالب الإنتاج الجاهزة</label>
                 <div class="template-cards" id="templateCards">
-                    <div class="template-card" data-template="A">
-                        <span class="icon">✨</span>
-                        <div class="name">GFRC ديكوري</div>
-                        <div class="desc">خرسانة ناعمة خالية من الثقوب</div>
-                    </div>
-                    <div class="template-card" data-template="B">
-                        <span class="icon">🌀</span>
-                        <div class="name">أرضيات ذاتية التسوية</div>
-                        <div class="desc">ملونة · سيولة عالية</div>
-                    </div>
-                    <div class="template-card" data-template="C">
-                        <span class="icon">🌊</span>
-                        <div class="name">واجهات عازلة للماء</div>
-                        <div class="desc">مونوكوش · مقاوم للمطر</div>
-                    </div>
+                    <div class="template-card active" data-template="A"><span class="icon">✨</span><div class="name">GFRC ديكوري</div><div class="desc">خرسانة ناعمة خالية من الثقوب</div></div>
+                    <div class="template-card" data-template="B"><span class="icon">🌀</span><div class="name">أرضيات ذاتية التسوية</div><div class="desc">ملونة · سيولة عالية</div></div>
+                    <div class="template-card" data-template="C"><span class="icon">🌊</span><div class="name">واجهات عازلة للماء</div><div class="desc">مونوكوش · مقاوم للمطر</div></div>
                 </div>
             </div>
 
             <!-- Additives -->
             <div class="form-group">
                 <label>🧪 الإضافات الكيميائية الأخرى</label>
-                <div id="additivesList">
-                    <!-- يتم تعبئتها بواسطة JavaScript -->
-                </div>
+                <div id="additivesList"></div>
             </div>
 
             <!-- Buttons -->
             <div class="flex-row mt-2">
-                <button class="btn btn-primary" id="calculateBtn" style="flex:2;">🔬 احسب الخلطة</button>
+                <button class="btn btn-primary" id="calculateBtn" style="flex:2;">🔬 احسب الخلطة وافحص TDS</button>
                 <button class="btn btn-secondary" id="resetBtn" style="flex:1;">🔄 إعادة</button>
             </div>
 
@@ -730,11 +800,11 @@
                 <div class="result-item"><span class="r-name">رمل</span><span class="r-value" id="rSand">55 <span class="unit">كجم</span></span></div>
                 <div class="result-item"><span class="r-name">ماء</span><span class="r-value" id="rWater">22 <span class="unit">كجم</span></span></div>
                 <div class="result-item"><span class="r-name">الصبغة</span><span class="r-value" id="rColor">0 <span class="unit">كجم</span></span></div>
-                <div class="result-item" id="rVinabondContainer" style="grid-column:1/-1; border-top:1px solid rgba(0,200,150,0.15); padding-top:6px;">
+                <div class="result-item" style="grid-column:1/-1; border-top:1px solid rgba(0,200,150,0.15); padding-top:6px;">
                     <span class="r-name">🧪 Vinabond</span>
                     <span class="r-value" id="rVinabond">-</span>
                 </div>
-                <div class="result-item" id="rAdditivesContainer" style="grid-column:1/-1;">
+                <div class="result-item" style="grid-column:1/-1;">
                     <span class="r-name">🧪 إضافات أخرى</span>
                     <span class="r-value" id="rAdditives">-</span>
                 </div>
@@ -746,26 +816,39 @@
             </div>
         </div>
 
-        <!-- ===== PANEL RIGHT: 3D + REPORT ===== -->
+        <!-- ===== PANEL RIGHT ===== -->
         <div class="panel">
             <h2>
-                🎮 المحاكاة التفاعلية 3D
-                <span class="badge-count">Three.js</span>
+                🎮 المحاكاة 3D + تقييم TDS
+                <span class="badge-count">تقييم فوري</span>
             </h2>
 
             <!-- 3D Container -->
             <div id="threeContainer"></div>
 
             <!-- Status -->
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-top:8px; font-size:0.75rem; color:#666; flex-wrap:wrap;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-top:6px; font-size:0.7rem; color:#666; flex-wrap:wrap;">
                 <span id="simulationStatus">🟢 محاكاة الألياف: نشطة</span>
-                <span id="rheologyStatus">🔵 سيولة ذاتية: غير نشطة</span>
+                <span id="rheologyStatus">⚪ سيولة ذاتية: غير نشطة</span>
                 <span id="vinabondStatus">🧪 Vinabond: 511</span>
             </div>
 
-            <!-- Reports -->
+            <!-- ===== TDS VALIDATION STATUS ===== -->
+            <div class="tds-status valid" id="tdsStatus">
+                <div class="status-title">
+                    <span class="icon" id="tdsIcon">✅</span>
+                    <span class="valid-text" id="tdsTitle">الخلطة صالحة ومطابقة لمواصفات TDS</span>
+                </div>
+                <div class="status-details" id="tdsDetails">
+                    جميع المواد ضمن النطاقات الموصى بها في صحيفة البيانات التقنية (TDS).
+                </div>
+                <div class="tds-grid" id="tdsGrid"></div>
+                <div class="recommendations" id="tdsRecommendations"></div>
+            </div>
+
+            <!-- Steps -->
             <div class="mt-2">
-                <h3 style="font-size:0.95rem; color:#ccc; margin-bottom:8px;">📋 تعليمات الخلط الميكانيكية</h3>
+                <h3 style="font-size:0.9rem; color:#ccc; margin-bottom:6px;">📋 تعليمات الخلط الميكانيكية</h3>
                 <div class="steps-list" id="stepsList">
                     <div class="step-item">1. تجهيز جميع المواد بالكميات المحددة أعلاه</div>
                     <div class="step-item">2. خلط المواد الجافة لمدة 3-5 دقائق</div>
@@ -788,160 +871,120 @@
             'use strict';
 
             // ========================================
-            // 1. DATA - VINABOND TYPES
+            // 1. TDS DATA - Technical Data Sheets
             // ========================================
 
-            const vinabondTypes = {
-                '511': {
-                    name: '511',
-                    desc: 'رابط عام',
-                    effect: 'يحسن الالتصاق الأساسي بين الطبقات الخرسانية',
-                    strengthMul: 1.05,
-                    slumpAdd: 5,
-                    densityAdd: 2,
-                    colorShift: [0, 0, 0],
-                    consAdd: 0.01
+            const tdsData = {
+                vinabond: {
+                    name: 'Vinabond RDP',
+                    min: 0.5,
+                    max: 5.0,
+                    unit: '%',
+                    ideal: 1.5,
+                    desc: 'نطاق الجرعة الموصى به حسب TDS: 0.5% - 5.0%'
                 },
-                '514': {
-                    name: '514',
-                    desc: 'مرن - عازل',
-                    effect: 'يعمل كعازل مرن يمنع تسرب الماء ويحسن الالتصاق في الظروف الرطبة',
-                    strengthMul: 1.08,
-                    slumpAdd: 12,
-                    densityAdd: 3,
-                    colorShift: [0, 0, 0],
-                    consAdd: 0.03
-                },
-                '515': {
-                    name: '515',
-                    desc: 'لاصق عالي',
-                    effect: 'يزيد من التصاق الخرسانة بالأسطح المختلفة ويحسن المقاومة الميكانيكية',
-                    strengthMul: 1.10,
-                    slumpAdd: 8,
-                    densityAdd: 5,
-                    colorShift: [0, 0, 0],
-                    consAdd: 0.02
-                },
-                '516': {
-                    name: '516',
-                    desc: 'مقاوم للرطوبة',
-                    effect: 'يحسن مرونة الخرسانة ومقاومتها للرطوبة والتشقق تحت الأحمال',
-                    strengthMul: 1.12,
-                    slumpAdd: 8,
-                    densityAdd: 5,
-                    colorShift: [0, 0, 0],
-                    consAdd: 0.02
-                },
-                '517': {
-                    name: '517',
-                    desc: 'مقاوم للعوامل الجوية',
-                    effect: 'يوفر حماية إضافية ضد العوامل الجوية ويزيد من العمر الافتراضي',
-                    strengthMul: 1.12,
-                    slumpAdd: 8,
-                    densityAdd: 5,
-                    colorShift: [0, 0, 0],
-                    consAdd: 0.02
-                },
-                '518': {
-                    name: '518',
-                    desc: 'مقوي فائق',
-                    effect: 'مادة تقوية فائقة تزيد من المقاومة الميكانيكية والالتصاق بشكل ملحوظ',
-                    strengthMul: 1.20,
-                    slumpAdd: 5,
-                    densityAdd: 8,
-                    colorShift: [0, 0, 0],
-                    consAdd: 0.01
-                }
-            };
-
-            // ========================================
-            // 2. ADDITIVES CONFIG
-            // ========================================
-
-            const additivesConfig = {
                 celoprome: {
-                    id: 'celoprome',
                     name: 'Celoprome 70M',
                     min: 0.05,
                     max: 0.6,
-                    default: 0.3,
-                    step: 0.01,
                     unit: '%',
-                    role: 'HPMC مثخن',
-                    active: true
+                    ideal: 0.3,
+                    desc: 'نطاق الجرعة الموصى به حسب TDS: 0.05% - 0.6%'
                 },
                 foamsolver: {
-                    id: 'foamsolver',
                     name: 'Foamsolver DF03',
                     min: 0.1,
                     max: 0.2,
-                    default: 0.15,
-                    step: 0.01,
                     unit: '%',
-                    role: 'مزيل رغوة',
-                    active: true,
-                    locked: true
+                    ideal: 0.15,
+                    desc: 'نطاق الجرعة الموصى به حسب TDS: 0.1% - 0.2%'
                 },
                 celofiber: {
-                    id: 'celofiber',
                     name: 'CELOFIBER CF 200W',
                     min: 0.3,
                     max: 0.6,
-                    default: 0.4,
-                    step: 0.01,
                     unit: '%',
-                    role: 'ألياف سليلوزية',
-                    active: true,
-                    locked: true
+                    ideal: 0.4,
+                    desc: 'نطاق الجرعة الموصى به حسب TDS: 0.3% - 0.6%'
                 },
                 prestarr: {
-                    id: 'prestarr',
                     name: 'PRESTARR 1027',
                     min: 0.01,
                     max: 0.1,
-                    default: 0.05,
-                    step: 0.01,
                     unit: '%',
-                    role: 'إيثر نشا',
-                    active: true
+                    ideal: 0.05,
+                    desc: 'نطاق الجرعة الموصى به حسب TDS: 0.01% - 0.1%'
                 },
                 stargel: {
-                    id: 'stargel',
                     name: 'STARGEL ST600',
                     min: 0.01,
                     max: 0.1,
-                    default: 0.04,
-                    step: 0.01,
                     unit: '%',
-                    role: 'إيثر نشا (معلق)',
-                    active: true
+                    ideal: 0.04,
+                    desc: 'نطاق الجرعة الموصى به حسب TDS: 0.01% - 0.1%'
                 },
                 aquago: {
-                    id: 'aquago',
                     name: 'AQUAGO WP 200',
                     min: 0.2,
                     max: 0.5,
-                    default: 0.3,
-                    step: 0.01,
                     unit: '%',
-                    role: 'عازل مائي',
-                    active: true
+                    ideal: 0.3,
+                    desc: 'نطاق الجرعة الموصى به حسب TDS: 0.2% - 0.5%'
                 },
                 gypstar: {
-                    id: 'gypstar',
                     name: 'GYPSTAR G300',
                     min: 0.05,
                     max: 0.25,
-                    default: 0.15,
-                    step: 0.01,
                     unit: '%',
-                    role: 'مثبط جبس',
-                    active: true
+                    ideal: 0.15,
+                    desc: 'نطاق الجرعة الموصى به حسب TDS: 0.05% - 0.25%'
                 }
             };
 
             // ========================================
-            // 3. TEMPLATES
+            // 2. VINABOND TYPES
+            // ========================================
+
+            const vinabondTypes = {
+                '511': { name: '511', desc: 'رابط عام', effect: 'يحسن الالتصاق الأساسي', strengthMul: 1.05, slumpAdd: 5,
+                    densityAdd: 2, colorShift: [0, 0, 0], consAdd: 0.01 },
+                '514': { name: '514', desc: 'مرن - عازل', effect: 'عازل مرن يمنع تسرب الماء', strengthMul: 1.08, slumpAdd: 12,
+                    densityAdd: 3, colorShift: [0, 0, 0], consAdd: 0.03 },
+                '515': { name: '515', desc: 'لاصق عالي', effect: 'يزيد الالتصاق والمقاومة الميكانيكية', strengthMul: 1.10,
+                    slumpAdd: 8, densityAdd: 5, colorShift: [0, 0, 0], consAdd: 0.02 },
+                '516': { name: '516', desc: 'مقاوم للرطوبة', effect: 'يحسن المرونة ومقاومة الرطوبة', strengthMul: 1.12,
+                    slumpAdd: 8, densityAdd: 5, colorShift: [0, 0, 0], consAdd: 0.02 },
+                '517': { name: '517', desc: 'مقاوم للجو', effect: 'حماية ضد العوامل الجوية', strengthMul: 1.12, slumpAdd: 8,
+                    densityAdd: 5, colorShift: [0, 0, 0], consAdd: 0.02 },
+                '518': { name: '518', desc: 'مقوي فائق', effect: 'تقوية فائقة للمقاومة الميكانيكية', strengthMul: 1.20,
+                    slumpAdd: 5, densityAdd: 8, colorShift: [0, 0, 0], consAdd: 0.01 }
+            };
+
+            // ========================================
+            // 3. ADDITIVES CONFIG
+            // ========================================
+
+            const additivesConfig = {
+                vinabond: { id: 'vinabond', name: 'Vinabond RDP', min: 0.5, max: 5.0, default: 1.5, step: 0.1,
+                    unit: '%', role: 'بوليمر رابط', active: true },
+                celoprome: { id: 'celoprome', name: 'Celoprome 70M', min: 0.05, max: 0.6, default: 0.3, step: 0.01,
+                    unit: '%', role: 'HPMC مثخن', active: true },
+                foamsolver: { id: 'foamsolver', name: 'Foamsolver DF03', min: 0.1, max: 0.2, default: 0.15, step: 0.01,
+                    unit: '%', role: 'مزيل رغوة', active: true, locked: true },
+                celofiber: { id: 'celofiber', name: 'CELOFIBER CF 200W', min: 0.3, max: 0.6, default: 0.4, step: 0.01,
+                    unit: '%', role: 'ألياف سليلوزية', active: true, locked: true },
+                prestarr: { id: 'prestarr', name: 'PRESTARR 1027', min: 0.01, max: 0.1, default: 0.05, step: 0.01,
+                    unit: '%', role: 'إيثر نشا', active: true },
+                stargel: { id: 'stargel', name: 'STARGEL ST600', min: 0.01, max: 0.1, default: 0.04, step: 0.01,
+                    unit: '%', role: 'إيثر نشا معلق', active: true },
+                aquago: { id: 'aquago', name: 'AQUAGO WP 200', min: 0.2, max: 0.5, default: 0.3, step: 0.01, unit: '%',
+                    role: 'عازل مائي', active: true },
+                gypstar: { id: 'gypstar', name: 'GYPSTAR G300', min: 0.05, max: 0.25, default: 0.15, step: 0.01,
+                    unit: '%', role: 'مثبط جبس', active: true }
+            };
+
+            // ========================================
+            // 4. TEMPLATES
             // ========================================
 
             const templates = {
@@ -949,48 +992,30 @@
                     name: 'GFRC ديكوري',
                     desc: 'خرسانة ناعمة خالية من الثقوب',
                     vinabond: ['515'],
-                    settings: {
-                        celoprome: { value: 0.3 },
-                        foamsolver: { value: 0.18 },
-                        celofiber: { value: 0.3 },
-                        prestarr: { value: 0.02 },
-                        stargel: { value: 0 },
-                        aquago: { value: 0.2 },
-                        gypstar: { value: 0.1 }
-                    }
+                    settings: { celoprome: { value: 0.3 }, foamsolver: { value: 0.18 }, celofiber: { value: 0.3 },
+                        prestarr: { value: 0.02 }, stargel: { value: 0 }, aquago: { value: 0.2 },
+                    gypstar: { value: 0.1 } }
                 },
                 B: {
                     name: 'أرضيات ذاتية التسوية',
                     desc: 'ملونة · سيولة عالية',
                     vinabond: ['514'],
-                    settings: {
-                        celoprome: { value: 0.4 },
-                        foamsolver: { value: 0.15 },
-                        celofiber: { value: 0.2 },
-                        prestarr: { value: 0.08 },
-                        stargel: { value: 0.07 },
-                        aquago: { value: 0.3 },
-                        gypstar: { value: 0.15 }
-                    }
+                    settings: { celoprome: { value: 0.4 }, foamsolver: { value: 0.15 }, celofiber: { value: 0.2 },
+                        prestarr: { value: 0.08 }, stargel: { value: 0.07 }, aquago: { value: 0.3 },
+                    gypstar: { value: 0.15 } }
                 },
                 C: {
                     name: 'واجهات عازلة للماء',
                     desc: 'مونوكوش · مقاوم للمطر',
                     vinabond: ['517'],
-                    settings: {
-                        celoprome: { value: 0.5 },
-                        foamsolver: { value: 0.15 },
-                        celofiber: { value: 0.5 },
-                        prestarr: { value: 0.03 },
-                        stargel: { value: 0.02 },
-                        aquago: { value: 0.5 },
-                        gypstar: { value: 0.08 }
-                    }
+                    settings: { celoprome: { value: 0.5 }, foamsolver: { value: 0.15 }, celofiber: { value: 0.5 },
+                        prestarr: { value: 0.03 }, stargel: { value: 0.02 }, aquago: { value: 0.5 },
+                    gypstar: { value: 0.08 } }
                 }
             };
 
             // ========================================
-            // 4. STATE
+            // 5. STATE
             // ========================================
 
             let state = {
@@ -999,12 +1024,13 @@
                 oxideColor: '#d4c4b0',
                 vinabondSelected: ['511'],
                 additives: {},
-                template: null,
-                results: {}
+                template: 'A',
+                results: {},
+                tdsResults: {}
             };
 
             // ========================================
-            // 5. DOM REFS
+            // 6. DOM REFS
             // ========================================
 
             const baseCement = document.getElementById('baseCement');
@@ -1027,14 +1053,18 @@
             const rAdditives = document.getElementById('rAdditives');
             const totalWeight = document.getElementById('totalWeight');
             const stepsList = document.getElementById('stepsList');
-            const simulationStatus = document.getElementById('simulationStatus');
-            const rheologyStatus = document.getElementById('rheologyStatus');
-            const vinabondStatus = document.getElementById('vinabondStatus');
+
+            const tdsStatus = document.getElementById('tdsStatus');
+            const tdsIcon = document.getElementById('tdsIcon');
+            const tdsTitle = document.getElementById('tdsTitle');
+            const tdsDetails = document.getElementById('tdsDetails');
+            const tdsGrid = document.getElementById('tdsGrid');
+            const tdsRecommendations = document.getElementById('tdsRecommendations');
 
             const threeContainer = document.getElementById('threeContainer');
 
             // ========================================
-            // 6. THREE.JS SETUP
+            // 7. THREE.JS SETUP
             // ========================================
 
             let scene, camera, renderer, controls, blockMesh;
@@ -1044,7 +1074,7 @@
 
             function initThree() {
                 const width = threeContainer.clientWidth || 400;
-                const height = threeContainer.clientHeight || 300;
+                const height = threeContainer.clientHeight || 280;
 
                 scene = new THREE.Scene();
                 scene.background = new THREE.Color(0x0d0d1a);
@@ -1069,16 +1099,13 @@
 
                 const ambient = new THREE.AmbientLight(0xffffff, 0.5);
                 scene.add(ambient);
-
                 const mainLight = new THREE.DirectionalLight(0xffeedd, 1);
                 mainLight.position.set(4, 6, 5);
                 mainLight.castShadow = true;
                 scene.add(mainLight);
-
                 const fillLight = new THREE.DirectionalLight(0x4488ff, 0.3);
                 fillLight.position.set(-3, 2, 4);
                 scene.add(fillLight);
-
                 const rimLight = new THREE.DirectionalLight(0xff6644, 0.2);
                 rimLight.position.set(-2, -1, -4);
                 scene.add(rimLight);
@@ -1098,7 +1125,6 @@
                 scene.add(floor);
 
                 createBlock('#d4c4b0');
-
                 isThreeReady = true;
                 animate();
             }
@@ -1120,24 +1146,16 @@
             }
 
             function createBlock(colorHex, showFibers = true, showParticles = false) {
-                if (blockMesh) {
-                    scene.remove(blockMesh);
+                if (blockMesh) { scene.remove(blockMesh);
                     blockMesh.geometry.dispose();
-                    blockMesh.material.dispose();
-                }
-
-                fiberLines.forEach(line => {
-                    scene.remove(line);
+                    blockMesh.material.dispose(); }
+                fiberLines.forEach(line => { scene.remove(line);
                     line.geometry.dispose();
-                    line.material.dispose();
-                });
+                    line.material.dispose(); });
                 fiberLines = [];
-
-                particles.forEach(p => {
-                    scene.remove(p);
+                particles.forEach(p => { scene.remove(p);
                     p.geometry.dispose();
-                    p.material.dispose();
-                });
+                    p.material.dispose(); });
                 particles = [];
 
                 const color = new THREE.Color(colorHex);
@@ -1158,34 +1176,18 @@
                 scene.add(blockMesh);
 
                 const edges = new THREE.EdgesGeometry(geometry);
-                const edgeMat = new THREE.LineBasicMaterial({
-                    color: 0x00c896,
-                    transparent: true,
-                    opacity: 0.15
-                });
+                const edgeMat = new THREE.LineBasicMaterial({ color: 0x00c896, transparent: true, opacity: 0.15 });
                 const edgeLine = new THREE.LineSegments(edges, edgeMat);
                 edgeLine.position.copy(blockMesh.position);
                 scene.add(edgeLine);
 
                 if (showFibers) {
-                    const fiberMat = new THREE.LineBasicMaterial({
-                        color: 0x00c896,
-                        transparent: true,
-                        opacity: 0.2
-                    });
-
+                    const fiberMat = new THREE.LineBasicMaterial({ color: 0x00c896, transparent: true, opacity: 0.2 });
                     for (let i = 0; i < 30; i++) {
-                        const start = new THREE.Vector3(
-                            (Math.random() - 0.5) * 1.6,
-                            (Math.random() - 0.5) * 1.6,
-                            (Math.random() - 0.5) * 1.6
-                        );
-                        const end = new THREE.Vector3(
-                            (Math.random() - 0.5) * 1.6,
-                            (Math.random() - 0.5) * 1.6,
-                            (Math.random() - 0.5) * 1.6
-                        );
-
+                        const start = new THREE.Vector3((Math.random() - 0.5) * 1.6, (Math.random() - 0.5) * 1.6, (Math
+                        .random() - 0.5) * 1.6);
+                        const end = new THREE.Vector3((Math.random() - 0.5) * 1.6, (Math.random() - 0.5) * 1.6, (Math
+                            .random() - 0.5) * 1.6);
                         const points = [start, end];
                         const geo = new THREE.BufferGeometry().setFromPoints(points);
                         const line = new THREE.Line(geo, fiberMat);
@@ -1203,17 +1205,14 @@
                         opacity: 0.6,
                         blending: THREE.AdditiveBlending
                     });
-
                     const positions = new Float32Array(150 * 3);
                     for (let i = 0; i < 150; i++) {
                         positions[i * 3] = (Math.random() - 0.5) * 2.2;
                         positions[i * 3 + 1] = (Math.random() - 0.5) * 2.2 + 0.1;
                         positions[i * 3 + 2] = (Math.random() - 0.5) * 2.2;
                     }
-
                     const pGeo = new THREE.BufferGeometry();
                     pGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-
                     const pMesh = new THREE.Points(pGeo, particleMat);
                     scene.add(pMesh);
                     particles.push(pMesh);
@@ -1223,16 +1222,135 @@
             function updateBlock(colorHex) {
                 const showFibers = state.additives.celofiber && state.additives.celofiber.value > 0.2;
                 const showParticles = state.additives.stargel && state.additives.stargel.value > 0.05;
-
                 createBlock(colorHex, showFibers, showParticles);
-
-                simulationStatus.textContent = showFibers ? '🟢 محاكاة الألياف: نشطة' : '⚪ محاكاة الألياف: غير نشطة';
-                rheologyStatus.textContent = showParticles ? '🔵 سيولة ذاتية: نشطة' : '⚪ سيولة ذاتية: غير نشطة';
-                vinabondStatus.textContent = `🧪 Vinabond: ${state.vinabondSelected.join(' + ')}`;
+                document.getElementById('simulationStatus').textContent = showFibers ? '🟢 محاكاة الألياف: نشطة' :
+                    '⚪ محاكاة الألياف: غير نشطة';
+                document.getElementById('rheologyStatus').textContent = showParticles ? '🔵 سيولة ذاتية: نشطة' :
+                    '⚪ سيولة ذاتية: غير نشطة';
+                document.getElementById('vinabondStatus').textContent = `🧪 Vinabond: ${state.vinabondSelected.join(' + ')}`;
             }
 
             // ========================================
-            // 7. UI RENDER FUNCTIONS
+            // 8. TDS VALIDATION ENGINE
+            // ========================================
+
+            function validateTDS() {
+                const cement = state.baseCement || 100;
+                const results = {};
+                let allValid = true;
+                let hasWarnings = false;
+                let recommendations = [];
+
+                // Check each additive against TDS
+                const keys = Object.keys(tdsData);
+                keys.forEach(key => {
+                    const tds = tdsData[key];
+                    const currentValue = state.additives[key]?.value || 0;
+
+                    let status = 'pass';
+                    let message = '';
+
+                    if (currentValue < tds.min) {
+                        status = 'fail';
+                        allValid = false;
+                        message = `منخفضة (أقل من ${tds.min}${tds.unit})`;
+                        recommendations.push(
+                            `زيادة ${tds.name} إلى ${tds.min}${tds.unit} على الأقل (حالياً ${currentValue.toFixed(2)}${tds.unit})`
+                            );
+                    } else if (currentValue > tds.max) {
+                        status = 'fail';
+                        allValid = false;
+                        message = `مرتفعة (أكثر من ${tds.max}${tds.unit})`;
+                        recommendations.push(
+                            `تقليل ${tds.name} إلى ${tds.max}${tds.unit} كحد أقصى (حالياً ${currentValue.toFixed(2)}${tds.unit})`
+                            );
+                    } else if (currentValue < tds.ideal * 0.7 || currentValue > tds.ideal * 1.3) {
+                        status = 'warn';
+                        hasWarnings = true;
+                        message = `قريبة من الحد (مثالي: ${tds.ideal}${tds.unit})`;
+                        recommendations.push(
+                            `ضبط ${tds.name} إلى القيمة المثالية ${tds.ideal}${tds.unit} للحصول على أفضل أداء (حالياً ${currentValue.toFixed(2)}${tds.unit})`
+                            );
+                    } else {
+                        status = 'pass';
+                        message = `مطابقة (مثالي: ${tds.ideal}${tds.unit})`;
+                    }
+
+                    results[key] = { status, message, value: currentValue, tds };
+                });
+
+                state.tdsResults = results;
+
+                // Update UI
+                let tdsHtml = '';
+                let passCount = 0,
+                    failCount = 0,
+                    warnCount = 0;
+
+                Object.keys(results).forEach(key => {
+                    const r = results[key];
+                    const statusText = r.status === 'pass' ? '✅ مطابق' : r.status === 'warn' ? '⚠️ قريب' :
+                    '❌ غير مطابق';
+                    const statusClass = r.status === 'pass' ? 'pass' : r.status === 'warn' ? 'warn' : 'fail';
+
+                    if (r.status === 'pass') passCount++;
+                    if (r.status === 'fail') failCount++;
+                    if (r.status === 'warn') warnCount++;
+
+                    tdsHtml += `
+                        <div class="tds-item">
+                            <span class="tds-name">${r.tds.name}</span>
+                            <span class="tds-result ${statusClass}">${r.value.toFixed(2)}${r.tds.unit} → ${statusText}</span>
+                        </div>
+                    `;
+                });
+
+                tdsGrid.innerHTML = tdsHtml;
+
+                // Update status
+                const icon = document.getElementById('tdsIcon');
+                const title = document.getElementById('tdsTitle');
+                const details = document.getElementById('tdsDetails');
+
+                if (failCount > 0) {
+                    tdsStatus.className = 'tds-status invalid';
+                    icon.textContent = '❌';
+                    title.className = 'invalid-text';
+                    title.textContent = 'الخلطة غير صالحة - بعض المواد خارج نطاق TDS';
+                    details.innerHTML =
+                        `<span class="highlight-invalid">${failCount} مادة خارج النطاق المسموح به.</span> يرجى تعديل النسب حسب التوصيات أدناه.`;
+                } else if (warnCount > 0) {
+                    tdsStatus.className = 'tds-status warning';
+                    icon.textContent = '⚠️';
+                    title.className = 'warning-text';
+                    title.textContent = 'الخلطة تحتاج تحسين - بعض المواد قريبة من الحدود';
+                    details.innerHTML =
+                        `<span class="highlight-warning">${warnCount} مادة قريبة من الحدود.</span> ينصح بضبط النسب للحصول على أداء مثالي.`;
+                } else {
+                    tdsStatus.className = 'tds-status valid';
+                    icon.textContent = '✅';
+                    title.className = 'valid-text';
+                    title.textContent = 'الخلطة صالحة ومطابقة لمواصفات TDS';
+                    details.innerHTML = `جميع المواد ضمن النطاقات الموصى بها. عدد المواد المطابقة: <span class="highlight-valid">${passCount}</span>`;
+                }
+
+                // Recommendations
+                let recHtml = '';
+                if (recommendations.length > 0) {
+                    recHtml = '<strong>💡 التوصيات:</strong><br>';
+                    recommendations.forEach(rec => {
+                        recHtml += `<div class="rec-item">${rec}</div>`;
+                    });
+                } else {
+                    recHtml = '<span style="color:#00c896;">✅ جميع المواد ضمن النطاقات المثالية. لا توجد توصيات.</span>';
+                }
+                tdsRecommendations.innerHTML = recHtml;
+
+                return { allValid, hasWarnings, results };
+            }
+
+            // ========================================
+            // 9. UI RENDER FUNCTIONS
             // ========================================
 
             function renderVinabondSelector() {
@@ -1241,12 +1359,8 @@
                     const val = opt.dataset.value;
                     opt.classList.toggle('active', state.vinabondSelected.includes(val));
                 });
-
-                // Update summary
                 const names = state.vinabondSelected.map(v => vinabondTypes[v]?.name || v);
                 vinabondSelected.textContent = names.join(' + ');
-
-                // Show combined effect
                 const effects = state.vinabondSelected.map(v => vinabondTypes[v]?.effect || '');
                 vinabondEffect.textContent = `تأثير: ${effects.join(' · ') || 'رابط عام'}`;
             }
@@ -1259,12 +1373,19 @@
                     const config = additivesConfig[key];
                     const value = state.additives[key]?.value || config.default;
                     const weight = state.results[key] || 0;
+                    const tds = tdsData[key];
+                    let tdsStatus = 'pass';
+                    if (tds) {
+                        if (value < tds.min || value > tds.max) tdsStatus = 'fail';
+                        else if (value < tds.ideal * 0.7 || value > tds.ideal * 1.3) tdsStatus = 'warn';
+                    }
 
                     html += `
-                        <div class="additive-item" data-key="${key}">
+                        <div class="additive-item">
                             <span class="add-name">
                                 ${config.name}
                                 <span class="add-role">· ${config.role}</span>
+                                <span class="tds-indicator ${tdsStatus}"></span>
                             </span>
                             <span class="add-controls">
                                 <input type="range" min="${config.min}" max="${config.max}" step="${config.step}" value="${value}" data-key="${key}" ${config.locked ? 'disabled style="opacity:0.5;"' : ''}>
@@ -1281,16 +1402,12 @@
                     input.addEventListener('input', function() {
                         const key = this.dataset.key;
                         const val = parseFloat(this.value);
-                        if (state.additives[key]) {
-                            state.additives[key].value = val;
-                        } else {
-                            state.additives[key] = { value: val };
-                        }
+                        if (state.additives[key]) state.additives[key].value = val;
+                        else state.additives[key] = { value: val };
                         const parent = this.closest('.additive-item');
                         const valueDisplay = parent.querySelector('.add-value');
-                        if (valueDisplay) {
-                            valueDisplay.textContent = val.toFixed(2) + (additivesConfig[key]?.unit || '%');
-                        }
+                        if (valueDisplay) valueDisplay.textContent = val.toFixed(2) + (additivesConfig[key]
+                            ?.unit || '%');
                         calculate();
                     });
                 });
@@ -1300,98 +1417,91 @@
                 const cement = state.baseCement || 100;
                 const sand = (state.sandRatio / 100) * cement;
                 const water = cement * 0.22;
+                const colorWeight = state.oxideColor !== '#d4c4b0' ? cement * 0.03 : 0;
 
                 rCement.innerHTML = `${cement.toFixed(1)} <span class="unit">كجم</span>`;
                 rSand.innerHTML = `${sand.toFixed(1)} <span class="unit">كجم</span>`;
                 rWater.innerHTML = `${water.toFixed(1)} <span class="unit">كجم</span>`;
-
-                const colorWeight = state.oxideColor !== '#d4c4b0' ? cement * 0.03 : 0;
                 rColor.innerHTML = `${colorWeight.toFixed(1)} <span class="unit">كجم</span>`;
 
-                // Vinabond - calculate total for all selected types
-                let vinabondTotalWeight = 0;
                 let vinabondDetails = [];
-
                 state.vinabondSelected.forEach(vType => {
-                    const config = vinabondTypes[vType];
                     const percent = state.additives.vinabond?.value || 1.5;
                     const weight = (percent / 100) * cement;
-                    vinabondTotalWeight += weight;
                     vinabondDetails.push(`${vType}: ${weight.toFixed(1)}g`);
                 });
-
-                rVinabond.innerHTML = vinabondDetails.length > 0 ?
-                    vinabondDetails.join(' · ') :
+                rVinabond.innerHTML = vinabondDetails.length > 0 ? vinabondDetails.join(' · ') :
                     '<span style="color:#666;">لم يتم الاختيار</span>';
 
-                // Other additives
                 let addHtml = '';
                 let totalAddWeight = 0;
                 const keys = Object.keys(additivesConfig);
-
                 keys.forEach(key => {
+                    if (key === 'vinabond') return;
                     const config = additivesConfig[key];
                     const val = state.additives[key]?.value || 0;
                     const weight = (val / 100) * cement;
                     state.results[key] = weight;
                     totalAddWeight += weight;
-
                     if (weight > 0.001) {
                         addHtml +=
                             `<span style="margin-left:8px;font-size:0.7rem;color:#888;">${config.name}: <span style="color:#00c896;">${weight.toFixed(1)}g</span></span>`;
                     }
                 });
-
                 rAdditives.innerHTML = addHtml || '<span style="color:#666;">لا توجد إضافات أخرى</span>';
 
-                const total = cement + sand + water + colorWeight + (vinabondTotalWeight + totalAddWeight) / 1000;
+                const vinabondTotal = state.vinabondSelected.reduce((sum) => {
+                    const percent = state.additives.vinabond?.value || 1.5;
+                    return sum + (percent / 100) * cement;
+                }, 0);
+
+                const total = cement + sand + water + colorWeight + (vinabondTotal + totalAddWeight) / 1000;
                 totalWeight.innerHTML = `${total.toFixed(2)} <span class="unit">كجم</span>`;
             }
 
             function renderSteps() {
                 const template = state.template;
-                let steps = [];
-
                 const vinabondList = state.vinabondSelected.join(' + ');
+                let steps = [];
 
                 if (template === 'A') {
                     steps = [
                         `1. تجهيز الأسمنت الأبيض، الرمل، وجميع الإضافات حسب الكميات المحددة`,
-                        `2. خلط المواد الجافة (أسمنت + رمل + إضافات جافة) لمدة 3-5 دقائق`,
+                        `2. خلط المواد الجافة لمدة 3-5 دقائق`,
                         `3. إضافة Vinabond (${vinabondList}) والماء تدريجياً مع الخلط المستمر`,
                         `4. إضافة Foamsolver DF03 لضمان خلو الخلطة من الثقوب الهوائية`,
                         `5. الخلط النهائي لمدة 5-7 دقائق حتى الحصول على قوام ناعم متجانس`,
-                        `6. الصب في القوالب مع الاهتزاز المناسب لإزالة أي فقاعات متبقية`,
-                        `7. المعالجة بالرطوبة لمدة 7 أيام للحصول على تشطيب مثالي`
+                        `6. الصب في القوالب مع الاهتزاز المناسب`,
+                        `7. المعالجة بالرطوبة لمدة 7 أيام`
                     ];
                 } else if (template === 'B') {
                     steps = [
                         `1. تجهيز الأسمنت الأبيض والرمل والإضافات المحددة`,
                         `2. خلط المواد الجافة جيداً لمدة 3-5 دقائق`,
                         `3. إضافة Vinabond (${vinabondList}) مع الماء تدريجياً`,
-                        `4. إضافة STARGEL ST600 للحصول على سيولة ذاتية ومعلقات مستقرة`,
+                        `4. إضافة STARGEL ST600 للحصول على سيولة ذاتية`,
                         `5. إضافة الأكاسيد الملونة حسب اللون المطلوب`,
-                        `6. الخلط النهائي لمدة 5-7 دقائق حتى التجانس الكامل`,
-                        `7. الصب في الموقع مباشرة دون اهتزاز (ذاتية التسوية)`,
-                        `8. المعالجة لمدة 24-48 ساعة قبل الاستخدام`
+                        `6. الخلط النهائي لمدة 5-7 دقائق`,
+                        `7. الصب في الموقع مباشرة دون اهتزاز`,
+                        `8. المعالجة لمدة 24-48 ساعة`
                     ];
                 } else if (template === 'C') {
                     steps = [
-                        `1. تجهيز جميع المواد الجافة (أسمنت، رمل، إضافات)`,
+                        `1. تجهيز جميع المواد الجافة`,
                         `2. خلط المكونات الجافة لمدة 3-5 دقائق`,
                         `3. إضافة Vinabond (${vinabondList}) مع الماء تدريجياً`,
-                        `4. إضافة AQUAGO WP 200 للحصول على خاصية طاردة للماء`,
-                        `5. إضافة CELOFIBER CF 200W لتعزيز المتانة ومقاومة التشقق`,
-                        `6. الخلط النهائي لمدة 5-7 دقائق حتى التجانس`,
-                        `7. التطبيق على الواجهات بسمك مناسب مع التسوية الجيدة`,
-                        `8. المعالجة والرعاية لمدة 7-14 يوماً`
+                        `4. إضافة AQUAGO WP 200 للعزل المائي`,
+                        `5. إضافة CELOFIBER CF 200W لتعزيز المتانة`,
+                        `6. الخلط النهائي لمدة 5-7 دقائق`,
+                        `7. التطبيق على الواجهات مع التسوية الجيدة`,
+                        `8. المعالجة لمدة 7-14 يوماً`
                     ];
                 } else {
                     steps = [
-                        `1. تجهيز جميع المواد بالكميات المحددة أعلاه`,
+                        `1. تجهيز جميع المواد بالكميات المحددة`,
                         `2. خلط المواد الجافة لمدة 3-5 دقائق`,
                         `3. إضافة Vinabond (${vinabondList}) والماء تدريجياً`,
-                        `4. الخلط النهائي لمدة 5-7 دقائق حتى التجانس`
+                        `4. الخلط النهائي لمدة 5-7 دقائق`
                     ];
                 }
 
@@ -1399,7 +1509,7 @@
             }
 
             // ========================================
-            // 8. CALCULATE FUNCTION
+            // 10. CALCULATE FUNCTION
             // ========================================
 
             function calculate() {
@@ -1407,7 +1517,6 @@
                 state.sandRatio = parseFloat(sandRatio.value) || 55;
                 state.oxideColor = oxideColor.value;
 
-                // Get additive values
                 const keys = Object.keys(additivesConfig);
                 keys.forEach(key => {
                     const config = additivesConfig[key];
@@ -1419,10 +1528,7 @@
                     }
                 });
 
-                // Ensure vinabond has a value
-                if (!state.additives.vinabond) {
-                    state.additives.vinabond = { value: 1.5 };
-                }
+                if (!state.additives.vinabond) state.additives.vinabond = { value: 1.5 };
 
                 renderResults();
                 renderSteps();
@@ -1430,12 +1536,12 @@
                 const color = state.oxideColor !== '#d4c4b0' ? state.oxideColor : '#d4c4b0';
                 updateBlock(color);
 
-                // Update vinabond status in 3D
-                vinabondStatus.textContent = `🧪 Vinabond: ${state.vinabondSelected.join(' + ')}`;
+                // Run TDS Validation
+                validateTDS();
             }
 
             // ========================================
-            // 9. TEMPLATE FUNCTIONS
+            // 11. TEMPLATE FUNCTIONS
             // ========================================
 
             function applyTemplate(templateKey) {
@@ -1443,37 +1549,26 @@
                 if (!template) return;
 
                 state.template = templateKey;
-
                 templateCards.forEach(card => {
                     card.classList.toggle('active', card.dataset.template === templateKey);
                 });
 
-                // Apply Vinabond selection
                 state.vinabondSelected = template.vinabond || ['511'];
                 renderVinabondSelector();
 
-                // Apply other settings
                 const settings = template.settings;
-                const keys = Object.keys(settings);
-
-                keys.forEach(key => {
+                Object.keys(settings).forEach(key => {
                     const config = settings[key];
-                    if (config && state.additives[key]) {
+                    if (config) {
+                        if (!state.additives[key]) state.additives[key] = {};
                         state.additives[key].value = config.value;
-                    } else if (config) {
-                        state.additives[key] = { value: config.value };
-                    }
-
-                    const input = document.querySelector(`input[data-key="${key}"]`);
-                    const parent = input?.closest('.additive-item');
-                    const valueDisplay = parent?.querySelector('.add-value');
-
-                    if (input) {
-                        input.value = config.value;
-                    }
-                    if (valueDisplay) {
-                        const unit = additivesConfig[key]?.unit || '%';
-                        valueDisplay.textContent = config.value.toFixed(2) + unit;
+                        const input = document.querySelector(`input[data-key="${key}"]`);
+                        const parent = input?.closest('.additive-item');
+                        const valueDisplay = parent?.querySelector('.add-value');
+                        if (input) input.value = config.value;
+                        if (valueDisplay) {
+                            valueDisplay.textContent = config.value.toFixed(2) + (additivesConfig[key]?.unit || '%');
+                        }
                     }
                 });
 
@@ -1481,16 +1576,13 @@
             }
 
             // ========================================
-            // 10. VINABOND SELECTION
+            // 12. VINABOND SELECTION
             // ========================================
 
             function toggleVinabond(value) {
                 const idx = state.vinabondSelected.indexOf(value);
                 if (idx > -1) {
-                    if (state.vinabondSelected.length === 1) {
-                        // Don't remove the last one
-                        return;
-                    }
+                    if (state.vinabondSelected.length === 1) return;
                     state.vinabondSelected.splice(idx, 1);
                 } else {
                     state.vinabondSelected.push(value);
@@ -1500,7 +1592,7 @@
             }
 
             // ========================================
-            // 11. DOWNLOAD REPORT
+            // 13. DOWNLOAD REPORT
             // ========================================
 
             function generateReport() {
@@ -1511,7 +1603,7 @@
                 const colorName = oxideColor.options[oxideColor.selectedIndex]?.text || 'بدون';
 
                 let report = '========================================\n';
-                report += '🏭 CEMOTECH / CELOTECH - تقرير الخلطة\n';
+                report += '🏭 CEMOTECH / CELOTECH - تقرير الخلطة مع TDS\n';
                 report += '========================================\n\n';
                 report += `📅 التاريخ: ${new Date().toLocaleDateString('ar-EG')}\n`;
                 report += `⏰ الوقت: ${new Date().toLocaleTimeString('ar-EG')}\n\n`;
@@ -1531,37 +1623,51 @@
                     report += `    التأثير: ${config.effect}\n`;
                 });
 
-                report += '\n🧪 الإضافات الكيميائية الأخرى:\n';
+                report += '\n🧪 الإضافات الكيميائية الأخرى (فحص TDS):\n';
                 const keys = Object.keys(additivesConfig);
                 let totalAdd = 0;
                 keys.forEach(key => {
+                    if (key === 'vinabond') return;
                     const config = additivesConfig[key];
                     const val = state.additives[key]?.value || 0;
                     const weight = (val / 100) * cement;
                     totalAdd += weight;
+                    const tds = tdsData[key];
+                    let status = '✅ مطابق';
+                    if (tds) {
+                        if (val < tds.min || val > tds.max) status = '❌ غير مطابق';
+                        else if (val < tds.ideal * 0.7 || val > tds.ideal * 1.3) status = '⚠️ قريب من الحد';
+                    }
                     if (weight > 0.001) {
-                        report += `  ${config.name}: ${val.toFixed(2)}% → ${weight.toFixed(2)} جم\n`;
+                        report += `  ${config.name}: ${val.toFixed(2)}% → ${weight.toFixed(2)} جم (${status})\n`;
                     }
                 });
-                report += `  ════════════════════════════════════\n`;
-                report += `  مجموع الإضافات: ${totalAdd.toFixed(2)} جم\n\n`;
 
-                const vinabondTotal = state.vinabondSelected.reduce((sum, v) => {
+                const vinabondTotal = state.vinabondSelected.reduce((sum) => {
                     const percent = state.additives.vinabond?.value || 1.5;
                     return sum + (percent / 100) * cement;
                 }, 0);
 
                 const total = cement + sand + water + colorWeight + (vinabondTotal + totalAdd) / 1000;
-                report += `📦 الوزن الإجمالي: ${total.toFixed(2)} كجم\n\n`;
+                report += `\n📦 الوزن الإجمالي: ${total.toFixed(2)} كجم\n`;
 
-                report += '📋 تعليمات الخلط الميكانيكية:\n';
+                // TDS Summary
+                report += '\n📋 ملخص فحص TDS:\n';
+                const tdsResults = state.tdsResults;
+                Object.keys(tdsResults).forEach(key => {
+                    const r = tdsResults[key];
+                    const statusText = r.status === 'pass' ? '✅' : r.status === 'warn' ? '⚠️' : '❌';
+                    report += `  ${statusText} ${r.tds.name}: ${r.value.toFixed(2)}${r.tds.unit} (${r.message})\n`;
+                });
+
+                report += '\n📋 تعليمات الخلط الميكانيكية:\n';
                 const steps = stepsList.querySelectorAll('.step-item');
-                steps.forEach((step, i) => {
+                steps.forEach(step => {
                     report += `  ${step.textContent.trim()}\n`;
                 });
 
                 report += '\n========================================\n';
-                report += '🧪 CEMOTECH / CELOTECH - Drymix Lab\n';
+                report += '🧪 CEMOTECH / CELOTECH - TDS Validation System\n';
                 report += '========================================\n';
 
                 return report;
@@ -1573,7 +1679,7 @@
                 const url = URL.createObjectURL(blob);
                 const a = document.createElement('a');
                 a.href = url;
-                a.download = `CEMOTECH_Report_${new Date().toISOString().slice(0,10)}.txt`;
+                a.download = `CEMOTECH_TDS_Report_${new Date().toISOString().slice(0,10)}.txt`;
                 a.click();
                 URL.revokeObjectURL(url);
             }
@@ -1583,102 +1689,82 @@
             }
 
             // ========================================
-            // 12. EVENT BINDING
+            // 14. EVENT BINDING
             // ========================================
 
-            // Vinabond selector
             vinabondSelector.addEventListener('click', function(e) {
                 const option = e.target.closest('.vinabond-option');
-                if (option) {
-                    toggleVinabond(option.dataset.value);
-                }
+                if (option) toggleVinabond(option.dataset.value);
             });
 
-            // Sand ratio
             sandRatio.addEventListener('input', function() {
                 sandRatioValue.textContent = this.value + '%';
                 calculate();
             });
 
-            // Base cement
             baseCement.addEventListener('input', calculate);
-
-            // Oxide color
             oxideColor.addEventListener('change', calculate);
 
-            // Templates
             templateCards.forEach(card => {
                 card.addEventListener('click', function() {
                     applyTemplate(this.dataset.template);
                 });
             });
 
-            // Calculate button
             calculateBtn.addEventListener('click', calculate);
 
-            // Reset button
             resetBtn.addEventListener('click', function() {
-                state.template = null;
+                state.template = 'A';
                 state.vinabondSelected = ['511'];
-                templateCards.forEach(card => card.classList.remove('active'));
+                templateCards.forEach(card => card.classList.toggle('active', card.dataset.template === 'A'));
                 renderVinabondSelector();
 
                 const keys = Object.keys(additivesConfig);
                 keys.forEach(key => {
                     const config = additivesConfig[key];
                     const defaultVal = config.default || 0;
-                    if (state.additives[key]) {
-                        state.additives[key].value = defaultVal;
-                    } else {
-                        state.additives[key] = { value: defaultVal };
-                    }
+                    if (!state.additives[key]) state.additives[key] = {};
+                    state.additives[key].value = defaultVal;
                     const input = document.querySelector(`input[data-key="${key}"]`);
                     const parent = input?.closest('.additive-item');
                     const valueDisplay = parent?.querySelector('.add-value');
                     if (input) input.value = defaultVal;
                     if (valueDisplay) {
-                        const unit = config.unit || '%';
-                        valueDisplay.textContent = defaultVal.toFixed(2) + unit;
+                        valueDisplay.textContent = defaultVal.toFixed(2) + (config.unit || '%');
                     }
                 });
 
                 calculate();
             });
 
-            // Download & Print
             document.getElementById('downloadReportBtn').addEventListener('click', downloadReport);
             document.getElementById('printReportBtn').addEventListener('click', printReport);
 
             // ========================================
-            // 13. INIT
+            // 15. INIT
             // ========================================
 
             function init() {
-                // Initialize additives
                 const keys = Object.keys(additivesConfig);
                 keys.forEach(key => {
                     const config = additivesConfig[key];
                     state.additives[key] = { value: config.default || 0 };
                 });
-
-                // Initialize Vinabond
                 state.additives.vinabond = { value: 1.5 };
 
                 renderVinabondSelector();
                 renderAdditives();
-                calculate();
-
-                setTimeout(initThree, 200);
 
                 setTimeout(() => {
+                    initThree();
                     applyTemplate('A');
-                }, 500);
+                }, 300);
             }
 
             window.addEventListener('resize', function() {
                 if (isThreeReady && threeContainer) {
                     const width = threeContainer.clientWidth;
-                    const height = threeContainer.clientHeight || 300;
+                    const height = threeContainer.clientHeight || 280;
                     camera.aspect = width / height;
                     camera.updateProjectionMatrix();
                     renderer.setSize(width, height);
