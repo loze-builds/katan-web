@@ -4,8 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>katanbuild — المنتجات</title>
-  <meta name="description" content="استعرض الأقسام الأربعة لمنتجات katanbuild: مواد الطينة، العزل، لواصق السيراميك، والعزل الحراري." />
+  <title id="pageTitle">katanbuild — تفاصيل القسم</title>
   <link rel="stylesheet" href="css/style.css" />
 </head>
 
@@ -59,100 +58,36 @@
 
   <!-- ========== MAIN ========== -->
   <main>
-
-    <!-- PAGE HERO -->
-    <section class="hero" style="min-height:auto;padding:calc(var(--header-h) + 100px) 0 80px;">
-      <div class="hero-bg">
-        <div class="hero-slide active" style="background-image:url('https://images.unsplash.com/photo-1541888946425-d81bb19240f5?w=1920&q=80')"></div>
-      </div>
+    <section class="section" style="padding-top:calc(var(--header-h) + 80px);">
       <div class="container">
-        <div class="hero-content reveal">
-          <span class="eyebrow">دليل المنتجات</span>
-          <h1>
-            الأقسام<br />
-            <span class="accent">الأربعة.</span>
-          </h1>
-          <p class="lede">
-            استعرض الأقسام الأربعة، وادخل لأي قسم للاطلاع على المواصفة الكاملة والمواد المتخصصة داخله.
-          </p>
-        </div>
-      </div>
-    </section>
 
-    <!-- PRODUCTS GRID -->
-    <section class="section">
-      <div class="container">
-        <div class="product-grid stagger">
-
-          <!-- القسم 1: مواد الطينة -->
-          <a href="product.html?slug=render-plaster-materials" class="product-card">
-            <div class="thumb" style="background-image:url('https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=800&q=80')">
-              <span class="cat">مواد الطينة</span>
-            </div>
-            <div class="body">
-              <h3>طينة الديكور</h3>
-              <p>قسم مخصص لخلطات الطينة الجاهزة ومواد التسوية التي تمنح الجدران سطحاً قوياً ومتجانساً قبل التشطيب النهائي.</p>
-              <span class="go">عرض القسم (4 مواد) <span class="arrow">←</span></span>
-            </div>
-          </a>
-
-          <!-- القسم 2: مواد العزل -->
-          <a href="product.html?slug=waterproofing-materials" class="product-card">
-            <div class="thumb" style="background-image:url('https://images.unsplash.com/photo-1591955506264-3f5a6834570a?w=800&q=80')">
-              <span class="cat">مواد العزل</span>
-            </div>
-            <div class="body">
-              <h3>مواد العزل</h3>
-              <p>قسم يضم مواد عزل عالية الأداء لحماية الأسطح والمناطق الرطبة والعناصر الإنشائية من تسرب المياه والرطوبة.</p>
-              <span class="go">عرض القسم (4 مواد) <span class="arrow">←</span></span>
-            </div>
-          </a>
-
-          <!-- القسم 3: لواصق السيراميك -->
-          <a href="product.html?slug=ceramic-adhesive-grout" class="product-card">
-            <div class="thumb" style="background-image:url('https://images.unsplash.com/photo-1600585152220-90363fe7e115?w=800&q=80')">
-              <span class="cat">لواصق السيراميك</span>
-            </div>
-            <div class="body">
-              <h3>لاصق وروبة السيراميك</h3>
-              <p>قسم خاص بمواد لصق السيراميك وروبة الفواصل المناسبة لأعمال الإكساء الداخلية والخارجية.</p>
-              <span class="go">عرض القسم (11 مادة) <span class="arrow">←</span></span>
-            </div>
-          </a>
-
-          <!-- القسم 4: العزل الحراري -->
-          <a href="product.html?slug=thermal-insulation-materials" class="product-card">
-            <div class="thumb" style="background-image:url('https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=80')">
-              <span class="cat">العزل الحراري</span>
-            </div>
-            <div class="body">
-              <h3>مواد العزل الحراري</h3>
-              <p>قسم مواد العزل الحراري لواجهات المباني، لتقليل انتقال الحرارة وتحسين كفاءة الطاقة.</p>
-              <span class="go">عرض القسم (4 مواد) <span class="arrow">←</span></span>
-            </div>
-          </a>
-
-        </div>
-      </div>
-    </section>
-
-    <!-- CTA -->
-    <section class="cta-band">
-      <div class="container row">
-        <div>
-          <span class="eyebrow">تواصل معنا</span>
-          <h2 style="margin-top:20px;">لم تجد ما تبحث عنه؟</h2>
-          <p class="lede" style="margin-top:20px;">
-            فريقنا الفني جاهز لمساعدتك في اختيار المادة المناسبة لمشروعك.
-          </p>
-        </div>
-        <a href="about.html#contact" class="btn btn-primary btn-lg">
-          تواصل معنا
-          <span class="arrow">←</span>
+        <!-- Back link -->
+        <a href="products.html" class="eyebrow" style="margin-bottom:40px;display:inline-flex;">
+          ← العودة إلى المنتجات
         </a>
+
+        <div class="detail-layout">
+          <!-- Main content -->
+          <div class="detail-main" id="detailMain"></div>
+
+          <!-- Sidebar -->
+          <aside class="sidebar">
+            <h4>أقسام المنتجات</h4>
+            <div id="sidebarList"></div>
+          </aside>
+        </div>
       </div>
     </section>
 
+    <!-- Other sections strip -->
+    <section class="section-alt" style="padding:60px 0;">
+      <div class="container">
+        <div class="section-head reveal" style="margin-bottom:32px;max-width:none;">
+          <span class="eyebrow">أقسام أخرى</span>
+        </div>
+        <div id="stripLinks" class="product-grid stagger"></div>
+      </div>
+    </section>
   </main>
 
   <!-- ========== FOOTER ========== -->
@@ -206,16 +141,115 @@
   <script src="js/animations.js"></script>
   <script src="js/data.js"></script>
   <script>
-    // Language toggle
+    // ============ PRODUCT DETAIL RENDERER ============
+    function currentSlug() {
+      const params = new URLSearchParams(location.search);
+      return params.get("slug") || window.SITE.products[0].slug;
+    }
+
+    function renderDetail() {
+      const lang = document.documentElement.lang || "ar";
+      const S = window.SITE;
+      const slug = currentSlug();
+      const product = S.products.find((p) => p.slug === slug) || S.products[0];
+
+      document.title = `katanbuild — ${product.title[lang] || product.title.ar}`;
+
+      // Main content
+      document.getElementById("detailMain").innerHTML = `
+        <span class="eyebrow">${product.category[lang] || product.category.ar}</span>
+        <h1 style="margin-top:24px;">${product.title[lang] || product.title.ar}</h1>
+        <div class="thumb-lg" style="background-image:url('${S.media.productImages[S.products.indexOf(product)]}')"></div>
+        <p class="lede">${product.short[lang] || product.short.ar}</p>
+        <p style="margin-top:24px;color:var(--text-muted);line-height:1.7;">${product.details[lang] || product.details.ar}</p>
+
+        <div class="spec-list">
+          <h4 class="mono" style="color:var(--text-muted);font-size:.75rem;letter-spacing:.15em;text-transform:uppercase;margin-bottom:8px;">المواصفات</h4>
+          ${(product.specs || []).map((s) => `
+            <div class="row">
+              <span>${s[lang] || s.ar}</span>
+              <span>${s.val[lang] || s.val.ar}</span>
+            </div>
+          `).join("")}
+        </div>
+
+        <section class="section-products">
+          <div class="section-head">
+            <span class="eyebrow">مواد القسم</span>
+            <h2 style="margin-top:20px;">المواد الموجودة داخل القسم (${product.items.length})</h2>
+          </div>
+          <div class="product-grid stagger">
+            ${product.items.map((item) => `
+              <article class="product-card">
+                <div class="thumb" style="background-image:url('${S.media.productImages[item.imageIndex]}')">
+                  <span class="cat">${product.category[lang] || product.category.ar}</span>
+                </div>
+                <div class="body">
+                  <h3>${item.title[lang] || item.title.ar}</h3>
+                  <p>${lang === "ar" ? "مادة متخصصة ضمن هذا القسم، مع مواصفات تطبيق واضحة." : "A specialized material within this section with clear application guidance."}</p>
+                </div>
+              </article>
+            `).join("")}
+          </div>
+        </section>
+      `;
+
+      // Sidebar
+      document.getElementById("sidebarList").innerHTML = S.products
+        .map((p) => `
+          <a href="product.html?slug=${p.slug}" class="${p.slug === product.slug ? "active" : ""}">
+            <span>${p.category[lang] || p.category.ar}</span>
+            <span class="arrow">${lang === "ar" ? "←" : "→"}</span>
+          </a>
+        `)
+        .join("");
+
+      // Strip
+      document.getElementById("stripLinks").innerHTML = S.products
+        .filter((p) => p.slug !== product.slug)
+        .map((p) => `
+          <a href="product.html?slug=${p.slug}" class="product-card">
+            <div class="thumb" style="background-image:url('${S.media.productImages[S.products.indexOf(p)]}')">
+              <span class="cat">${p.category[lang] || p.category.ar}</span>
+            </div>
+            <div class="body">
+              <h3>${p.title[lang] || p.title.ar}</h3>
+              <p>${p.short[lang] || p.short.ar}</p>
+              <span class="go">عرض القسم <span class="arrow">←</span></span>
+            </div>
+          </a>
+        `)
+        .join("");
+
+      // Re-init reveal animations for new content
+      setTimeout(() => {
+        document.querySelectorAll('.reveal, .stagger').forEach((el) => {
+          const obs = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add('in-view');
+                obs.unobserve(entry.target);
+              }
+            });
+          }, { threshold: 0.15 });
+          obs.observe(el);
+        });
+      }, 100);
+    }
+
+    // Render on load
+    document.addEventListener("DOMContentLoaded", renderDetail);
+
+    // ============ LANGUAGE & THEME TOGGLES ============
     document.getElementById('langToggle')?.addEventListener('click', function () {
       const html = document.documentElement;
       const newLang = html.lang === 'ar' ? 'en' : 'ar';
       html.lang = newLang;
       html.dir = newLang === 'ar' ? 'rtl' : 'ltr';
       this.textContent = newLang === 'ar' ? 'EN' : 'AR';
+      renderDetail();
     });
 
-    // Theme toggle
     document.getElementById('themeToggle')?.addEventListener('click', function () {
       const html = document.documentElement;
       const newTheme = html.dataset.theme === 'dark' ? 'light' : 'dark';
