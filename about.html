@@ -7,6 +7,8 @@
   <title>katanbuild — من نحن</title>
   <meta name="description" content="شركة سورية متخصصة بمواد البناء الكيميائية: الطينة، العزل، لواصق السيراميك." />
   <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/admin.css" />
+  <link rel="stylesheet" href="css/cart.css" />
 </head>
 
 <body>
@@ -24,9 +26,15 @@
         <a href="products.html" class="nav-link">المنتجات</a>
         <a href="projects.html" class="nav-link">المشاريع</a>
         <a href="about.html" class="nav-link active">من نحن</a>
+        <a href="#" class="nav-link" data-cart-open style="color:var(--accent);">اطلب منتج</a>
+        <a href="payment.html" class="nav-link">الدفع</a>
       </nav>
 
       <div class="header-actions">
+        <button class="icon-btn kb-cart-badge" data-cart-open title="الطلبية" type="button">
+          🛒
+          <span class="count" data-count="0">0</span>
+        </button>
         <button class="icon-btn" id="langToggle" title="تغيير اللغة">EN</button>
         <button class="icon-btn" id="themeToggle" title="تغيير المظهر">☀</button>
         <button class="icon-btn menu-toggle" id="menuToggle" title="القائمة">☰</button>
@@ -49,6 +57,8 @@
       <a href="products.html">المنتجات <span class="arrow">←</span></a>
       <a href="projects.html">المشاريع <span class="arrow">←</span></a>
       <a href="about.html" class="active">من نحن <span class="arrow">←</span></a>
+      <a href="#" data-cart-open style="color:var(--accent);">اطلب منتج <span class="arrow">←</span></a>
+      <a href="payment.html">الدفع <span class="arrow">←</span></a>
     </nav>
     <div class="drawer-footer">
       <div>+963 952 725 590</div>
@@ -274,6 +284,10 @@
 
   <!-- ========== SCRIPTS ========== -->
   <script src="js/animations.js"></script>
+  <script src="js/cart-drawer.js"></script>
+  <script src="js/admin-panel.js"></script>
+  <script src="js/site-access-local.js"></script>
+  <script src="js/apply-customization.js"></script>
   <script>
     document.getElementById('langToggle')?.addEventListener('click', function () {
       const html = document.documentElement;
