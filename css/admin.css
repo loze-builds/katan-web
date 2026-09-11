@@ -1,0 +1,707 @@
+/* =========================================================
+   katanbuild — Admin Panel Styles
+   KERN® Inspired
+   ========================================================= */
+
+/* ---------- ADMIN PANEL OVERLAY ---------- */
+.kb-admin-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  animation: kbFadeIn 0.3s ease;
+}
+
+.kb-admin-overlay.open {
+  display: flex;
+}
+
+@keyframes kbFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* ---------- ADMIN DIALOG ---------- */
+.kb-admin-dialog {
+  width: min(1200px, 100%);
+  height: min(800px, 90vh);
+  background: var(--surface, #161616);
+  border: 1px solid var(--line, #262626);
+  border-radius: 12px;
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  overflow: hidden;
+  box-shadow: 0 40px 100px -20px rgba(0, 0, 0, 0.7);
+  animation: kbSlideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes kbSlideUp {
+  from { transform: translateY(30px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+/* ---------- SIDEBAR ---------- */
+.kb-admin-sidebar {
+  background: var(--surface-2, #1E1E1E);
+  border-inline-end: 1px solid var(--line, #262626);
+  padding: 24px 0;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+}
+
+.kb-admin-brand {
+  padding: 0 24px 24px;
+  border-bottom: 1px solid var(--line, #262626);
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.kb-admin-brand img {
+  height: 32px;
+  width: auto;
+}
+
+.kb-admin-brand span {
+  font-weight: 800;
+  font-size: 0.95rem;
+  letter-spacing: -0.02em;
+}
+
+.kb-admin-brand small {
+  display: block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem;
+  color: var(--accent, #E87722);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-top: 2px;
+}
+
+.kb-admin-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 0 12px;
+}
+
+.kb-admin-nav button {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  border-radius: 6px;
+  border: none;
+  background: transparent;
+  color: var(--text-muted, #8A8A8A);
+  font: inherit;
+  font-size: 0.9rem;
+  font-weight: 500;
+  text-align: start;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.kb-admin-nav button:hover {
+  background: var(--surface, #161616);
+  color: var(--text, #F5F5F5);
+}
+
+.kb-admin-nav button.active {
+  background: var(--accent, #E87722);
+  color: white;
+}
+
+.kb-admin-nav button .icon {
+  font-size: 1.1rem;
+  width: 20px;
+  text-align: center;
+}
+
+.kb-admin-sidebar-footer {
+  margin-top: auto;
+  padding: 20px 24px 0;
+  border-top: 1px solid var(--line, #262626);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  color: var(--text-muted, #8A8A8A);
+  letter-spacing: 0.05em;
+}
+
+/* ---------- MAIN ---------- */
+.kb-admin-main {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.kb-admin-header {
+  padding: 24px 32px;
+  border-bottom: 1px solid var(--line, #262626);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.kb-admin-header h1 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.kb-admin-header p {
+  font-size: 0.85rem;
+  color: var(--text-muted, #8A8A8A);
+  margin-top: 4px;
+}
+
+.kb-admin-close {
+  width: 40px;
+  height: 40px;
+  border-radius: 6px;
+  border: 1px solid var(--line, #262626);
+  background: transparent;
+  color: var(--text, #F5F5F5);
+  font-size: 1.25rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.kb-admin-close:hover {
+  border-color: var(--accent, #E87722);
+  color: var(--accent, #E87722);
+  transform: rotate(90deg);
+}
+
+.kb-admin-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 32px;
+}
+
+/* ---------- PANELS ---------- */
+.kb-panel {
+  display: none;
+}
+
+.kb-panel.active {
+  display: block;
+  animation: kbPanelIn 0.3s ease;
+}
+
+@keyframes kbPanelIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.kb-panel h2 {
+  font-size: 1.25rem;
+  margin-bottom: 8px;
+}
+
+.kb-panel .hint {
+  color: var(--text-muted, #8A8A8A);
+  font-size: 0.9rem;
+  margin-bottom: 24px;
+}
+
+/* ---------- FORM ELEMENTS ---------- */
+.kb-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.kb-field label {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--text-muted, #8A8A8A);
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.kb-field input[type="text"],
+.kb-field input[type="number"],
+.kb-field input[type="url"],
+.kb-field input[type="password"],
+.kb-field textarea,
+.kb-field select {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid var(--line, #262626);
+  border-radius: 6px;
+  background: var(--bg, #0E0E0E);
+  color: var(--text, #F5F5F5);
+  font: inherit;
+  font-size: 0.95rem;
+  transition: border-color 0.2s ease;
+}
+
+.kb-field input:focus,
+.kb-field textarea:focus,
+.kb-field select:focus {
+  outline: none;
+  border-color: var(--accent, #E87722);
+}
+
+.kb-field textarea {
+  resize: vertical;
+  min-height: 80px;
+  font-family: inherit;
+}
+
+/* ---------- BUTTONS ---------- */
+.kb-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 22px;
+  border-radius: 6px;
+  border: 1px solid transparent;
+  font: inherit;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.kb-btn-primary {
+  background: var(--accent, #E87722);
+  color: white;
+  border-color: var(--accent, #E87722);
+}
+
+.kb-btn-primary:hover {
+  background: #C45F12;
+  border-color: #C45F12;
+  transform: translateY(-1px);
+}
+
+.kb-btn-outline {
+  background: transparent;
+  color: var(--text, #F5F5F5);
+  border-color: var(--line, #262626);
+}
+
+.kb-btn-outline:hover {
+  border-color: var(--accent, #E87722);
+  color: var(--accent, #E87722);
+}
+
+.kb-btn-danger {
+  background: transparent;
+  color: #EF4444;
+  border-color: #EF4444;
+}
+
+.kb-btn-danger:hover {
+  background: #EF4444;
+  color: white;
+}
+
+.kb-btn-sm {
+  padding: 8px 14px;
+  font-size: 0.8rem;
+}
+
+/* ---------- CARDS / ITEMS ---------- */
+.kb-card {
+  padding: 24px;
+  border: 1px solid var(--line, #262626);
+  border-radius: 8px;
+  background: var(--surface-2, #1E1E1E);
+  margin-bottom: 16px;
+}
+
+.kb-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.kb-card-header h3 {
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.kb-card-header .actions {
+  display: flex;
+  gap: 8px;
+}
+
+/* ---------- IMAGE PREVIEW ---------- */
+.kb-image-preview {
+  width: 100%;
+  aspect-ratio: 16/10;
+  border-radius: 8px;
+  background-size: cover;
+  background-position: center;
+  background-color: var(--bg, #0E0E0E);
+  border: 1px solid var(--line, #262626);
+  margin-bottom: 16px;
+  position: relative;
+}
+
+.kb-image-preview::after {
+  content: "معاينة";
+  position: absolute;
+  top: 12px;
+  inset-inline-start: 12px;
+  background: rgba(0, 0, 0, 0.7);
+  color: white;
+  padding: 4px 10px;
+  border-radius: 100px;
+  font-size: 0.7rem;
+  font-family: 'JetBrains Mono', monospace;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+/* ---------- FILE INPUT ---------- */
+.kb-file-input {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px;
+  border: 2px dashed var(--line, #262626);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.kb-file-input:hover {
+  border-color: var(--accent, #E87722);
+  background: color-mix(in srgb, var(--accent, #E87722) 5%, transparent);
+}
+
+.kb-file-input input[type="file"] {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.kb-file-input .icon {
+  font-size: 1.5rem;
+  color: var(--accent, #E87722);
+}
+
+.kb-file-input .text {
+  font-size: 0.85rem;
+  color: var(--text-muted, #8A8A8A);
+}
+
+.kb-file-input .text strong {
+  display: block;
+  color: var(--text, #F5F5F5);
+  font-weight: 600;
+}
+
+/* ---------- STATUS MESSAGES ---------- */
+.kb-status {
+  padding: 12px 16px;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  margin-top: 16px;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+}
+
+.kb-status:empty {
+  display: none;
+}
+
+.kb-status.success {
+  background: rgba(34, 197, 94, 0.1);
+  border: 1px solid rgba(34, 197, 94, 0.3);
+  color: #22C55E;
+}
+
+.kb-status.error {
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  color: #EF4444;
+}
+
+.kb-status.info {
+  background: rgba(59, 130, 246, 0.1);
+  border: 1px solid rgba(59, 130, 246, 0.3);
+  color: #3B82F6;
+}
+
+/* ---------- TOAST ---------- */
+.kb-toast {
+  position: fixed;
+  bottom: 24px;
+  inset-inline-start: 24px;
+  z-index: 10000;
+  padding: 16px 24px;
+  background: var(--surface, #161616);
+  border: 1px solid var(--line, #262626);
+  border-inline-start: 4px solid var(--accent, #E87722);
+  border-radius: 6px;
+  box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.5);
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--text, #F5F5F5);
+  transform: translateY(100px);
+  opacity: 0;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  max-width: 380px;
+}
+
+.kb-toast.show {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.kb-toast.success { border-inline-start-color: #22C55E; }
+.kb-toast.error { border-inline-start-color: #EF4444; }
+
+/* ---------- SITE NOTICE BANNER ---------- */
+.kb-site-notice {
+  position: relative;
+  z-index: 90;
+  padding: 12px 24px;
+  background: linear-gradient(90deg, var(--accent, #E87722), #C45F12);
+  color: white;
+  font-weight: 600;
+  text-align: center;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+  animation: kbNoticeSlide 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.kb-site-notice::before {
+  content: "⏱";
+  font-size: 1.2rem;
+}
+
+@keyframes kbNoticeSlide {
+  from { transform: translateY(-100%); }
+  to { transform: translateY(0); }
+}
+
+.kb-site-notice a {
+  color: white;
+  text-decoration: underline;
+  font-weight: 700;
+}
+
+.kb-site-notice .close {
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+  font-size: 1.2rem;
+  padding: 0 8px;
+  opacity: 0.7;
+  transition: opacity 0.2s;
+}
+
+.kb-site-notice .close:hover {
+  opacity: 1;
+}
+
+/* ---------- GATE (BLOCKING SCREEN) ---------- */
+.kb-site-gate {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: rgba(14, 14, 14, 0.98);
+  backdrop-filter: blur(12px);
+  display: grid;
+  place-items: center;
+  padding: 24px;
+}
+
+.kb-site-gate-dialog {
+  width: min(680px, 100%);
+  padding: 60px 40px;
+  border: 2px solid var(--accent, #E87722);
+  border-radius: 12px;
+  background: var(--surface, #161616);
+  text-align: center;
+  box-shadow: 0 40px 100px -20px rgba(232, 119, 34, 0.3);
+}
+
+.kb-site-gate-dialog .eyebrow {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+  color: var(--accent, #E87722);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+}
+
+.kb-site-gate-dialog h1 {
+  font-size: clamp(2rem, 4vw, 3rem);
+  margin-bottom: 20px;
+}
+
+.kb-site-gate-dialog p {
+  color: var(--text-muted, #8A8A8A);
+  font-size: 1.05rem;
+  max-width: 50ch;
+  margin: 0 auto 20px;
+  line-height: 1.6;
+}
+
+.kb-site-gate-dialog .countdown {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1.5rem;
+  color: var(--accent, #E87722);
+  margin: 24px 0;
+  letter-spacing: 0.05em;
+}
+
+/* ---------- PASSWORD PROMPT ---------- */
+.kb-password-prompt {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  background: rgba(0, 0, 0, 0.9);
+  backdrop-filter: blur(8px);
+  display: grid;
+  place-items: center;
+  padding: 24px;
+}
+
+.kb-password-dialog {
+  width: min(420px, 100%);
+  padding: 40px 32px;
+  background: var(--surface, #161616);
+  border: 1px solid var(--line, #262626);
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: 0 40px 100px -20px rgba(0, 0, 0, 0.7);
+}
+
+.kb-password-dialog h2 {
+  font-size: 1.25rem;
+  margin-bottom: 8px;
+}
+
+.kb-password-dialog p {
+  color: var(--text-muted, #8A8A8A);
+  font-size: 0.85rem;
+  margin-bottom: 24px;
+}
+
+.kb-password-dialog input {
+  width: 100%;
+  padding: 16px;
+  border: 1px solid var(--line, #262626);
+  border-radius: 8px;
+  background: var(--bg, #0E0E0E);
+  color: var(--text, #F5F5F5);
+  font: inherit;
+  font-size: 1.5rem;
+  text-align: center;
+  letter-spacing: 0.5em;
+  font-family: 'JetBrains Mono', monospace;
+  margin-bottom: 16px;
+}
+
+.kb-password-dialog input:focus {
+  outline: none;
+  border-color: var(--accent, #E87722);
+}
+
+.kb-password-dialog .error {
+  color: #EF4444;
+  font-size: 0.8rem;
+  min-height: 20px;
+  margin-bottom: 12px;
+}
+
+.kb-password-dialog .actions {
+  display: flex;
+  gap: 8px;
+}
+
+.kb-password-dialog .actions button {
+  flex: 1;
+}
+
+/* ---------- RESPONSIVE ---------- */
+@media (max-width: 768px) {
+  .kb-admin-dialog {
+    grid-template-columns: 1fr;
+    height: 100vh;
+    border-radius: 0;
+  }
+
+  .kb-admin-sidebar {
+    display: none;
+  }
+
+  .kb-admin-body {
+    padding: 20px;
+  }
+
+  .kb-admin-header {
+    padding: 20px;
+  }
+
+  .kb-site-gate-dialog {
+    padding: 40px 24px;
+  }
+}
+
+/* ---------- LIGHT THEME ---------- */
+[data-theme="light"] .kb-admin-dialog,
+[data-theme="light"] .kb-password-dialog,
+[data-theme="light"] .kb-site-gate-dialog {
+  background: #FFFFFF;
+  border-color: #E5E5E3;
+}
+
+[data-theme="light"] .kb-admin-sidebar {
+  background: #F2F2F0;
+  border-color: #E5E5E3;
+}
+
+[data-theme="light"] .kb-field input,
+[data-theme="light"] .kb-field textarea,
+[data-theme="light"] .kb-field select,
+[data-theme="light"] .kb-password-dialog input {
+  background: #FAFAF8;
+  color: #0E0E0E;
+  border-color: #E5E5E3;
+}
+
+[data-theme="light"] .kb-card {
+  background: #F2F2F0;
+  border-color: #E5E5E3;
+}
+
+[data-theme="light"] .kb-toast {
+  background: #FFFFFF;
+  color: #0E0E0E;
+  border-color: #E5E5E3;
+}
