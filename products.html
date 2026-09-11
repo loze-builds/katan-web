@@ -7,6 +7,8 @@
   <title>katanbuild — المنتجات</title>
   <meta name="description" content="استعرض الأقسام الأربعة لمنتجات katanbuild: مواد الطينة، العزل، لواصق السيراميك، والعزل الحراري." />
   <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/admin.css" />
+  <link rel="stylesheet" href="css/cart.css" />
 </head>
 
 <body>
@@ -24,9 +26,15 @@
         <a href="products.html" class="nav-link active">المنتجات</a>
         <a href="projects.html" class="nav-link">المشاريع</a>
         <a href="about.html" class="nav-link">من نحن</a>
+        <a href="#" class="nav-link" data-cart-open style="color:var(--accent);">اطلب منتج</a>
+        <a href="payment.html" class="nav-link">الدفع</a>
       </nav>
 
       <div class="header-actions">
+        <button class="icon-btn kb-cart-badge" data-cart-open title="الطلبية" type="button">
+          🛒
+          <span class="count" data-count="0">0</span>
+        </button>
         <button class="icon-btn" id="langToggle" title="تغيير اللغة">EN</button>
         <button class="icon-btn" id="themeToggle" title="تغيير المظهر">☀</button>
         <button class="icon-btn menu-toggle" id="menuToggle" title="القائمة">☰</button>
@@ -49,6 +57,8 @@
       <a href="products.html" class="active">المنتجات <span class="arrow">←</span></a>
       <a href="projects.html">المشاريع <span class="arrow">←</span></a>
       <a href="about.html">من نحن <span class="arrow">←</span></a>
+      <a href="#" data-cart-open style="color:var(--accent);">اطلب منتج <span class="arrow">←</span></a>
+      <a href="payment.html">الدفع <span class="arrow">←</span></a>
     </nav>
     <div class="drawer-footer">
       <div>+963 952 725 590</div>
@@ -85,52 +95,76 @@
         <div class="product-grid stagger">
 
           <!-- القسم 1: مواد الطينة -->
-          <a href="product.html?slug=render-plaster-materials" class="product-card">
-            <div class="thumb" style="background-image:url('https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=800&q=80')">
-              <span class="cat">مواد الطينة</span>
-            </div>
-            <div class="body">
-              <h3>طينة الديكور</h3>
-              <p>قسم مخصص لخلطات الطينة الجاهزة ومواد التسوية التي تمنح الجدران سطحاً قوياً ومتجانساً قبل التشطيب النهائي.</p>
-              <span class="go">عرض القسم (4 مواد) <span class="arrow">←</span></span>
-            </div>
-          </a>
+          <div class="product-card">
+            <a href="product.html?slug=render-plaster-materials" style="display:contents;color:inherit;text-decoration:none;">
+              <div class="thumb" style="background-image:url('https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=800&q=80')">
+                <span class="cat">مواد الطينة</span>
+              </div>
+              <div class="body">
+                <h3>طينة الديكور</h3>
+                <p>قسم مخصص لخلطات الطينة الجاهزة ومواد التسوية التي تمنح الجدران سطحاً قوياً ومتجانساً قبل التشطيب النهائي.</p>
+                <span class="go">عرض القسم (4 مواد) <span class="arrow">←</span></span>
+              </div>
+            </a>
+            <button class="kb-add-btn" type="button"
+              data-cart-add="طينة الديكور"
+              data-cart-category="مواد الطينة"
+              aria-label="أضف للسلة">+</button>
+          </div>
 
           <!-- القسم 2: مواد العزل -->
-          <a href="product.html?slug=waterproofing-materials" class="product-card">
-            <div class="thumb" style="background-image:url('https://images.unsplash.com/photo-1591955506264-3f5a6834570a?w=800&q=80')">
-              <span class="cat">مواد العزل</span>
-            </div>
-            <div class="body">
-              <h3>مواد العزل</h3>
-              <p>قسم يضم مواد عزل عالية الأداء لحماية الأسطح والمناطق الرطبة والعناصر الإنشائية من تسرب المياه والرطوبة.</p>
-              <span class="go">عرض القسم (4 مواد) <span class="arrow">←</span></span>
-            </div>
-          </a>
+          <div class="product-card">
+            <a href="product.html?slug=waterproofing-materials" style="display:contents;color:inherit;text-decoration:none;">
+              <div class="thumb" style="background-image:url('https://images.unsplash.com/photo-1591955506264-3f5a6834570a?w=800&q=80')">
+                <span class="cat">مواد العزل</span>
+              </div>
+              <div class="body">
+                <h3>مواد العزل</h3>
+                <p>قسم يضم مواد عزل عالية الأداء لحماية الأسطح والمناطق الرطبة والعناصر الإنشائية من تسرب المياه والرطوبة.</p>
+                <span class="go">عرض القسم (4 مواد) <span class="arrow">←</span></span>
+              </div>
+            </a>
+            <button class="kb-add-btn" type="button"
+              data-cart-add="مواد العزل"
+              data-cart-category="مواد العزل"
+              aria-label="أضف للسلة">+</button>
+          </div>
 
           <!-- القسم 3: لواصق السيراميك -->
-          <a href="product.html?slug=ceramic-adhesive-grout" class="product-card">
-            <div class="thumb" style="background-image:url('https://images.unsplash.com/photo-1600585152220-90363fe7e115?w=800&q=80')">
-              <span class="cat">لواصق السيراميك</span>
-            </div>
-            <div class="body">
-              <h3>لاصق وروبة السيراميك</h3>
-              <p>قسم خاص بمواد لصق السيراميك وروبة الفواصل المناسبة لأعمال الإكساء الداخلية والخارجية.</p>
-              <span class="go">عرض القسم (11 مادة) <span class="arrow">←</span></span>
-            </div>
-          </a>
+          <div class="product-card">
+            <a href="product.html?slug=ceramic-adhesive-grout" style="display:contents;color:inherit;text-decoration:none;">
+              <div class="thumb" style="background-image:url('https://images.unsplash.com/photo-1600585152220-90363fe7e115?w=800&q=80')">
+                <span class="cat">لواصق السيراميك</span>
+              </div>
+              <div class="body">
+                <h3>لاصق وروبة السيراميك</h3>
+                <p>قسم خاص بمواد لصق السيراميك وروبة الفواصل المناسبة لأعمال الإكساء الداخلية والخارجية.</p>
+                <span class="go">عرض القسم (11 مادة) <span class="arrow">←</span></span>
+              </div>
+            </a>
+            <button class="kb-add-btn" type="button"
+              data-cart-add="لاصق وروبة السيراميك"
+              data-cart-category="لواصق السيراميك"
+              aria-label="أضف للسلة">+</button>
+          </div>
 
           <!-- القسم 4: العزل الحراري -->
-          <a href="product.html?slug=thermal-insulation-materials" class="product-card">
-            <div class="thumb" style="background-image:url('https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=80')">
-              <span class="cat">العزل الحراري</span>
-            </div>
-            <div class="body">
-              <h3>مواد العزل الحراري</h3>
-              <p>قسم مواد العزل الحراري لواجهات المباني، لتقليل انتقال الحرارة وتحسين كفاءة الطاقة.</p>
-              <span class="go">عرض القسم (4 مواد) <span class="arrow">←</span></span>
-            </div>
-          </a>
+          <div class="product-card">
+            <a href="product.html?slug=thermal-insulation-materials" style="display:contents;color:inherit;text-decoration:none;">
+              <div class="thumb" style="background-image:url('https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=80')">
+                <span class="cat">العزل الحراري</span>
+              </div>
+              <div class="body">
+                <h3>مواد العزل الحراري</h3>
+                <p>قسم مواد العزل الحراري لواجهات المباني، لتقليل انتقال الحرارة وتحسين كفاءة الطاقة.</p>
+                <span class="go">عرض القسم (4 مواد) <span class="arrow">←</span></span>
+              </div>
+            </a>
+            <button class="kb-add-btn" type="button"
+              data-cart-add="مواد العزل الحراري"
+              data-cart-category="العزل الحراري"
+              aria-label="أضف للسلة">+</button>
+          </div>
 
         </div>
       </div>
@@ -205,6 +239,10 @@
   <!-- ========== SCRIPTS ========== -->
   <script src="js/animations.js"></script>
   <script src="js/data.js"></script>
+  <script src="js/cart-drawer.js"></script>
+  <script src="js/admin-panel.js"></script>
+  <script src="js/site-access-local.js"></script>
+  <script src="js/apply-customization.js"></script>
   <script>
     // Language toggle
     document.getElementById('langToggle')?.addEventListener('click', function () {
