@@ -6,6 +6,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title id="pageTitle">katanbuild — تفاصيل القسم</title>
   <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/admin.css" />
+  <link rel="stylesheet" href="css/cart.css" />
 </head>
 
 <body>
@@ -23,9 +25,15 @@
         <a href="products.html" class="nav-link active">المنتجات</a>
         <a href="projects.html" class="nav-link">المشاريع</a>
         <a href="about.html" class="nav-link">من نحن</a>
+        <a href="#" class="nav-link" data-cart-open style="color:var(--accent);">اطلب منتج</a>
+        <a href="payment.html" class="nav-link">الدفع</a>
       </nav>
 
       <div class="header-actions">
+        <button class="icon-btn kb-cart-badge" data-cart-open title="الطلبية" type="button">
+          🛒
+          <span class="count" data-count="0">0</span>
+        </button>
         <button class="icon-btn" id="langToggle" title="تغيير اللغة">EN</button>
         <button class="icon-btn" id="themeToggle" title="تغيير المظهر">☀</button>
         <button class="icon-btn menu-toggle" id="menuToggle" title="القائمة">☰</button>
@@ -48,6 +56,8 @@
       <a href="products.html" class="active">المنتجات <span class="arrow">←</span></a>
       <a href="projects.html">المشاريع <span class="arrow">←</span></a>
       <a href="about.html">من نحن <span class="arrow">←</span></a>
+      <a href="#" data-cart-open style="color:var(--accent);">اطلب منتج <span class="arrow">←</span></a>
+      <a href="payment.html">الدفع <span class="arrow">←</span></a>
     </nav>
     <div class="drawer-footer">
       <div>+963 952 725 590</div>
@@ -140,6 +150,10 @@
   <!-- ========== SCRIPTS ========== -->
   <script src="js/animations.js"></script>
   <script src="js/data.js"></script>
+  <script src="js/cart-drawer.js"></script>
+  <script src="js/admin-panel.js"></script>
+  <script src="js/site-access-local.js"></script>
+  <script src="js/apply-customization.js"></script>
   <script>
     // ============ PRODUCT DETAIL RENDERER ============
     function currentSlug() {
@@ -188,6 +202,10 @@
                   <h3>${item.title[lang] || item.title.ar}</h3>
                   <p>${lang === "ar" ? "مادة متخصصة ضمن هذا القسم، مع مواصفات تطبيق واضحة." : "A specialized material within this section with clear application guidance."}</p>
                 </div>
+                <button class="kb-add-btn" type="button"
+                  data-cart-add="${item.title.ar}"
+                  data-cart-category="${product.category.ar}"
+                  aria-label="أضف للسلة">+</button>
               </article>
             `).join("")}
           </div>
@@ -208,16 +226,22 @@
       document.getElementById("stripLinks").innerHTML = S.products
         .filter((p) => p.slug !== product.slug)
         .map((p) => `
-          <a href="product.html?slug=${p.slug}" class="product-card">
-            <div class="thumb" style="background-image:url('${S.media.productImages[S.products.indexOf(p)]}')">
-              <span class="cat">${p.category[lang] || p.category.ar}</span>
-            </div>
-            <div class="body">
-              <h3>${p.title[lang] || p.title.ar}</h3>
-              <p>${p.short[lang] || p.short.ar}</p>
-              <span class="go">عرض القسم <span class="arrow">←</span></span>
-            </div>
-          </a>
+          <div class="product-card">
+            <a href="product.html?slug=${p.slug}" style="display:contents;color:inherit;text-decoration:none;">
+              <div class="thumb" style="background-image:url('${S.media.productImages[S.products.indexOf(p)]}')">
+                <span class="cat">${p.category[lang] || p.category.ar}</span>
+              </div>
+              <div class="body">
+                <h3>${p.title[lang] || p.title.ar}</h3>
+                <p>${p.short[lang] || p.short.ar}</p>
+                <span class="go">عرض القسم <span class="arrow">←</span></span>
+              </div>
+            </a>
+            <button class="kb-add-btn" type="button"
+              data-cart-add="${p.title.ar}"
+              data-cart-category="${p.category.ar}"
+              aria-label="أضف للسلة">+</button>
+          </div>
         `)
         .join("");
 
