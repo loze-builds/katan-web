@@ -9,6 +9,7 @@
   <meta name="theme-color" content="#0E0E0E" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900;1000&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css" />
   <link rel="stylesheet" href="css/admin.css" />
   <link rel="stylesheet" href="css/cart.css" />
@@ -37,6 +38,9 @@
         <button class="icon-btn kb-cart-badge" data-cart-open title="الطلبية" type="button">
           🛒
           <span class="count" data-count="0">0</span>
+        </button>
+        <button class="icon-btn" id="navToggleBtn" title="تصغير القائمة" type="button">
+          <span id="navToggleIcon">▼</span>
         </button>
         <button class="icon-btn" id="langToggle" title="تغيير اللغة">EN</button>
         <button class="icon-btn" id="themeToggle" title="تغيير المظهر">☀</button>
@@ -134,7 +138,6 @@
 
         <div class="product-grid stagger">
 
-          <!-- القسم 1 -->
           <div class="product-card">
             <a href="product.html?slug=render-plaster-materials" style="display:contents;color:inherit;text-decoration:none;">
               <div class="thumb" style="background-image:url('https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=800&q=80')">
@@ -152,7 +155,6 @@
               aria-label="أضف للسلة">+</button>
           </div>
 
-          <!-- القسم 2 -->
           <div class="product-card">
             <a href="product.html?slug=waterproofing-materials" style="display:contents;color:inherit;text-decoration:none;">
               <div class="thumb" style="background-image:url('https://images.unsplash.com/photo-1591955506264-3f5a6834570a?w=800&q=80')">
@@ -170,7 +172,6 @@
               aria-label="أضف للسلة">+</button>
           </div>
 
-          <!-- القسم 3 -->
           <div class="product-card">
             <a href="product.html?slug=ceramic-adhesive-grout" style="display:contents;color:inherit;text-decoration:none;">
               <div class="thumb" style="background-image:url('https://images.unsplash.com/photo-1600585152220-90363fe7e115?w=800&q=80')">
@@ -188,7 +189,6 @@
               aria-label="أضف للسلة">+</button>
           </div>
 
-          <!-- القسم 4 -->
           <div class="product-card">
             <a href="product.html?slug=thermal-insulation-materials" style="display:contents;color:inherit;text-decoration:none;">
               <div class="thumb" style="background-image:url('https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=80')">
@@ -344,12 +344,12 @@
   <!-- ========== SCRIPTS ========== -->
   <script src="js/animations.js"></script>
   <script src="js/cursor.js"></script>
+  <script src="js/nav-toggle.js"></script>
   <script src="js/cart-drawer.js"></script>
   <script src="js/admin-panel.js"></script>
   <script src="js/site-access-local.js"></script>
   <script src="js/apply-customization.js"></script>
   <script>
-    // Language toggle
     document.getElementById('langToggle')?.addEventListener('click', function () {
       const html = document.documentElement;
       const newLang = html.lang === 'ar' ? 'en' : 'ar';
@@ -358,7 +358,6 @@
       this.textContent = newLang === 'ar' ? 'EN' : 'AR';
     });
 
-    // Theme toggle
     document.getElementById('themeToggle')?.addEventListener('click', function () {
       const html = document.documentElement;
       const newTheme = html.dataset.theme === 'dark' ? 'light' : 'dark';
@@ -367,7 +366,6 @@
       localStorage.setItem('kb-theme', newTheme);
     });
 
-    // Load saved theme
     const savedTheme = localStorage.getItem('kb-theme');
     if (savedTheme) {
       document.documentElement.dataset.theme = savedTheme;
