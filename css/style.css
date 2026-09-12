@@ -1301,3 +1301,99 @@ body.kb-cursor-ready .kb-add-btn {
     scroll-behavior: smooth;
   }
 }
+
+/* =========================================================
+   COLLAPSIBLE NAV (Dropdown Menu Toggle)
+   ========================================================= */
+
+#navToggleIcon {
+  display: inline-block;
+  transition: transform 0.3s var(--ease-out);
+  font-size: 0.7rem;
+  line-height: 1;
+}
+
+#navToggleBtn {
+  font-family: var(--font-sans);
+}
+
+/* عند تصغير القائمة */
+.site-header.nav-collapsed {
+  position: fixed;
+}
+
+.site-header.nav-collapsed .main-nav {
+  position: absolute;
+  top: calc(100% + 12px);
+  right: 24px;
+  min-width: 280px;
+  max-height: calc(100vh - var(--header-h) - 40px);
+  overflow-y: auto;
+  flex-direction: column;
+  align-items: stretch;
+  padding: 12px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 20px 60px -20px rgba(0, 0, 0, 0.5);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-10px) scale(0.96);
+  transform-origin: top right;
+  transition: opacity 0.3s var(--ease-out),
+              transform 0.3s var(--ease-out),
+              visibility 0s 0.3s;
+  z-index: 99;
+  pointer-events: none;
+  gap: 2px;
+}
+
+[dir="ltr"] .site-header.nav-collapsed .main-nav {
+  right: auto;
+  left: 24px;
+  transform-origin: top left;
+}
+
+.site-header.nav-collapsed.nav-open .main-nav {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0) scale(1);
+  transition: opacity 0.3s var(--ease-out),
+              transform 0.3s var(--ease-out),
+              visibility 0s;
+  pointer-events: auto;
+}
+
+.site-header.nav-collapsed .main-nav .nav-link {
+  width: 100%;
+  padding: 14px 16px;
+  border-radius: var(--radius);
+  justify-content: space-between;
+  font-weight: 800;
+  color: var(--text);
+}
+
+.site-header.nav-collapsed .main-nav .nav-link:hover {
+  background: var(--surface-2);
+  color: var(--accent);
+}
+
+.site-header.nav-collapsed .main-nav .nav-link.active {
+  color: var(--accent);
+  background: var(--surface-2);
+}
+
+.site-header.nav-collapsed .main-nav .nav-link.active::after {
+  display: none;
+}
+
+.site-header.nav-collapsed.nav-open #navToggleIcon {
+  transform: rotate(180deg);
+}
+
+/* إخفاء زر ▼ في الجوال */
+@media (max-width: 920px) {
+  #navToggleBtn {
+    display: none !important;
+  }
+}
