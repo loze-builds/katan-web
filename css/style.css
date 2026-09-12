@@ -1,13 +1,10 @@
 /* =========================================================
    katanbuild — KERN® Studio Inspired Design System
-   Author: Redesign 2026
+   Arabic: Cairo Black (Bold Ottoman)
    ========================================================= */
-
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap');
 
 /* ---------- TOKENS ---------- */
 :root {
-  /* Brand */
   --kb-orange: #E87722;
   --kb-orange-dark: #C45F12;
   --kb-orange-light: #F5A24E;
@@ -18,7 +15,6 @@
   --kb-text: #1A1A1A;
   --kb-text-muted: #6B6B6B;
 
-  /* Theme (dark default) */
   --bg: #0E0E0E;
   --surface: #161616;
   --surface-2: #1E1E1E;
@@ -29,17 +25,15 @@
   --accent-ink: #FFFFFF;
 
   /* Type */
-  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-sans: 'Cairo', 'Tajawal', 'Inter', system-ui, -apple-system, sans-serif;
   --font-mono: 'JetBrains Mono', ui-monospace, monospace;
 
-  /* Motion */
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
   --dur-fast: 0.2s;
   --dur-base: 0.4s;
   --dur-slow: 0.8s;
 
-  /* Layout */
   --maxw: 1400px;
   --header-h: 80px;
   --radius: 4px;
@@ -77,8 +71,9 @@ body {
   font-family: var(--font-sans);
   background: var(--bg);
   color: var(--text);
-  line-height: 1.6;
+  line-height: 1.7;
   font-size: 16px;
+  font-weight: 700;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
@@ -117,37 +112,41 @@ ul {
 
 /* ---------- TYPOGRAPHY ---------- */
 h1, h2, h3, h4, h5, h6 {
-  font-weight: 700;
-  line-height: 1.05;
-  letter-spacing: -0.03em;
+  font-weight: 800;
+  line-height: 1.2;
+  letter-spacing: 0;
 }
 
 h1 {
   font-size: clamp(2.5rem, 7vw, 6rem);
-  font-weight: 800;
+  font-weight: 900;
+  line-height: 1.15;
 }
 
 h2 {
   font-size: clamp(2rem, 4.5vw, 4rem);
-  font-weight: 700;
+  font-weight: 900;
 }
 
 h3 {
   font-size: clamp(1.25rem, 2vw, 1.75rem);
+  font-weight: 800;
 }
 
 h4 {
   font-size: 1.125rem;
+  font-weight: 800;
 }
 
 p {
-  line-height: 1.7;
+  line-height: 1.85;
+  font-weight: 700;
 }
 
 .eyebrow {
   font-family: var(--font-mono);
   font-size: 0.75rem;
-  font-weight: 500;
+  font-weight: 700;
   letter-spacing: 0.15em;
   text-transform: uppercase;
   color: var(--accent);
@@ -171,7 +170,8 @@ p {
 .lede {
   font-size: clamp(1.05rem, 1.5vw, 1.35rem);
   color: var(--text-muted);
-  line-height: 1.55;
+  line-height: 1.8;
+  font-weight: 700;
   max-width: 60ch;
 }
 
@@ -237,9 +237,9 @@ p {
   display: inline-flex;
   align-items: center;
   gap: 12px;
-  font-weight: 800;
-  font-size: 1.125rem;
-  letter-spacing: -0.02em;
+  font-weight: 900;
+  font-size: 1.25rem;
+  letter-spacing: 0;
   z-index: 2;
 }
 
@@ -251,6 +251,7 @@ p {
 
 .brand-name {
   font-family: var(--font-sans);
+  font-weight: 900;
 }
 
 .main-nav {
@@ -265,7 +266,7 @@ p {
   align-items: center;
   padding: 12px 20px;
   font-size: 0.95rem;
-  font-weight: 500;
+  font-weight: 800;
   color: var(--text-muted);
   border-radius: var(--radius);
   transition: color var(--dur-fast) var(--ease-out);
@@ -314,7 +315,7 @@ p {
   color: var(--text);
   font-family: var(--font-mono);
   font-size: 0.8rem;
-  font-weight: 600;
+  font-weight: 700;
   letter-spacing: 0.05em;
   transition: all var(--dur-fast) var(--ease-out);
 }
@@ -414,8 +415,8 @@ p {
   justify-content: space-between;
   padding: 18px 0;
   font-size: 1.5rem;
-  font-weight: 600;
-  letter-spacing: -0.02em;
+  font-weight: 800;
+  letter-spacing: 0;
   border-bottom: 1px solid var(--line);
   color: var(--text-muted);
   transition: all var(--dur-fast) var(--ease-out);
@@ -451,8 +452,8 @@ p {
   gap: 10px;
   padding: 16px 32px;
   font-size: 0.95rem;
-  font-weight: 600;
-  letter-spacing: -0.01em;
+  font-weight: 800;
+  letter-spacing: 0;
   border-radius: var(--radius);
   border: 1px solid transparent;
   cursor: pointer;
@@ -559,15 +560,14 @@ p {
 
 .hero-content h1 {
   margin-top: 28px;
-  font-weight: 800;
-  letter-spacing: -0.04em;
-  line-height: 0.98;
+  font-weight: 900;
+  letter-spacing: 0;
+  line-height: 1.15;
 }
 
 .hero-content h1 .accent {
   color: var(--accent);
-  font-style: italic;
-  font-weight: 400;
+  font-weight: 900;
 }
 
 .hero-content .lede {
@@ -597,7 +597,7 @@ p {
   display: block;
   font-family: var(--font-mono);
   font-size: clamp(1.75rem, 3vw, 2.5rem);
-  font-weight: 600;
+  font-weight: 700;
   color: var(--accent);
   letter-spacing: -0.02em;
   line-height: 1;
@@ -608,6 +608,7 @@ p {
   margin-top: 12px;
   font-size: 0.85rem;
   color: var(--text-muted);
+  font-weight: 700;
   letter-spacing: 0.02em;
 }
 
@@ -623,6 +624,7 @@ p {
   gap: 12px;
   font-family: var(--font-mono);
   font-size: 0.7rem;
+  font-weight: 700;
   letter-spacing: 0.15em;
   text-transform: uppercase;
   color: var(--text-muted);
@@ -690,7 +692,7 @@ p {
   border-radius: 100px;
   font-family: var(--font-mono);
   font-size: 0.7rem;
-  font-weight: 600;
+  font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--accent);
@@ -706,12 +708,14 @@ p {
 
 .product-card h3 {
   font-size: 1.5rem;
-  letter-spacing: -0.02em;
+  font-weight: 900;
+  letter-spacing: 0;
 }
 
 .product-card p {
   color: var(--text-muted);
   font-size: 0.95rem;
+  font-weight: 700;
   flex: 1;
 }
 
@@ -721,7 +725,7 @@ p {
   gap: 8px;
   font-family: var(--font-mono);
   font-size: 0.8rem;
-  font-weight: 600;
+  font-weight: 700;
   letter-spacing: 0.05em;
   text-transform: uppercase;
   color: var(--accent);
@@ -766,19 +770,21 @@ p {
   font-family: var(--font-mono);
   font-size: 0.8rem;
   color: var(--accent);
-  font-weight: 600;
+  font-weight: 700;
   letter-spacing: 0.1em;
   margin-bottom: 20px;
 }
 
 .grid-cell h3 {
   font-size: 1.25rem;
+  font-weight: 900;
   margin-bottom: 12px;
 }
 
 .grid-cell p {
   color: var(--text-muted);
   font-size: 0.95rem;
+  font-weight: 700;
 }
 
 /* ---------- PROJECTS ---------- */
@@ -821,17 +827,19 @@ p {
   font-family: var(--font-mono);
   font-size: 0.8rem;
   color: var(--accent);
-  font-weight: 600;
+  font-weight: 700;
   letter-spacing: 0.1em;
 }
 
 .project-card h3 {
   margin: 12px 0 12px;
+  font-weight: 900;
 }
 
 .project-card p {
   color: var(--text-muted);
   font-size: 0.95rem;
+  font-weight: 700;
 }
 
 .project-card ul {
@@ -846,6 +854,7 @@ p {
   position: relative;
   color: var(--text-muted);
   font-size: 0.9rem;
+  font-weight: 700;
 }
 
 .project-card li::before {
@@ -853,7 +862,7 @@ p {
   position: absolute;
   inset-inline-start: 0;
   color: var(--accent);
-  font-weight: 600;
+  font-weight: 700;
 }
 
 /* ---------- CTA BAND ---------- */
@@ -908,7 +917,7 @@ p {
 .footer-grid h4 {
   font-family: var(--font-mono);
   font-size: 0.75rem;
-  font-weight: 600;
+  font-weight: 700;
   letter-spacing: 0.15em;
   text-transform: uppercase;
   color: var(--text-muted);
@@ -924,6 +933,7 @@ p {
 .footer-grid a {
   color: var(--text);
   font-size: 0.95rem;
+  font-weight: 700;
   transition: color var(--dur-fast) var(--ease-out);
 }
 
@@ -942,6 +952,7 @@ p {
   font-size: 0.85rem;
   color: var(--text-muted);
   font-family: var(--font-mono);
+  font-weight: 700;
 }
 
 /* ---------- DETAIL PAGE ---------- */
@@ -954,6 +965,7 @@ p {
 
 .detail-main h1 {
   margin: 24px 0;
+  font-weight: 900;
 }
 
 .detail-main .thumb-lg {
@@ -979,11 +991,12 @@ p {
 
 .spec-list .row span:first-child {
   color: var(--text-muted);
+  font-weight: 700;
 }
 
 .spec-list .row span:last-child {
   font-family: var(--font-mono);
-  font-weight: 500;
+  font-weight: 700;
 }
 
 .sidebar {
@@ -1000,7 +1013,7 @@ p {
   border-bottom: 1px solid var(--line);
   font-family: var(--font-mono);
   font-size: 0.75rem;
-  font-weight: 600;
+  font-weight: 700;
   letter-spacing: 0.15em;
   text-transform: uppercase;
   color: var(--text-muted);
@@ -1013,6 +1026,7 @@ p {
   padding: 20px 28px;
   border-bottom: 1px solid var(--line);
   font-size: 0.95rem;
+  font-weight: 700;
   transition: all var(--dur-fast) var(--ease-out);
 }
 
@@ -1151,7 +1165,6 @@ p {
    CUSTOM CURSOR (KERN Style) — V2 (Theme-Aware)
    ========================================================= */
 
-/* المؤشر المخصص — يُفعّل فقط عندما يكون الجافاسكربت جاهزاً */
 body.kb-cursor-ready,
 body.kb-cursor-ready a,
 body.kb-cursor-ready button,
@@ -1202,7 +1215,6 @@ body.kb-cursor-ready .kb-add-btn {
   box-shadow: 0 0 8px rgba(232, 119, 34, 0.6);
 }
 
-/* ---------- Dark Theme ---------- */
 [data-theme="dark"] .kb-cursor {
   border-color: #F5A24E;
   box-shadow: 0 0 14px rgba(245, 162, 78, 0.55);
@@ -1223,7 +1235,6 @@ body.kb-cursor-ready .kb-add-btn {
   background: #F5A24E;
 }
 
-/* ---------- Light Theme ---------- */
 [data-theme="light"] .kb-cursor {
   border-color: #C45F12;
   box-shadow: 0 0 12px rgba(196, 95, 18, 0.35);
@@ -1244,7 +1255,6 @@ body.kb-cursor-ready .kb-add-btn {
   background: #C45F12;
 }
 
-/* ---------- States ---------- */
 .kb-cursor.hover {
   width: 64px;
   height: 64px;
@@ -1265,7 +1275,6 @@ body.kb-cursor-ready .kb-add-btn {
   border-color: transparent;
 }
 
-/* ---------- Hidden on Touch ---------- */
 @media (hover: none), (pointer: coarse) {
   .kb-cursor,
   .kb-cursor-dot {
