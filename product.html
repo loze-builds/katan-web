@@ -17,7 +17,7 @@
 
   <header class="site-header" id="site-header">
     <div class="container header-inner">
-      <a href="index.html" class="brand">
+      <a href="index.html" class="brand" id="brandTrigger">
         <img src="assets/katanbuild-logo.png" alt="katanbuild" />
         <span class="brand-name">katanbuild</span>
       </a>
@@ -76,10 +76,8 @@
         <a href="products.html" class="eyebrow" style="margin-bottom:40px;display:inline-flex;">
           ← العودة إلى المنتجات
         </a>
-
         <div class="detail-layout">
           <div class="detail-main" id="detailMain"></div>
-
           <aside class="sidebar">
             <h4>أقسام المنتجات</h4>
             <div id="sidebarList"></div>
@@ -144,6 +142,7 @@
     </div>
   </footer>
 
+  <script src="js/data.js"></script>
   <script src="js/animations.js"></script>
   <script src="js/cursor.js"></script>
   <script src="js/nav-toggle.js"></script>
@@ -151,14 +150,17 @@
   <script src="js/admin-panel.js"></script>
   <script src="js/site-access-local.js"></script>
   <script src="js/apply-customization.js"></script>
-  <script src="js/data.js"></script>
   <script>
     function currentSlug() {
       const params = new URLSearchParams(location.search);
-      return params.get("slug") || window.SITE.products[0].slug;
+      return params.get("slug") || (window.SITE && window.SITE.products[0] ? window.SITE.products[0].slug : "render-plaster-materials");
     }
 
     function renderDetail() {
+      if (!window.SITE || !window.SITE.products) {
+        setTimeout(renderDetail, 200);
+        return;
+      }
       const lang = document.documentElement.lang || "ar";
       const S = window.SITE;
       const slug = currentSlug();
