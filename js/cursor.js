@@ -22,7 +22,6 @@
   let rafId = null;
 
   function init() {
-    // 1) أنشئ العناصر
     const cursor = document.createElement('div');
     cursor.className = 'kb-cursor';
     cursor.setAttribute('aria-hidden', 'true');
@@ -33,10 +32,8 @@
     dot.setAttribute('aria-hidden', 'true');
     document.body.appendChild(dot);
 
-    // 2) فعّل إخفاء المؤشر العادي — الآن فقط!
     document.body.classList.add('kb-cursor-ready');
 
-    // 3) تتبع الماوس
     document.addEventListener('mousemove', (e) => {
       mouseX = e.clientX;
       mouseY = e.clientY;
@@ -44,7 +41,6 @@
       dot.style.opacity = '1';
     }, { passive: true });
 
-    // 4) حلقة الرسوم
     function animate() {
       cursorX += (mouseX - cursorX) * 0.18;
       cursorY += (mouseY - cursorY) * 0.18;
@@ -58,7 +54,6 @@
     }
     animate();
 
-    // 5) Hover على عناصر تفاعلية
     const hoverSelector = 'a, button, [data-cart-add], [data-cart-open], .product-card, .nav-link, .icon-btn, .kb-add-btn, .grid-cell, .project-card, .btn';
 
     document.addEventListener('mouseover', (e) => {
@@ -82,11 +77,9 @@
       }
     }, { passive: true });
 
-    // 6) الضغط
     document.addEventListener('mousedown', () => cursor.classList.add('click'));
     document.addEventListener('mouseup', () => cursor.classList.remove('click'));
 
-    // 7) إخفاء عند مغادرة النافذة
     document.addEventListener('mouseleave', () => {
       cursor.style.opacity = '0';
       dot.style.opacity = '0';
@@ -97,7 +90,6 @@
       dot.style.opacity = '1';
     });
 
-    // 8) على اللمس — أخفِ
     window.addEventListener('touchstart', () => {
       document.body.classList.remove('kb-cursor-ready');
       cursor.style.display = 'none';
