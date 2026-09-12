@@ -601,7 +601,7 @@
   }
 
   // =========================================================
-  // LOGO CLICK HANDLER — يستهدف #brandTrigger فقط
+  // LOGO CLICK HANDLER — يستهدف #brandTrigger فقط (مع Debug)
   // =========================================================
   function getBrandElement() {
     const byId = document.getElementById('brandTrigger');
@@ -617,20 +617,25 @@
   function initLogoTrigger() {
     const brand = getBrandElement();
     if (!brand) {
+      console.log('⏳ waiting for brand element...');
       setTimeout(initLogoTrigger, 500);
       return;
     }
     if (brand.dataset.adminReady) return;
     brand.dataset.adminReady = 'true';
 
+    console.log('✅ brand trigger wired:', brand);
+
     brand.addEventListener('click', (e) => {
       clickCount++;
+      console.log(`🖱️ click ${clickCount}/${CLICKS_NEEDED}`);
       clearTimeout(clickTimer);
 
       if (clickCount >= CLICKS_NEEDED) {
         e.preventDefault();
         e.stopPropagation();
         clickCount = 0;
+        console.log('🔓 opening password prompt...');
         askPassword();
         return;
       }
