@@ -1,7 +1,6 @@
 /* =========================================================
-   katanbuild — Admin Panel (Comprehensive)
-   Methods to open: 5 clicks on logo | Ctrl+Shift+K | URL ?admin=1
-   Password: 1992
+   katanbuild — Admin Panel (Comprehensive v3)
+   Tabs: Content, Images, Categories, Catalogues, Notice, Settings
    ========================================================= */
 
 (function () {
@@ -34,7 +33,6 @@
         "https://images.unsplash.com/photo-1541888946425-d81bb19240f5?w=1920&q=80",
         "https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=1920&q=80"
       ],
-      pdfs: { render: null, waterproofing: null, ceramic: null, thermal: null },
       hero: {
         title: "كيمياء البناء تصنع الفرق.",
         subtitle: "حلول طينة وعزل ولواصق سيراميك مصممة للموقع، من الأساس حتى التشطيب النهائي."
@@ -49,7 +47,11 @@
         { title: "متانة عالية", text: "تركيبات مصممة لتتحمل الحمل والاستخدام اليومي دون تدهور مبكر." },
         { title: "مقاومة الطقس", text: "أداء مستقر تحت الحرارة والرطوبة وتقلبات الفصول المحلية." },
         { title: "سهولة التطبيق", text: "قوام متجانس يسهّل العمل ويقلل الهدر في الورشة." },
-        { title: "نتائج احترافية", text: "لسمة نهائية نظيفة ومتجانسة تليق بالتسليم النهائي." }
+        { title: "نتائج احترافية", text: "لمسة نهائية نظيفة ومتجانسة تليق بالتسليم النهائي." }
+      ],
+      catalogues: [
+        { id: 'cat-1', name: 'cove .pdf', url: 'assets/files/cove.pdf', type: 'pdf' },
+        { id: 'cat-2', name: 'بروشور قطان', url: 'assets/files/brochure-qattan.pdf', type: 'pdf' }
       ]
     };
   }
@@ -83,89 +85,18 @@
     }, 3000);
   }
 
-  // =========================================================
-  // PASSWORD PROMPT — Simple & Robust
-  // =========================================================
   function askPassword() {
-    // احذف أي نافذة قديمة
-    document.querySelector('.kb-password-prompt')?.remove();
-
     const prompt = document.createElement('div');
     prompt.className = 'kb-password-prompt';
-    prompt.style.cssText = `
-      position: fixed;
-      inset: 0;
-      z-index: 2147483647;
-      background: rgba(0, 0, 0, 0.92);
-      backdrop-filter: blur(10px);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 24px;
-      font-family: 'Cairo', sans-serif;
-      direction: rtl;
-    `;
-
     prompt.innerHTML = `
-      <div style="
-        width: min(420px, 100%);
-        padding: 40px 32px;
-        background: #161616;
-        border: 1px solid #262626;
-        border-radius: 12px;
-        text-align: center;
-        box-shadow: 0 40px 100px -20px rgba(0, 0, 0, 0.9);
-      ">
-        <h2 style="color:#F5F5F5;font-size:1.5rem;margin:0 0 12px;font-weight:900;">لوحة التحكم</h2>
-        <p style="color:#8A8A8A;font-size:0.9rem;margin:0 0 24px;font-weight:600;">أدخل كلمة المرور للوصول</p>
-        <input
-          type="password"
-          id="kbPassInput"
-          inputmode="numeric"
-          maxlength="4"
-          autocomplete="off"
-          placeholder="••••"
-          style="
-            width:100%;
-            padding:18px;
-            border:1px solid #262626;
-            border-radius:8px;
-            background:#0E0E0E;
-            color:#F5F5F5;
-            font-size:1.75rem;
-            text-align:center;
-            letter-spacing:0.5em;
-            font-family:'JetBrains Mono',monospace;
-            outline:none;
-            box-sizing:border-box;
-          "
-        />
-        <div id="kbPassError" style="color:#EF4444;font-size:0.85rem;min-height:20px;margin:12px 0;font-weight:700;"></div>
-        <div style="display:flex;gap:8px;">
-          <button id="kbPassCancel" style="
-            flex:1;
-            padding:14px;
-            border-radius:6px;
-            border:1px solid #262626;
-            background:transparent;
-            color:#F5F5F5;
-            font-family:inherit;
-            font-size:0.95rem;
-            font-weight:700;
-            cursor:pointer;
-          ">إلغاء</button>
-          <button id="kbPassConfirm" style="
-            flex:1;
-            padding:14px;
-            border-radius:6px;
-            border:1px solid #E87722;
-            background:#E87722;
-            color:#FFF;
-            font-family:inherit;
-            font-size:0.95rem;
-            font-weight:800;
-            cursor:pointer;
-          ">دخول</button>
+      <div class="kb-password-dialog">
+        <h2>لوحة التحكم</h2>
+        <p>أدخل كلمة المرور للوصول</p>
+        <input type="password" id="kbPassInput" inputmode="numeric" maxlength="4" autocomplete="off" />
+        <div class="error" id="kbPassError"></div>
+        <div class="actions">
+          <button class="kb-btn kb-btn-outline" id="kbPassCancel">إلغاء</button>
+          <button class="kb-btn kb-btn-primary" id="kbPassConfirm">دخول</button>
         </div>
       </div>
     `;
@@ -176,15 +107,14 @@
     const confirm = prompt.querySelector('#kbPassConfirm');
     const cancel = prompt.querySelector('#kbPassCancel');
 
-    setTimeout(() => input.focus(), 100);
+    input.focus();
 
     function tryLogin() {
-      const val = input.value.trim();
-      if (val === PASSWORD) {
+      if (input.value === PASSWORD) {
         prompt.remove();
         openAdminPanel();
       } else {
-        error.textContent = '❌ كلمة المرور غير صحيحة';
+        error.textContent = 'كلمة المرور غير صحيحة';
         input.value = '';
         input.focus();
       }
@@ -199,72 +129,41 @@
     prompt.addEventListener('click', (e) => { if (e.target === prompt) prompt.remove(); });
   }
 
-  // =========================================================
-  // ADMIN PANEL — with inline fallback styles
-  // =========================================================
   function openAdminPanel() {
-    document.querySelector('.kb-admin-overlay')?.remove();
+    const existing = document.querySelector('.kb-admin-overlay');
+    if (existing) existing.remove();
 
     const overlay = document.createElement('div');
     overlay.className = 'kb-admin-overlay open';
-    overlay.style.cssText = `
-      position: fixed;
-      inset: 0;
-      z-index: 2147483646;
-      background: rgba(0, 0, 0, 0.88);
-      backdrop-filter: blur(12px);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-      font-family: 'Cairo', sans-serif;
-      direction: rtl;
-    `;
-
     overlay.innerHTML = `
-      <div style="
-        width: min(1200px, 100%);
-        height: min(800px, 90vh);
-        background: #161616;
-        border: 1px solid #262626;
-        border-radius: 12px;
-        display: grid;
-        grid-template-columns: 240px 1fr;
-        overflow: hidden;
-        box-shadow: 0 40px 100px -20px rgba(0, 0, 0, 0.7);
-      ">
-        <aside style="
-          background: #1E1E1E;
-          border-left: 1px solid #262626;
-          padding: 24px 0;
-          display: flex;
-          flex-direction: column;
-          overflow-y: auto;
-        ">
-          <div style="padding: 0 24px 24px; border-bottom: 1px solid #262626; margin-bottom: 16px; display: flex; align-items: center; gap: 10px;">
-            <img src="assets/katanbuild-logo.png" alt="katanbuild" style="height:32px;width:auto;" onerror="this.style.display='none'" />
+      <div class="kb-admin-dialog">
+        <aside class="kb-admin-sidebar">
+          <div class="kb-admin-brand">
+            <img src="assets/katanbuild-logo-dark.png" alt="katanbuild" onerror="this.src='assets/katanbuild-logo.png'" />
             <div>
-              <div style="font-weight:900;font-size:0.95rem;color:#F5F5F5;">katanbuild</div>
-              <div style="font-family:'JetBrains Mono',monospace;font-size:0.65rem;color:#E87722;letter-spacing:0.15em;text-transform:uppercase;margin-top:2px;">Admin Panel</div>
+              <span>katanbuild</span>
+              <small>Admin Panel v3</small>
             </div>
           </div>
-          <nav style="display:flex;flex-direction:column;gap:2px;padding:0 12px;">
-            <button data-panel="content" class="kb-admin-nav-btn" style="display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:6px;border:none;background:#E87722;color:white;font-family:inherit;font-size:0.9rem;font-weight:700;text-align:right;cursor:pointer;"><span>📝</span> المحتوى</button>
-            <button data-panel="images" class="kb-admin-nav-btn" style="display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:6px;border:none;background:transparent;color:#8A8A8A;font-family:inherit;font-size:0.9rem;font-weight:700;text-align:right;cursor:pointer;"><span>🖼</span> الصور</button>
-            <button data-panel="categories" class="kb-admin-nav-btn" style="display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:6px;border:none;background:transparent;color:#8A8A8A;font-family:inherit;font-size:0.9rem;font-weight:700;text-align:right;cursor:pointer;"><span>📦</span> الأقسام</button>
-            <button data-panel="notice" class="kb-admin-nav-btn" style="display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:6px;border:none;background:transparent;color:#8A8A8A;font-family:inherit;font-size:0.9rem;font-weight:700;text-align:right;cursor:pointer;"><span>🔔</span> الإشعار</button>
-            <button data-panel="settings" class="kb-admin-nav-btn" style="display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:6px;border:none;background:transparent;color:#8A8A8A;font-family:inherit;font-size:0.9rem;font-weight:700;text-align:right;cursor:pointer;"><span>⚙</span> الإعدادات</button>
+          <nav class="kb-admin-nav">
+            <button data-panel="content" class="active"><span class="icon">📝</span> المحتوى</button>
+            <button data-panel="images"><span class="icon">🖼</span> الصور</button>
+            <button data-panel="categories"><span class="icon">📦</span> الأقسام</button>
+            <button data-panel="catalogues"><span class="icon">📚</span> الكتالوجات</button>
+            <button data-panel="notice"><span class="icon">🔔</span> الإشعار</button>
+            <button data-panel="settings"><span class="icon">⚙</span> الإعدادات</button>
           </nav>
+          <div class="kb-admin-sidebar-footer">v3.0 · 2026</div>
         </aside>
-        <main style="display:flex;flex-direction:column;overflow:hidden;background:#0E0E0E;">
-          <header style="padding:24px 32px;border-bottom:1px solid #262626;display:flex;align-items:center;justify-content:space-between;gap:16px;">
+        <main class="kb-admin-main">
+          <header class="kb-admin-header">
             <div>
-              <h1 id="kbPanelTitle" style="font-size:1.5rem;font-weight:900;color:#F5F5F5;margin:0;">المحتوى</h1>
-              <p id="kbPanelSubtitle" style="font-size:0.85rem;color:#8A8A8A;margin:4px 0 0;font-weight:600;">عدّل النصوص والمسميات</p>
+              <h1 id="kbPanelTitle">المحتوى</h1>
+              <p id="kbPanelSubtitle">عدّل النصوص والمسميات</p>
             </div>
-            <button id="kbAdminClose" style="width:40px;height:40px;border-radius:6px;border:1px solid #262626;background:transparent;color:#F5F5F5;font-size:1.25rem;cursor:pointer;">✕</button>
+            <button class="kb-admin-close" id="kbAdminClose" aria-label="إغلاق">✕</button>
           </header>
-          <div id="kbAdminBody" style="flex:1;overflow-y:auto;padding:32px;color:#F5F5F5;font-family:'Cairo',sans-serif;"></div>
+          <div class="kb-admin-body" id="kbAdminBody"></div>
         </main>
       </div>
     `;
@@ -281,12 +180,8 @@
 
     overlay.querySelectorAll('[data-panel]').forEach((btn) => {
       btn.addEventListener('click', () => {
-        overlay.querySelectorAll('[data-panel]').forEach((b) => {
-          b.style.background = 'transparent';
-          b.style.color = '#8A8A8A';
-        });
-        btn.style.background = '#E87722';
-        btn.style.color = 'white';
+        overlay.querySelectorAll('[data-panel]').forEach((b) => b.classList.remove('active'));
+        btn.classList.add('active');
         currentPanel = btn.dataset.panel;
         renderPanel(overlay);
       });
@@ -305,6 +200,7 @@
       content: ['المحتوى', 'عدّل النصوص والمسميات'],
       images: ['الصور', 'غيّر صور الأقسام و Hero'],
       categories: ['الأقسام', 'أضف، عدّل، أو احذف الأقسام'],
+      catalogues: ['الكتالوجات', 'أضف ملفات PDF وباركود'],
       notice: ['الإشعار', 'إرسال إشعار 24 ساعة للموقع'],
       settings: ['الإعدادات', 'نسخ احتياطي وإعادة الضبط']
     };
@@ -315,52 +211,46 @@
     if (currentPanel === 'content') renderContentPanel(body, data);
     else if (currentPanel === 'images') renderImagesPanel(body, data);
     else if (currentPanel === 'categories') renderCategoriesPanel(body, data);
+    else if (currentPanel === 'catalogues') renderCataloguesPanel(body, data);
     else if (currentPanel === 'notice') renderNoticePanel(body, data);
     else if (currentPanel === 'settings') renderSettingsPanel(body, data);
   }
 
-  const inputStyle = 'width:100%;padding:12px 14px;border:1px solid #262626;border-radius:6px;background:#0E0E0E;color:#F5F5F5;font-family:inherit;font-size:0.95rem;outline:none;box-sizing:border-box;font-weight:600;';
-  const labelStyle = 'display:block;font-size:0.8rem;font-weight:700;color:#8A8A8A;letter-spacing:0.03em;text-transform:uppercase;font-family:"JetBrains Mono",monospace;margin-bottom:8px;';
-  const fieldStyle = 'display:flex;flex-direction:column;margin-bottom:20px;';
-  const cardStyle = 'padding:24px;border:1px solid #262626;border-radius:8px;background:#1E1E1E;margin-bottom:16px;';
-  const primaryBtnStyle = 'padding:12px 22px;border-radius:6px;border:1px solid #E87722;background:#E87722;color:white;font-family:inherit;font-size:0.9rem;font-weight:800;cursor:pointer;';
-  const outlineBtnStyle = 'padding:12px 22px;border-radius:6px;border:1px solid #262626;background:transparent;color:#F5F5F5;font-family:inherit;font-size:0.9rem;font-weight:700;cursor:pointer;';
-  const dangerBtnStyle = 'padding:12px 22px;border-radius:6px;border:1px solid #EF4444;background:transparent;color:#EF4444;font-family:inherit;font-size:0.9rem;font-weight:700;cursor:pointer;';
-
+  /* ============ CONTENT ============ */
   function renderContentPanel(body, data) {
     body.innerHTML = `
-      <h2 style="font-size:1.25rem;color:#F5F5F5;margin:0 0 8px;font-weight:900;">نصوص Hero</h2>
-      <p style="color:#8A8A8A;font-size:0.9rem;margin:0 0 24px;font-weight:600;">تعديل العنوان والوصف في الصفحة الرئيسية</p>
-      <div style="${fieldStyle}">
-        <label style="${labelStyle}">عنوان Hero</label>
-        <input type="text" id="kbHeroTitle" value="${escapeHtml(data.hero.title)}" style="${inputStyle}" />
+      <h2>نصوص Hero</h2>
+      <p class="hint">تعديل العنوان والوصف في الصفحة الرئيسية</p>
+      <div class="kb-field">
+        <label>عنوان Hero</label>
+        <input type="text" id="kbHeroTitle" value="${escapeHtml(data.hero.title)}" />
       </div>
-      <div style="${fieldStyle}">
-        <label style="${labelStyle}">وصف Hero</label>
-        <textarea id="kbHeroSubtitle" style="${inputStyle}min-height:80px;resize:vertical;">${escapeHtml(data.hero.subtitle)}</textarea>
+      <div class="kb-field">
+        <label>وصف Hero</label>
+        <textarea id="kbHeroSubtitle">${escapeHtml(data.hero.subtitle)}</textarea>
       </div>
-      <h2 style="font-size:1.25rem;color:#F5F5F5;margin:40px 0 8px;font-weight:900;">بطاقات "لماذا نحن"</h2>
-      <p style="color:#8A8A8A;font-size:0.9rem;margin:0 0 24px;font-weight:600;">تعديل البطاقات الأربع في الصفحة الرئيسية</p>
+      <h2 style="margin-top:40px;">بطاقات "لماذا نحن"</h2>
+      <p class="hint">تعديل البطاقات الأربع في الصفحة الرئيسية</p>
       <div id="kbWhyUsList"></div>
-      <div style="margin-top:32px;display:flex;gap:12px;">
-        <button id="kbSaveContent" style="${primaryBtnStyle}">حفظ التغييرات</button>
+      <div style="margin-top:32px; display:flex; gap:12px;">
+        <button class="kb-btn kb-btn-primary" id="kbSaveContent">حفظ التغييرات</button>
       </div>
-      <div id="kbContentStatus" style="min-height:20px;margin-top:16px;color:#22C55E;font-weight:700;font-size:0.9rem;"></div>
+      <div class="kb-status" id="kbContentStatus"></div>
     `;
 
     const list = body.querySelector('#kbWhyUsList');
     data.whyUs.forEach((card, i) => {
       const div = document.createElement('div');
-      div.style.cssText = cardStyle;
+      div.className = 'kb-card';
       div.innerHTML = `
-        <h3 style="font-size:1rem;color:#F5F5F5;margin:0 0 16px;font-weight:800;">بطاقة ${i + 1}</h3>
-        <div style="${fieldStyle}">
-          <label style="${labelStyle}">العنوان</label>
-          <input type="text" data-why-title="${i}" value="${escapeHtml(card.title)}" style="${inputStyle}" />
+        <div class="kb-card-header"><h3>بطاقة ${i + 1}</h3></div>
+        <div class="kb-field">
+          <label>العنوان</label>
+          <input type="text" data-why-title="${i}" value="${escapeHtml(card.title)}" />
         </div>
-        <div style="${fieldStyle}margin-bottom:0;">
-          <label style="${labelStyle}">النص</label>
-          <textarea data-why-text="${i}" style="${inputStyle}min-height:60px;resize:vertical;">${escapeHtml(card.text)}</textarea>
+        <div class="kb-field">
+          <label>النص</label>
+          <textarea data-why-text="${i}">${escapeHtml(card.text)}</textarea>
         </div>
       `;
       list.appendChild(div);
@@ -370,54 +260,51 @@
       const newData = getCustomization();
       newData.hero.title = body.querySelector('#kbHeroTitle').value;
       newData.hero.subtitle = body.querySelector('#kbHeroSubtitle').value;
-      newData.whyUs = Array.from(body.querySelectorAll('[data-why-title]')).map((input, i) => ({
-        title: input.value,
-        text: body.querySelector(`[data-why-text="${i}"]`).value
+      newData.whyUs = Array.from(body.querySelectorAll('.kb-card')).map((card, i) => ({
+        title: card.querySelector(`[data-why-title="${i}"]`).value,
+        text: card.querySelector(`[data-why-text="${i}"]`).value
       }));
       saveCustomization(newData);
-      body.querySelector('#kbContentStatus').textContent = '✅ تم حفظ المحتوى بنجاح';
+      showStatus(body.querySelector('#kbContentStatus'), 'تم حفظ المحتوى بنجاح', 'success');
       toast('تم حفظ المحتوى', 'success');
     });
   }
 
+  /* ============ IMAGES ============ */
   function renderImagesPanel(body, data) {
     const categoryNames = ['مواد الطينة', 'مواد العزل', 'لواصق السيراميك', 'العزل الحراري'];
-    const pdfKeys = ['render', 'waterproofing', 'ceramic', 'thermal'];
 
     body.innerHTML = `
-      <h2 style="font-size:1.25rem;color:#F5F5F5;margin:0 0 8px;font-weight:900;">صور الأقسام</h2>
-      <p style="color:#8A8A8A;font-size:0.9rem;margin:0 0 24px;font-weight:600;">غيّر صورة كل قسم وأرفق ملف PDF</p>
+      <h2>صور الأقسام</h2>
+      <p class="hint">غيّر صورة كل قسم</p>
       <div id="kbImageList"></div>
-      <h2 style="font-size:1.25rem;color:#F5F5F5;margin:40px 0 8px;font-weight:900;">صور Hero</h2>
-      <p style="color:#8A8A8A;font-size:0.9rem;margin:0 0 24px;font-weight:600;">الصور الثلاث المتغيرة</p>
+      <h2 style="margin-top:40px;">صور Hero</h2>
+      <p class="hint">الصور الثلاث المتغيرة في الأعلى</p>
       <div id="kbHeroList"></div>
-      <div style="margin-top:32px;display:flex;gap:12px;">
-        <button id="kbSaveImages" style="${primaryBtnStyle}">حفظ التغييرات</button>
+      <div style="margin-top:32px; display:flex; gap:12px;">
+        <button class="kb-btn kb-btn-primary" id="kbSaveImages">حفظ التغييرات</button>
       </div>
-      <div id="kbImagesStatus" style="min-height:20px;margin-top:16px;color:#22C55E;font-weight:700;font-size:0.9rem;"></div>
+      <div class="kb-status" id="kbImagesStatus"></div>
     `;
 
     const list = body.querySelector('#kbImageList');
     categoryNames.forEach((name, i) => {
-      const pdfKey = pdfKeys[i];
-      const pdfData = data.pdfs[pdfKey];
       const div = document.createElement('div');
-      div.style.cssText = cardStyle;
+      div.className = 'kb-card';
       div.innerHTML = `
-        <h3 style="font-size:1rem;color:#F5F5F5;margin:0 0 16px;font-weight:800;">${name}</h3>
-        <div style="width:100%;aspect-ratio:16/10;background-image:url('${data.productImages[i]}');background-size:cover;background-position:center;border-radius:8px;border:1px solid #262626;margin-bottom:16px;"></div>
-        <div style="${fieldStyle}">
-          <label style="${labelStyle}">رابط الصورة</label>
-          <input type="text" data-img-index="${i}" value="${escapeHtml(data.productImages[i])}" style="${inputStyle}" />
+        <div class="kb-card-header"><h3>${name}</h3></div>
+        <div class="kb-image-preview" style="background-image:url('${data.productImages[i]}')"></div>
+        <div class="kb-field">
+          <label>رابط الصورة</label>
+          <input type="text" data-img-index="${i}" value="${escapeHtml(data.productImages[i])}" />
         </div>
-        <div style="${fieldStyle}">
-          <label style="${labelStyle}">أو ارفع صورة</label>
-          <input type="file" accept="image/*" data-img-upload="${i}" style="${inputStyle}padding:10px;cursor:pointer;" />
-        </div>
-        <div style="${fieldStyle}">
-          <label style="${labelStyle}">ملف PDF (اختياري)</label>
-          <input type="file" accept="application/pdf" data-pdf-upload="${pdfKey}" style="${inputStyle}padding:10px;cursor:pointer;" />
-          ${pdfData ? `<div style="margin-top:8px;color:#22C55E;font-size:0.85rem;font-weight:700;">✓ ${escapeHtml(pdfData.name)}</div><button data-pdf-remove="${pdfKey}" style="${dangerBtnStyle}margin-top:8px;font-size:0.8rem;padding:8px 14px;">حذف PDF</button>` : ''}
+        <div class="kb-field">
+          <label>أو ارفع صورة من جهازك</label>
+          <div class="kb-file-input">
+            <span class="icon">📷</span>
+            <div class="text"><strong>رفع صورة</strong><span>PNG, JPG · حد أقصى 2MB</span></div>
+            <input type="file" accept="image/*" data-img-upload="${i}" />
+          </div>
         </div>
       `;
       list.appendChild(div);
@@ -426,13 +313,13 @@
     const heroList = body.querySelector('#kbHeroList');
     data.heroImages.forEach((url, i) => {
       const div = document.createElement('div');
-      div.style.cssText = cardStyle;
+      div.className = 'kb-card';
       div.innerHTML = `
-        <h3 style="font-size:1rem;color:#F5F5F5;margin:0 0 16px;font-weight:800;">شريحة ${i + 1}</h3>
-        <div style="width:100%;aspect-ratio:16/10;background-image:url('${url}');background-size:cover;background-position:center;border-radius:8px;border:1px solid #262626;margin-bottom:16px;"></div>
-        <div style="${fieldStyle}margin-bottom:0;">
-          <label style="${labelStyle}">رابط الصورة</label>
-          <input type="text" data-hero-img="${i}" value="${escapeHtml(url)}" style="${inputStyle}" />
+        <div class="kb-card-header"><h3>شريحة ${i + 1}</h3></div>
+        <div class="kb-image-preview" style="background-image:url('${url}')"></div>
+        <div class="kb-field">
+          <label>رابط الصورة</label>
+          <input type="text" data-hero-img="${i}" value="${escapeHtml(url)}" />
         </div>
       `;
       heroList.appendChild(div);
@@ -447,39 +334,12 @@
         reader.addEventListener('load', () => {
           const index = input.dataset.imgUpload;
           const textInput = body.querySelector(`[data-img-index="${index}"]`);
-          if (textInput) textInput.value = reader.result;
-          const preview = input.closest('div[style*="border-radius:8px"]');
-          if (preview) preview.style.backgroundImage = `url('${reader.result}')`;
+          textInput.value = reader.result;
+          const preview = input.closest('.kb-card').querySelector('.kb-image-preview');
+          preview.style.backgroundImage = `url('${reader.result}')`;
           toast('تم رفع الصورة', 'success');
         });
         reader.readAsDataURL(file);
-      });
-    });
-
-    body.querySelectorAll('[data-pdf-upload]').forEach((input) => {
-      input.addEventListener('change', (e) => {
-        const file = e.target.files[0];
-        if (!file) return;
-        if (file.size > 5 * 1024 * 1024) { toast('حجم PDF يجب ألا يتجاوز 5MB', 'error'); return; }
-        const reader = new FileReader();
-        reader.addEventListener('load', () => {
-          const newData = getCustomization();
-          newData.pdfs[input.dataset.pdfUpload] = { name: file.name, data: reader.result, size: file.size };
-          saveCustomization(newData);
-          toast('تم رفع PDF', 'success');
-          renderPanel(body.closest('.kb-admin-overlay'));
-        });
-        reader.readAsDataURL(file);
-      });
-    });
-
-    body.querySelectorAll('[data-pdf-remove]').forEach((btn) => {
-      btn.addEventListener('click', () => {
-        const newData = getCustomization();
-        newData.pdfs[btn.dataset.pdfRemove] = null;
-        saveCustomization(newData);
-        toast('تم حذف PDF', 'success');
-        renderPanel(body.closest('.kb-admin-overlay'));
       });
     });
 
@@ -488,49 +348,40 @@
       newData.productImages = Array.from(body.querySelectorAll('[data-img-index]')).map((input) => input.value);
       newData.heroImages = Array.from(body.querySelectorAll('[data-hero-img]')).map((input) => input.value);
       saveCustomization(newData);
-      body.querySelector('#kbImagesStatus').textContent = '✅ تم حفظ الصور';
+      showStatus(body.querySelector('#kbImagesStatus'), 'تم حفظ الصور', 'success');
       toast('تم حفظ الصور', 'success');
     });
   }
 
+  /* ============ CATEGORIES ============ */
   function renderCategoriesPanel(body, data) {
     body.innerHTML = `
-      <h2 style="font-size:1.25rem;color:#F5F5F5;margin:0 0 8px;font-weight:900;">الأقسام (${data.categories.length})</h2>
-      <p style="color:#8A8A8A;font-size:0.9rem;margin:0 0 24px;font-weight:600;">أضف قسم جديد، أو عدّل الموجود، أو احذف</p>
+      <h2>الأقسام (${data.categories.length})</h2>
+      <p class="hint">أضف قسم جديد، أو عدّل الموجود، أو احذف</p>
       <div id="kbCategoriesList"></div>
-      <div style="margin-top:24px;display:flex;gap:12px;flex-wrap:wrap;">
-        <button id="kbAddCategory" style="${primaryBtnStyle}">+ إضافة قسم جديد</button>
-        <button id="kbSaveCategories" style="${outlineBtnStyle}">حفظ التعديلات</button>
+      <div style="margin-top:24px; display:flex; gap:12px;">
+        <button class="kb-btn kb-btn-primary" id="kbAddCategory">+ إضافة قسم جديد</button>
+        <button class="kb-btn kb-btn-outline" id="kbSaveCategories">حفظ التعديلات</button>
       </div>
-      <div id="kbCategoriesStatus" style="min-height:20px;margin-top:16px;color:#22C55E;font-weight:700;font-size:0.9rem;"></div>
+      <div class="kb-status" id="kbCategoriesStatus"></div>
     `;
 
     const list = body.querySelector('#kbCategoriesList');
     data.categories.forEach((cat, i) => {
       const div = document.createElement('div');
-      div.style.cssText = cardStyle;
+      div.className = 'kb-card';
       div.dataset.categoryIndex = i;
       div.innerHTML = `
-        <div style="display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:16px;">
-          <h3 style="font-size:1rem;color:#F5F5F5;margin:0;font-weight:800;">القسم ${i + 1}</h3>
-          <button data-remove-cat="${i}" style="${dangerBtnStyle}font-size:0.8rem;padding:8px 14px;">حذف</button>
+        <div class="kb-card-header">
+          <h3>القسم ${i + 1}</h3>
+          <div class="actions">
+            <button class="kb-btn kb-btn-danger kb-btn-sm" data-remove-cat="${i}">حذف</button>
+          </div>
         </div>
-        <div style="${fieldStyle}">
-          <label style="${labelStyle}">Slug</label>
-          <input type="text" data-cat-slug="${i}" value="${escapeHtml(cat.slug)}" style="${inputStyle}" />
-        </div>
-        <div style="${fieldStyle}">
-          <label style="${labelStyle}">اسم القسم</label>
-          <input type="text" data-cat-category="${i}" value="${escapeHtml(cat.category)}" style="${inputStyle}" />
-        </div>
-        <div style="${fieldStyle}">
-          <label style="${labelStyle}">العنوان</label>
-          <input type="text" data-cat-title="${i}" value="${escapeHtml(cat.title)}" style="${inputStyle}" />
-        </div>
-        <div style="${fieldStyle}margin-bottom:0;">
-          <label style="${labelStyle}">وصف قصير</label>
-          <textarea data-cat-short="${i}" style="${inputStyle}min-height:60px;resize:vertical;">${escapeHtml(cat.short)}</textarea>
-        </div>
+        <div class="kb-field"><label>Slug</label><input type="text" data-cat-slug="${i}" value="${escapeHtml(cat.slug)}" /></div>
+        <div class="kb-field"><label>اسم القسم</label><input type="text" data-cat-category="${i}" value="${escapeHtml(cat.category)}" /></div>
+        <div class="kb-field"><label>العنوان</label><input type="text" data-cat-title="${i}" value="${escapeHtml(cat.title)}" /></div>
+        <div class="kb-field"><label>وصف قصير</label><textarea data-cat-short="${i}">${escapeHtml(cat.short)}</textarea></div>
       `;
       list.appendChild(div);
     });
@@ -568,43 +419,237 @@
         short: card.querySelector(`[data-cat-short="${i}"]`).value
       }));
       saveCustomization(newData);
-      body.querySelector('#kbCategoriesStatus').textContent = '✅ تم حفظ الأقسام';
+      showStatus(body.querySelector('#kbCategoriesStatus'), 'تم حفظ الأقسام', 'success');
       toast('تم حفظ الأقسام', 'success');
     });
   }
 
+  /* ============ CATALOGUES (NEW) ============ */
+  function renderCataloguesPanel(body, data) {
+    const catalogues = data.catalogues || [];
+
+    body.innerHTML = `
+      <h2>الكتالوجات والملفات (${catalogues.length})</h2>
+      <p class="hint">أضف ملفات PDF، وسيُولَّد باركود لكل ملف تلقائياً</p>
+
+      <div class="kb-card" style="border-color:var(--accent);">
+        <div class="kb-card-header"><h3>➕ إضافة كتالوج جديد</h3></div>
+        <div class="kb-field">
+          <label>اسم الكتالوج</label>
+          <input type="text" id="kbNewCatName" placeholder="مثال: كتالوج المنتجات 2026" />
+        </div>
+        <div class="kb-field">
+          <label>الرابط المباشر (URL)</label>
+          <input type="text" id="kbNewCatUrl" placeholder="https://example.com/file.pdf أو assets/files/file.pdf" />
+        </div>
+        <div class="kb-field">
+          <label>أو ارفع ملف PDF من جهازك</label>
+          <div class="kb-file-input">
+            <span class="icon">📄</span>
+            <div class="text">
+              <strong>رفع PDF</strong>
+              <span>PDF · حد أقصى 5MB</span>
+            </div>
+            <input type="file" accept="application/pdf" id="kbNewCatFile" />
+          </div>
+        </div>
+        <button class="kb-btn kb-btn-primary" id="kbAddCatalogue" style="margin-top:8px;">إضافة الكتالوج</button>
+      </div>
+
+      <h2 style="margin-top:40px;">الكتالوجات الحالية</h2>
+      <div id="kbCataloguesList"></div>
+
+      <div class="kb-status" id="kbCataloguesStatus"></div>
+    `;
+
+    const list = body.querySelector('#kbCataloguesList');
+    if (!catalogues.length) {
+      list.innerHTML = '<p style="color:var(--text-muted);text-align:center;padding:20px;">لا توجد كتالوجات بعد.</p>';
+    } else {
+      catalogues.forEach((cat, i) => {
+        const div = document.createElement('div');
+        div.className = 'kb-card';
+        div.dataset.catalogueIndex = i;
+        div.innerHTML = `
+          <div class="kb-card-header">
+            <h3>${escapeHtml(cat.name)}</h3>
+            <div class="actions">
+              <button class="kb-btn kb-btn-danger kb-btn-sm" data-remove-cat-item="${i}">حذف</button>
+            </div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 200px;gap:20px;align-items:start;">
+            <div>
+              <div class="kb-field">
+                <label>اسم الكتالوج</label>
+                <input type="text" data-cat-name="${i}" value="${escapeHtml(cat.name)}" />
+              </div>
+              <div class="kb-field">
+                <label>الرابط المباشر</label>
+                <input type="text" data-cat-url="${i}" value="${cat.url && cat.url.startsWith('data:') ? '(ملف مرفوع)' : escapeHtml(cat.url)}" ${cat.url && cat.url.startsWith('data:') ? 'readonly' : ''} />
+              </div>
+              <div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap;">
+                <a href="${escapeHtml(cat.url)}" target="_blank" rel="noopener noreferrer" class="kb-btn kb-btn-outline kb-btn-sm" download>فتح الملف</a>
+              </div>
+            </div>
+            <div style="text-align:center;">
+              <div id="qr-${i}" style="display:inline-block;padding:10px;background:#fff;border-radius:8px;"></div>
+              <p style="font-size:0.75rem;color:var(--text-muted);margin-top:8px;font-family:monospace;">باركود الملف</p>
+            </div>
+          </div>
+        `;
+        list.appendChild(div);
+      });
+    }
+
+    body.querySelector('#kbAddCatalogue').addEventListener('click', () => {
+      const nameInput = body.querySelector('#kbNewCatName');
+      const urlInput = body.querySelector('#kbNewCatUrl');
+      const fileInput = body.querySelector('#kbNewCatFile');
+
+      const name = nameInput.value.trim();
+      const url = urlInput.value.trim();
+      const file = fileInput.files[0];
+
+      if (!name) { toast('أدخل اسم الكتالوج', 'error'); return; }
+
+      const newData = getCustomization();
+      newData.catalogues = newData.catalogues || [];
+
+      const newCat = {
+        id: 'cat-' + Date.now(),
+        name: name,
+        url: '',
+        type: 'pdf'
+      };
+
+      if (file) {
+        if (file.size > 5 * 1024 * 1024) { toast('حجم الملف يجب ألا يتجاوز 5MB', 'error'); return; }
+        const reader = new FileReader();
+        reader.addEventListener('load', () => {
+          newCat.url = reader.result;
+          newData.catalogues.push(newCat);
+          saveCustomization(newData);
+          toast('تمت إضافة الكتالوج', 'success');
+          renderPanel(body.closest('.kb-admin-overlay'));
+        });
+        reader.readAsDataURL(file);
+      } else if (url) {
+        newCat.url = url;
+        newData.catalogues.push(newCat);
+        saveCustomization(newData);
+        toast('تمت إضافة الكتالوج', 'success');
+        renderPanel(body.closest('.kb-admin-overlay'));
+      } else {
+        toast('ضع رابطاً أو ارفع ملفاً', 'error');
+      }
+    });
+
+    body.querySelectorAll('[data-remove-cat-item]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        if (!confirm('حذف هذا الكتالوج؟')) return;
+        const newData = getCustomization();
+        newData.catalogues.splice(Number(btn.dataset.removeCatItem), 1);
+        saveCustomization(newData);
+        toast('تم حذف الكتالوج', 'success');
+        renderPanel(body.closest('.kb-admin-overlay'));
+      });
+    });
+
+    body.querySelectorAll('[data-cat-name]').forEach((input) => {
+      input.addEventListener('change', () => {
+        const newData = getCustomization();
+        newData.catalogues[Number(input.dataset.catName)].name = input.value;
+        saveCustomization(newData);
+        toast('تم حفظ الاسم', 'success');
+      });
+    });
+
+    body.querySelectorAll('[data-cat-url]').forEach((input) => {
+      if (input.readOnly) return;
+      input.addEventListener('change', () => {
+        const newData = getCustomization();
+        newData.catalogues[Number(input.dataset.catUrl)].url = input.value;
+        saveCustomization(newData);
+        toast('تم حفظ الرابط', 'success');
+      });
+    });
+
+    setTimeout(() => {
+      if (typeof QRCode === 'undefined') {
+        const script = document.createElement('script');
+        script.src = 'https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js';
+        script.onload = () => generateAllQRs(catalogues, body);
+        document.head.appendChild(script);
+      } else {
+        generateAllQRs(catalogues, body);
+      }
+    }, 100);
+  }
+
+  function generateAllQRs(catalogues, body) {
+    const baseUrl = window.location.origin + window.location.pathname.replace(/[^/]*$/, '');
+    catalogues.forEach((cat, i) => {
+      const el = body.querySelector(`#qr-${i}`);
+      if (!el) return;
+      el.innerHTML = '';
+      let qrUrl = cat.url;
+      if (qrUrl && !qrUrl.startsWith('data:') && !qrUrl.startsWith('http')) {
+        qrUrl = baseUrl + qrUrl;
+      }
+      if (qrUrl && qrUrl.startsWith('data:')) {
+        el.innerHTML = '<div style="font-size:0.7rem;color:#999;padding:20px;text-align:center;">الملف مرفوع<br>لا يمكن توليد باركود<br>استخدم رابطاً مباشراً</div>';
+        return;
+      }
+      try {
+        new QRCode(el, {
+          text: qrUrl || 'https://example.com',
+          width: 180,
+          height: 180,
+          colorDark: "#0E0E0E",
+          colorLight: "#FFFFFF",
+          correctLevel: QRCode.CorrectLevel.M
+        });
+      } catch (e) {
+        console.error('QR error:', e);
+      }
+    });
+  }
+
+  /* ============ NOTICE ============ */
   function renderNoticePanel(body, data) {
     const notice = getNotice() || { active: false, message: 'الموقع في وضع تجريبي، يرجى تأكيد الدفع خلال 24 ساعة.', expires: null };
 
     body.innerHTML = `
-      <h2 style="font-size:1.25rem;color:#F5F5F5;margin:0 0 8px;font-weight:900;">إشعار الموقع</h2>
-      <p style="color:#8A8A8A;font-size:0.9rem;margin:0 0 24px;font-weight:600;">أرسل إشعاراً لجميع الزوار يطالبهم بالدفع خلال 24 ساعة</p>
-      <div style="${cardStyle}">
-        <div style="display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:16px;">
-          <h3 style="font-size:1rem;color:#F5F5F5;margin:0;font-weight:800;">حالة الإشعار</h3>
-          <span style="color:${notice.active ? '#22C55E' : '#8A8A8A'};font-size:0.85rem;font-weight:700;">
+      <h2>إشعار الموقع</h2>
+      <p class="hint">أرسل إشعاراً لجميع الزوار يطالبهم بالدفع خلال 24 ساعة</p>
+      <div class="kb-card">
+        <div class="kb-card-header">
+          <h3>حالة الإشعار</h3>
+          <span class="mono" style="color:${notice.active ? '#22C55E' : '#8A8A8A'};font-size:.85rem;">
             ${notice.active ? '● نشط' : '○ متوقف'}
           </span>
         </div>
-        <div style="${fieldStyle}">
-          <label style="${labelStyle}">نص الإشعار</label>
-          <textarea id="kbNoticeMsg" style="${inputStyle}min-height:80px;resize:vertical;">${escapeHtml(notice.message)}</textarea>
+        <div class="kb-field">
+          <label>نص الإشعار</label>
+          <textarea id="kbNoticeMsg">${escapeHtml(notice.message)}</textarea>
         </div>
-        <div style="${fieldStyle}">
-          <label style="${labelStyle}">مدة الإشعار (بالساعات)</label>
-          <input type="number" id="kbNoticeHours" min="1" max="72" value="24" style="${inputStyle}" />
+        <div class="kb-field">
+          <label>مدة الإشعار (بالساعات)</label>
+          <input type="number" id="kbNoticeHours" min="1" max="72" value="24" />
         </div>
-        <div style="display:flex;gap:12px;flex-wrap:wrap;">
-          <button id="kbActivateNotice" style="${primaryBtnStyle}">🔔 إرسال الإشعار</button>
-          <button id="kbDeactivateNotice" style="${outlineBtnStyle}">⏹ إيقاف الإشعار</button>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:16px;">
+          <button class="kb-btn kb-btn-primary" id="kbActivateNotice">🔔 إرسال الإشعار</button>
+          <button class="kb-btn kb-btn-outline" id="kbDeactivateNotice">⏹ إيقاف الإشعار</button>
         </div>
       </div>
-      <div style="${cardStyle}border-color:#EF4444;">
-        <h3 style="font-size:1rem;color:#EF4444;margin:0 0 12px;font-weight:800;">وضع الحجب الكامل</h3>
-        <p style="color:#8A8A8A;font-size:0.9rem;margin:0 0 16px;font-weight:600;">عند تفعيله، لن يستطيع الزوار رؤية الموقع حتى يتم الدفع.</p>
-        <button id="kbActivateGate" style="${dangerBtnStyle}">🚫 تفعيل حجب الموقع</button>
+      <div class="kb-card">
+        <div class="kb-card-header"><h3>وضع الحجب الكامل</h3></div>
+        <p style="color:var(--text-muted);font-size:.9rem;margin-bottom:16px;">
+          عند تفعيله، لن يستطيع الزوار رؤية الموقع حتى يتم الدفع.
+        </p>
+        <button class="kb-btn kb-btn-danger" id="kbActivateGate">🚫 تفعيل حجب الموقع</button>
       </div>
-      <div id="kbNoticeStatus" style="min-height:20px;margin-top:16px;color:#22C55E;font-weight:700;font-size:0.9rem;"></div>
+      <div class="kb-status" id="kbNoticeStatus"></div>
     `;
 
     body.querySelector('#kbActivateNotice').addEventListener('click', () => {
@@ -613,13 +658,13 @@
       const expires = new Date(Date.now() + hours * 3600 * 1000).toISOString();
       saveNotice({ active: true, message, expires, gate: false });
       toast('تم تفعيل الإشعار', 'success');
-      body.querySelector('#kbNoticeStatus').textContent = '✅ تم إرسال الإشعار لجميع الزوار';
+      showStatus(body.querySelector('#kbNoticeStatus'), 'تم إرسال الإشعار لجميع الزوار', 'success');
     });
 
     body.querySelector('#kbDeactivateNotice').addEventListener('click', () => {
       saveNotice({ active: false, message: '', expires: null, gate: false });
       toast('تم إيقاف الإشعار', 'success');
-      body.querySelector('#kbNoticeStatus').textContent = '⏹ تم إيقاف الإشعار';
+      showStatus(body.querySelector('#kbNoticeStatus'), 'تم إيقاف الإشعار', 'info');
     });
 
     body.querySelector('#kbActivateGate').addEventListener('click', () => {
@@ -627,30 +672,35 @@
       const message = body.querySelector('#kbNoticeMsg').value || 'الموقع محجوب حتى يتم تأكيد الدفع.';
       saveNotice({ active: true, message, expires: null, gate: true });
       toast('تم تفعيل الحجب الكامل', 'success');
-      body.querySelector('#kbNoticeStatus').textContent = '🚫 الموقع محجوب الآن';
+      showStatus(body.querySelector('#kbNoticeStatus'), 'الموقع محجوب الآن', 'error');
     });
   }
 
+  /* ============ SETTINGS ============ */
   function renderSettingsPanel(body, data) {
     body.innerHTML = `
-      <h2 style="font-size:1.25rem;color:#F5F5F5;margin:0 0 8px;font-weight:900;">النسخ الاحتياطي</h2>
-      <p style="color:#8A8A8A;font-size:0.9rem;margin:0 0 24px;font-weight:600;">صدّر كل إعدادات الموقع كملف JSON، أو استوردها</p>
-      <div style="${cardStyle}">
-        <h3 style="font-size:1rem;color:#F5F5F5;margin:0 0 12px;font-weight:800;">تصدير الإعدادات</h3>
-        <p style="color:#8A8A8A;font-size:0.9rem;margin:0 0 16px;font-weight:600;">احفظ ملف JSON يحتوي على كل تعديلاتك.</p>
-        <button id="kbExport" style="${primaryBtnStyle}">📥 تصدير JSON</button>
+      <h2>النسخ الاحتياطي</h2>
+      <p class="hint">صدّر كل إعدادات الموقع كملف JSON، أو استوردها على جهاز آخر</p>
+      <div class="kb-card">
+        <div class="kb-card-header"><h3>تصدير الإعدادات</h3></div>
+        <p style="color:var(--text-muted);font-size:.9rem;margin-bottom:16px;">احفظ ملف JSON يحتوي على كل تعديلاتك.</p>
+        <button class="kb-btn kb-btn-primary" id="kbExport">📥 تصدير JSON</button>
       </div>
-      <div style="${cardStyle}">
-        <h3 style="font-size:1rem;color:#F5F5F5;margin:0 0 12px;font-weight:800;">استيراد الإعدادات</h3>
-        <p style="color:#8A8A8A;font-size:0.9rem;margin:0 0 16px;font-weight:600;">استورد ملف JSON لإعادة كل الإعدادات.</p>
-        <input type="file" accept="application/json" id="kbImport" style="${inputStyle}padding:10px;cursor:pointer;" />
+      <div class="kb-card">
+        <div class="kb-card-header"><h3>استيراد الإعدادات</h3></div>
+        <p style="color:var(--text-muted);font-size:.9rem;margin-bottom:16px;">استورد ملف JSON لإعادة كل الإعدادات.</p>
+        <div class="kb-file-input">
+          <span class="icon">📤</span>
+          <div class="text"><strong>اختر ملف JSON</strong><span>سيتم استبدال الإعدادات الحالية</span></div>
+          <input type="file" accept="application/json" id="kbImport" />
+        </div>
       </div>
-      <div style="${cardStyle}border-color:#EF4444;">
-        <h3 style="font-size:1rem;color:#EF4444;margin:0 0 12px;font-weight:800;">منطقة الخطر</h3>
-        <p style="color:#8A8A8A;font-size:0.9rem;margin:0 0 16px;font-weight:600;">إعادة تعيين كل الإعدادات للحالة الافتراضية.</p>
-        <button id="kbReset" style="${dangerBtnStyle}">🗑 إعادة تعيين كل شيء</button>
+      <div class="kb-card" style="border-color:#EF4444;">
+        <div class="kb-card-header"><h3 style="color:#EF4444;">منطقة الخطر</h3></div>
+        <p style="color:var(--text-muted);font-size:.9rem;margin-bottom:16px;">إعادة تعيين كل الإعدادات للحالة الافتراضية.</p>
+        <button class="kb-btn kb-btn-danger" id="kbReset">🗑 إعادة تعيين كل شيء</button>
       </div>
-      <div id="kbSettingsStatus" style="min-height:20px;margin-top:16px;color:#22C55E;font-weight:700;font-size:0.9rem;"></div>
+      <div class="kb-status" id="kbSettingsStatus"></div>
     `;
 
     body.querySelector('#kbExport').addEventListener('click', () => {
@@ -688,7 +738,7 @@
       localStorage.removeItem(STORAGE_KEY);
       localStorage.removeItem(NOTICE_KEY);
       toast('تمت إعادة التعيين', 'success');
-      body.querySelector('#kbSettingsStatus').textContent = '✅ تمت إعادة التعيين';
+      showStatus(body.querySelector('#kbSettingsStatus'), 'تمت إعادة التعيين للحالة الافتراضية', 'success');
       setTimeout(() => location.reload(), 1500);
     });
   }
@@ -699,15 +749,26 @@
     }[c]));
   }
 
-  // =========================================================
-  // MULTIPLE WAYS TO OPEN ADMIN PANEL
-  // =========================================================
+  function showStatus(el, message, type = 'info') {
+    el.textContent = message;
+    el.className = `kb-status ${type}`;
+    setTimeout(() => {
+      if (el.textContent === message) {
+        el.textContent = '';
+        el.className = 'kb-status';
+      }
+    }, 4000);
+  }
 
-  // 1) 5 clicks on logo
   function getBrandElement() {
-    return document.getElementById('brandTrigger')
-      || document.querySelector('#site-header .brand')
-      || document.querySelector('.brand');
+    const byId = document.getElementById('brandTrigger');
+    if (byId) return byId;
+    const header = document.getElementById('site-header');
+    if (header) {
+      const inHeader = header.querySelector('.brand');
+      if (inHeader) return inHeader;
+    }
+    return document.querySelector('.brand');
   }
 
   function initLogoTrigger() {
@@ -718,8 +779,6 @@
     }
     if (brand.dataset.adminReady) return;
     brand.dataset.adminReady = 'true';
-
-    console.log('✅ brand trigger wired:', brand);
 
     brand.addEventListener('click', (e) => {
       clickCount++;
@@ -733,33 +792,13 @@
         return;
       }
 
-      clickTimer = setTimeout(() => { clickCount = 0; }, CLICK_TIMEOUT);
+      clickTimer = setTimeout(() => {
+        clickCount = 0;
+      }, CLICK_TIMEOUT);
     }, true);
   }
 
-  // 2) Keyboard shortcut: Ctrl+Shift+K
-  function initKeyboardShortcut() {
-    document.addEventListener('keydown', (e) => {
-      if (e.ctrlKey && e.shiftKey && (e.key === 'K' || e.key === 'k')) {
-        e.preventDefault();
-        askPassword();
-      }
-    });
-  }
-
-  // 3) URL parameter: ?admin=1
-  function initURLTrigger() {
-    const params = new URLSearchParams(location.search);
-    if (params.get('admin') === '1') {
-      setTimeout(askPassword, 500);
-    }
-  }
-
-  function init() {
-    initLogoTrigger();
-    initKeyboardShortcut();
-    initURLTrigger();
-  }
+  function init() { initLogoTrigger(); }
 
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', init);
@@ -772,6 +811,6 @@
 
   window.KBAdmin = { open: askPassword, getCustomization, saveCustomization, getNotice, saveNotice, toast };
 
-  console.log('%c🔐 katanbuild Admin', 'color:#E87722;font-weight:bold;font-size:14px;');
-  console.log('%c3 طرق للفتح: ① انقر 5 مرات على الشعار ② اضغط Ctrl+Shift+K ③ افتح ?admin=1', 'color:#8A8A8A;font-size:12px;');
+  console.log('%c🔐 katanbuild Admin v3', 'color:#E87722;font-weight:bold;font-size:14px;');
+  console.log('%cانقر 5 مرات على الشعار + كلمة المرور: 1992', 'color:#8A8A8A;font-size:12px;');
 })();
