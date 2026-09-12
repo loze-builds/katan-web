@@ -49,10 +49,7 @@
         { title: "سهولة التطبيق", text: "قوام متجانس يسهّل العمل ويقلل الهدر في الورشة." },
         { title: "نتائج احترافية", text: "لمسة نهائية نظيفة ومتجانسة تليق بالتسليم النهائي." }
       ],
-      catalogues: [
-        { id: 'cat-1', name: 'cove .pdf', url: 'assets/files/cove.pdf', type: 'pdf' },
-        { id: 'cat-2', name: 'بروشور قطان', url: 'assets/files/brochure-qattan.pdf', type: 'pdf' }
-      ]
+      catalogues: []
     };
   }
 
@@ -139,7 +136,7 @@
       <div class="kb-admin-dialog">
         <aside class="kb-admin-sidebar">
           <div class="kb-admin-brand">
-            <img src="assets/katanbuild-logo-dark.png" alt="katanbuild" onerror="this.src='assets/katanbuild-logo.png'" />
+            <img src="assets/katanbuild-logo.png" alt="katanbuild" />
             <div>
               <span>katanbuild</span>
               <small>Admin Panel v3</small>
@@ -276,13 +273,13 @@
 
     body.innerHTML = `
       <h2>صور الأقسام</h2>
-      <p class="hint">غيّر صورة كل قسم</p>
+      <p class="hint">غيّر صورة كل قسم — ستُطبَّق فوراً بعد الحفظ</p>
       <div id="kbImageList"></div>
       <h2 style="margin-top:40px;">صور Hero</h2>
       <p class="hint">الصور الثلاث المتغيرة في الأعلى</p>
       <div id="kbHeroList"></div>
       <div style="margin-top:32px; display:flex; gap:12px;">
-        <button class="kb-btn kb-btn-primary" id="kbSaveImages">حفظ التغييرات</button>
+        <button class="kb-btn kb-btn-primary" id="kbSaveImages">💾 حفظ وتطبيق الصور</button>
       </div>
       <div class="kb-status" id="kbImagesStatus"></div>
     `;
@@ -295,8 +292,8 @@
         <div class="kb-card-header"><h3>${name}</h3></div>
         <div class="kb-image-preview" style="background-image:url('${data.productImages[i]}')"></div>
         <div class="kb-field">
-          <label>رابط الصورة</label>
-          <input type="text" data-img-index="${i}" value="${escapeHtml(data.productImages[i])}" />
+          <label>رابط الصورة (URL)</label>
+          <input type="text" data-img-index="${i}" value="${escapeHtml(data.productImages[i])}" placeholder="https://example.com/image.jpg" />
         </div>
         <div class="kb-field">
           <label>أو ارفع صورة من جهازك</label>
@@ -318,11 +315,26 @@
         <div class="kb-card-header"><h3>شريحة ${i + 1}</h3></div>
         <div class="kb-image-preview" style="background-image:url('${url}')"></div>
         <div class="kb-field">
-          <label>رابط الصورة</label>
+          <label>رابط الصورة (URL)</label>
           <input type="text" data-hero-img="${i}" value="${escapeHtml(url)}" />
         </div>
       `;
       heroList.appendChild(div);
+    });
+
+    // Preview on input change
+    body.querySelectorAll('[data-img-index]').forEach((input) => {
+      input.addEventListener('input', () => {
+        const preview = input.closest('.kb-card').querySelector('.kb-image-preview');
+        preview.style.backgroundImage = `url('${input.value}')`;
+      });
+    });
+
+    body.querySelectorAll('[data-hero-img]').forEach((input) => {
+      input.addEventListener('input', () => {
+        const preview = input.closest('.kb-card').querySelector('.kb-image-preview');
+        preview.style.backgroundImage = `url('${input.value}')`;
+      });
     });
 
     body.querySelectorAll('[data-img-upload]').forEach((input) => {
@@ -337,19 +349,20 @@
           textInput.value = reader.result;
           const preview = input.closest('.kb-card').querySelector('.kb-image-preview');
           preview.style.backgroundImage = `url('${reader.result}')`;
-          toast('تم رفع الصورة', 'success');
+          toast('تم رفع الصورة — اضغط حفظ', 'success');
         });
         reader.readAsDataURL(file);
       });
     });
 
+    // SAVE + APPLY
     body.querySelector('#kbSaveImages').addEventListener('click', () => {
       const newData = getCustomization();
       newData.productImages = Array.from(body.querySelectorAll('[data-img-index]')).map((input) => input.value);
       newData.heroImages = Array.from(body.querySelectorAll('[data-hero-img]')).map((input) => input.value);
       saveCustomization(newData);
-      showStatus(body.querySelector('#kbImagesStatus'), 'تم حفظ الصور', 'success');
-      toast('تم حفظ الصور', 'success');
+      showStatus(body.querySelector('#kbImagesStatus'), 'تم حفظ الصور وتطبيقها على الموقع', 'success');
+      toast('تم حفظ الصور وتطبيقها ✓', 'success');
     });
   }
 
@@ -361,7 +374,7 @@
       <div id="kbCategoriesList"></div>
       <div style="margin-top:24px; display:flex; gap:12px;">
         <button class="kb-btn kb-btn-primary" id="kbAddCategory">+ إضافة قسم جديد</button>
-        <button class="kb-btn kb-btn-outline" id="kbSaveCategories">حفظ التعديلات</button>
+        <button class="kb-btn kb-btn-outline" id="kbSaveCategories">💾 حفظ وتطبيق</button>
       </div>
       <div class="kb-status" id="kbCategoriesStatus"></div>
     `;
@@ -419,12 +432,12 @@
         short: card.querySelector(`[data-cat-short="${i}"]`).value
       }));
       saveCustomization(newData);
-      showStatus(body.querySelector('#kbCategoriesStatus'), 'تم حفظ الأقسام', 'success');
-      toast('تم حفظ الأقسام', 'success');
+      showStatus(body.querySelector('#kbCategoriesStatus'), 'تم حفظ الأقسام وتطبيقها', 'success');
+      toast('تم حفظ الأقسام ✓', 'success');
     });
   }
 
-  /* ============ CATALOGUES (NEW) ============ */
+  /* ============ CATALOGUES ============ */
   function renderCataloguesPanel(body, data) {
     const catalogues = data.catalogues || [];
 
@@ -488,7 +501,7 @@
                 <input type="text" data-cat-url="${i}" value="${cat.url && cat.url.startsWith('data:') ? '(ملف مرفوع)' : escapeHtml(cat.url)}" ${cat.url && cat.url.startsWith('data:') ? 'readonly' : ''} />
               </div>
               <div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap;">
-                <a href="${escapeHtml(cat.url)}" target="_blank" rel="noopener noreferrer" class="kb-btn kb-btn-outline kb-btn-sm" download>فتح الملف</a>
+                <a href="${escapeHtml(cat.url)}" target="_blank" rel="noopener noreferrer" class="kb-btn kb-btn-outline kb-btn-sm">فتح الملف</a>
               </div>
             </div>
             <div style="text-align:center;">
@@ -515,12 +528,7 @@
       const newData = getCustomization();
       newData.catalogues = newData.catalogues || [];
 
-      const newCat = {
-        id: 'cat-' + Date.now(),
-        name: name,
-        url: '',
-        type: 'pdf'
-      };
+      const newCat = { id: 'cat-' + Date.now(), name: name, url: '', type: 'pdf' };
 
       if (file) {
         if (file.size > 5 * 1024 * 1024) { toast('حجم الملف يجب ألا يتجاوز 5MB', 'error'); return; }
@@ -603,15 +611,11 @@
       try {
         new QRCode(el, {
           text: qrUrl || 'https://example.com',
-          width: 180,
-          height: 180,
-          colorDark: "#0E0E0E",
-          colorLight: "#FFFFFF",
+          width: 180, height: 180,
+          colorDark: "#0E0E0E", colorLight: "#FFFFFF",
           correctLevel: QRCode.CorrectLevel.M
         });
-      } catch (e) {
-        console.error('QR error:', e);
-      }
+      } catch (e) { console.error('QR error:', e); }
     });
   }
 
@@ -621,7 +625,7 @@
 
     body.innerHTML = `
       <h2>إشعار الموقع</h2>
-      <p class="hint">أرسل إشعاراً لجميع الزوار يطالبهم بالدفع خلال 24 ساعة</p>
+      <p class="hint">أرسل إشعاراً لجميع الزوار</p>
       <div class="kb-card">
         <div class="kb-card-header">
           <h3>حالة الإشعار</h3>
@@ -644,9 +648,6 @@
       </div>
       <div class="kb-card">
         <div class="kb-card-header"><h3>وضع الحجب الكامل</h3></div>
-        <p style="color:var(--text-muted);font-size:.9rem;margin-bottom:16px;">
-          عند تفعيله، لن يستطيع الزوار رؤية الموقع حتى يتم الدفع.
-        </p>
         <button class="kb-btn kb-btn-danger" id="kbActivateGate">🚫 تفعيل حجب الموقع</button>
       </div>
       <div class="kb-status" id="kbNoticeStatus"></div>
@@ -658,21 +659,18 @@
       const expires = new Date(Date.now() + hours * 3600 * 1000).toISOString();
       saveNotice({ active: true, message, expires, gate: false });
       toast('تم تفعيل الإشعار', 'success');
-      showStatus(body.querySelector('#kbNoticeStatus'), 'تم إرسال الإشعار لجميع الزوار', 'success');
     });
 
     body.querySelector('#kbDeactivateNotice').addEventListener('click', () => {
       saveNotice({ active: false, message: '', expires: null, gate: false });
       toast('تم إيقاف الإشعار', 'success');
-      showStatus(body.querySelector('#kbNoticeStatus'), 'تم إيقاف الإشعار', 'info');
     });
 
     body.querySelector('#kbActivateGate').addEventListener('click', () => {
-      if (!confirm('تحذير: سيتم حجب الموقع بالكامل عن جميع الزوار حتى يتم الدفع. متابعة؟')) return;
-      const message = body.querySelector('#kbNoticeMsg').value || 'الموقع محجوب حتى يتم تأكيد الدفع.';
+      if (!confirm('تحذير: سيتم حجب الموقع عن جميع الزوار. متابعة؟')) return;
+      const message = body.querySelector('#kbNoticeMsg').value || 'الموقع محجوب حتى تأكيد الدفع.';
       saveNotice({ active: true, message, expires: null, gate: true });
-      toast('تم تفعيل الحجب الكامل', 'success');
-      showStatus(body.querySelector('#kbNoticeStatus'), 'الموقع محجوب الآن', 'error');
+      toast('تم تفعيل الحجب', 'success');
     });
   }
 
@@ -680,24 +678,21 @@
   function renderSettingsPanel(body, data) {
     body.innerHTML = `
       <h2>النسخ الاحتياطي</h2>
-      <p class="hint">صدّر كل إعدادات الموقع كملف JSON، أو استوردها على جهاز آخر</p>
+      <p class="hint">صدّر أو استورد إعدادات الموقع</p>
       <div class="kb-card">
         <div class="kb-card-header"><h3>تصدير الإعدادات</h3></div>
-        <p style="color:var(--text-muted);font-size:.9rem;margin-bottom:16px;">احفظ ملف JSON يحتوي على كل تعديلاتك.</p>
         <button class="kb-btn kb-btn-primary" id="kbExport">📥 تصدير JSON</button>
       </div>
       <div class="kb-card">
         <div class="kb-card-header"><h3>استيراد الإعدادات</h3></div>
-        <p style="color:var(--text-muted);font-size:.9rem;margin-bottom:16px;">استورد ملف JSON لإعادة كل الإعدادات.</p>
         <div class="kb-file-input">
           <span class="icon">📤</span>
-          <div class="text"><strong>اختر ملف JSON</strong><span>سيتم استبدال الإعدادات الحالية</span></div>
+          <div class="text"><strong>اختر ملف JSON</strong></div>
           <input type="file" accept="application/json" id="kbImport" />
         </div>
       </div>
       <div class="kb-card" style="border-color:#EF4444;">
         <div class="kb-card-header"><h3 style="color:#EF4444;">منطقة الخطر</h3></div>
-        <p style="color:var(--text-muted);font-size:.9rem;margin-bottom:16px;">إعادة تعيين كل الإعدادات للحالة الافتراضية.</p>
         <button class="kb-btn kb-btn-danger" id="kbReset">🗑 إعادة تعيين كل شيء</button>
       </div>
       <div class="kb-status" id="kbSettingsStatus"></div>
@@ -726,9 +721,7 @@
           if (parsed.notice) saveNotice(parsed.notice);
           toast('تم استيراد الإعدادات', 'success');
           renderPanel(body.closest('.kb-admin-overlay'));
-        } catch (err) {
-          toast('ملف JSON غير صالح', 'error');
-        }
+        } catch (err) { toast('ملف JSON غير صالح', 'error'); }
       });
       reader.readAsText(file);
     });
@@ -738,7 +731,6 @@
       localStorage.removeItem(STORAGE_KEY);
       localStorage.removeItem(NOTICE_KEY);
       toast('تمت إعادة التعيين', 'success');
-      showStatus(body.querySelector('#kbSettingsStatus'), 'تمت إعادة التعيين للحالة الافتراضية', 'success');
       setTimeout(() => location.reload(), 1500);
     });
   }
@@ -773,17 +765,13 @@
 
   function initLogoTrigger() {
     const brand = getBrandElement();
-    if (!brand) {
-      setTimeout(initLogoTrigger, 500);
-      return;
-    }
+    if (!brand) { setTimeout(initLogoTrigger, 500); return; }
     if (brand.dataset.adminReady) return;
     brand.dataset.adminReady = 'true';
 
     brand.addEventListener('click', (e) => {
       clickCount++;
       clearTimeout(clickTimer);
-
       if (clickCount >= CLICKS_NEEDED) {
         e.preventDefault();
         e.stopPropagation();
@@ -791,10 +779,7 @@
         askPassword();
         return;
       }
-
-      clickTimer = setTimeout(() => {
-        clickCount = 0;
-      }, CLICK_TIMEOUT);
+      clickTimer = setTimeout(() => { clickCount = 0; }, CLICK_TIMEOUT);
     }, true);
   }
 
@@ -812,5 +797,4 @@
   window.KBAdmin = { open: askPassword, getCustomization, saveCustomization, getNotice, saveNotice, toast };
 
   console.log('%c🔐 katanbuild Admin v3', 'color:#E87722;font-weight:bold;font-size:14px;');
-  console.log('%cانقر 5 مرات على الشعار + كلمة المرور: 1992', 'color:#8A8A8A;font-size:12px;');
 })();
