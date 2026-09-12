@@ -6,6 +6,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>katanbuild — المشاريع</title>
   <meta name="description" content="نماذج من الورشات والمواقع التي استُخدمت فيها مواد katanbuild، مصنّفة حسب نوع العمل." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900;1000&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css" />
   <link rel="stylesheet" href="css/admin.css" />
   <link rel="stylesheet" href="css/cart.css" />
@@ -13,7 +16,6 @@
 
 <body>
 
-  <!-- ========== HEADER ========== -->
   <header class="site-header" id="site-header">
     <div class="container header-inner">
       <a href="index.html" class="brand">
@@ -35,6 +37,9 @@
           🛒
           <span class="count" data-count="0">0</span>
         </button>
+        <button class="icon-btn" id="navToggleBtn" title="تصغير القائمة" type="button">
+          <span id="navToggleIcon">▼</span>
+        </button>
         <button class="icon-btn" id="langToggle" title="تغيير اللغة">EN</button>
         <button class="icon-btn" id="themeToggle" title="تغيير المظهر">☀</button>
         <button class="icon-btn menu-toggle" id="menuToggle" title="القائمة">☰</button>
@@ -42,7 +47,6 @@
     </div>
   </header>
 
-  <!-- ========== MOBILE DRAWER ========== -->
   <div class="mobile-overlay" id="mobileOverlay"></div>
   <aside class="mobile-drawer" id="mobileDrawer">
     <div class="drawer-header">
@@ -67,10 +71,7 @@
     </div>
   </aside>
 
-  <!-- ========== MAIN ========== -->
   <main>
-
-    <!-- PAGE HERO -->
     <section class="hero" style="min-height:auto;padding:calc(var(--header-h) + 100px) 0 80px;">
       <div class="hero-bg">
         <div class="hero-slide active" style="background-image:url('https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=1920&q=80')"></div>
@@ -89,12 +90,10 @@
       </div>
     </section>
 
-    <!-- PROJECTS GRID -->
     <section class="section">
       <div class="container">
         <div class="project-grid stagger">
 
-          <!-- مشروع 1 -->
           <article class="project-card">
             <div class="thumb" style="background-image:url('https://images.unsplash.com/photo-1591955506264-3f5a6834570a?w=800&q=80')"></div>
             <div class="body">
@@ -110,7 +109,6 @@
             </div>
           </article>
 
-          <!-- مشروع 2 -->
           <article class="project-card">
             <div class="thumb" style="background-image:url('https://images.unsplash.com/photo-1541888946425-d81bb19240f5?w=800&q=80')"></div>
             <div class="body">
@@ -126,7 +124,6 @@
             </div>
           </article>
 
-          <!-- مشروع 3 -->
           <article class="project-card">
             <div class="thumb" style="background-image:url('https://images.unsplash.com/photo-1600585152220-90363fe7e115?w=800&q=80')"></div>
             <div class="body">
@@ -142,7 +139,6 @@
             </div>
           </article>
 
-          <!-- مشروع 4 -->
           <article class="project-card">
             <div class="thumb" style="background-image:url('https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=80')"></div>
             <div class="body">
@@ -162,7 +158,6 @@
       </div>
     </section>
 
-    <!-- STATS -->
     <section class="section section-alt">
       <div class="container">
         <div class="section-head reveal">
@@ -194,7 +189,6 @@
       </div>
     </section>
 
-    <!-- CTA -->
     <section class="cta-band">
       <div class="container row">
         <div>
@@ -210,10 +204,8 @@
         </a>
       </div>
     </section>
-
   </main>
 
-  <!-- ========== FOOTER ========== -->
   <footer class="site-footer">
     <div class="container">
       <div class="footer-grid">
@@ -260,8 +252,9 @@
     </div>
   </footer>
 
-  <!-- ========== SCRIPTS ========== -->
   <script src="js/animations.js"></script>
+  <script src="js/cursor.js"></script>
+  <script src="js/nav-toggle.js"></script>
   <script src="js/cart-drawer.js"></script>
   <script src="js/admin-panel.js"></script>
   <script src="js/site-access-local.js"></script>
