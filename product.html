@@ -5,6 +5,9 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title id="pageTitle">katanbuild — تفاصيل القسم</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900;1000&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css" />
   <link rel="stylesheet" href="css/admin.css" />
   <link rel="stylesheet" href="css/cart.css" />
@@ -12,7 +15,6 @@
 
 <body>
 
-  <!-- ========== HEADER ========== -->
   <header class="site-header" id="site-header">
     <div class="container header-inner">
       <a href="index.html" class="brand">
@@ -34,6 +36,9 @@
           🛒
           <span class="count" data-count="0">0</span>
         </button>
+        <button class="icon-btn" id="navToggleBtn" title="تصغير القائمة" type="button">
+          <span id="navToggleIcon">▼</span>
+        </button>
         <button class="icon-btn" id="langToggle" title="تغيير اللغة">EN</button>
         <button class="icon-btn" id="themeToggle" title="تغيير المظهر">☀</button>
         <button class="icon-btn menu-toggle" id="menuToggle" title="القائمة">☰</button>
@@ -41,7 +46,6 @@
     </div>
   </header>
 
-  <!-- ========== MOBILE DRAWER ========== -->
   <div class="mobile-overlay" id="mobileOverlay"></div>
   <aside class="mobile-drawer" id="mobileDrawer">
     <div class="drawer-header">
@@ -66,21 +70,16 @@
     </div>
   </aside>
 
-  <!-- ========== MAIN ========== -->
   <main>
     <section class="section" style="padding-top:calc(var(--header-h) + 80px);">
       <div class="container">
-
-        <!-- Back link -->
         <a href="products.html" class="eyebrow" style="margin-bottom:40px;display:inline-flex;">
           ← العودة إلى المنتجات
         </a>
 
         <div class="detail-layout">
-          <!-- Main content -->
           <div class="detail-main" id="detailMain"></div>
 
-          <!-- Sidebar -->
           <aside class="sidebar">
             <h4>أقسام المنتجات</h4>
             <div id="sidebarList"></div>
@@ -89,7 +88,6 @@
       </div>
     </section>
 
-    <!-- Other sections strip -->
     <section class="section-alt" style="padding:60px 0;">
       <div class="container">
         <div class="section-head reveal" style="margin-bottom:32px;max-width:none;">
@@ -100,7 +98,6 @@
     </section>
   </main>
 
-  <!-- ========== FOOTER ========== -->
   <footer class="site-footer">
     <div class="container">
       <div class="footer-grid">
@@ -147,15 +144,15 @@
     </div>
   </footer>
 
-  <!-- ========== SCRIPTS ========== -->
   <script src="js/animations.js"></script>
-  <script src="js/data.js"></script>
+  <script src="js/cursor.js"></script>
+  <script src="js/nav-toggle.js"></script>
   <script src="js/cart-drawer.js"></script>
   <script src="js/admin-panel.js"></script>
   <script src="js/site-access-local.js"></script>
   <script src="js/apply-customization.js"></script>
+  <script src="js/data.js"></script>
   <script>
-    // ============ PRODUCT DETAIL RENDERER ============
     function currentSlug() {
       const params = new URLSearchParams(location.search);
       return params.get("slug") || window.SITE.products[0].slug;
@@ -169,7 +166,6 @@
 
       document.title = `katanbuild — ${product.title[lang] || product.title.ar}`;
 
-      // Main content
       document.getElementById("detailMain").innerHTML = `
         <span class="eyebrow">${product.category[lang] || product.category.ar}</span>
         <h1 style="margin-top:24px;">${product.title[lang] || product.title.ar}</h1>
@@ -212,7 +208,6 @@
         </section>
       `;
 
-      // Sidebar
       document.getElementById("sidebarList").innerHTML = S.products
         .map((p) => `
           <a href="product.html?slug=${p.slug}" class="${p.slug === product.slug ? "active" : ""}">
@@ -222,7 +217,6 @@
         `)
         .join("");
 
-      // Strip
       document.getElementById("stripLinks").innerHTML = S.products
         .filter((p) => p.slug !== product.slug)
         .map((p) => `
@@ -245,7 +239,6 @@
         `)
         .join("");
 
-      // Re-init reveal animations for new content
       setTimeout(() => {
         document.querySelectorAll('.reveal, .stagger').forEach((el) => {
           const obs = new IntersectionObserver((entries) => {
@@ -261,10 +254,8 @@
       }, 100);
     }
 
-    // Render on load
     document.addEventListener("DOMContentLoaded", renderDetail);
 
-    // ============ LANGUAGE & THEME TOGGLES ============
     document.getElementById('langToggle')?.addEventListener('click', function () {
       const html = document.documentElement;
       const newLang = html.lang === 'ar' ? 'en' : 'ar';
