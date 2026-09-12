@@ -1,6 +1,5 @@
 /* =========================================================
-   katanbuild — Cart Drawer
-   سلة جانبية للمنتجات + إرسال الطلب إلى localStorage
+   katanbuild — Cart Drawer (FIXED)
    ========================================================= */
 
 (function () {
@@ -11,10 +10,9 @@
   const EXCHANGE_KEY = 'katan_exchange_rate';
   const PRICES_KEY = 'katan_prices';
 
-  // ---------- STATE ----------
   let cart = [];
+  let drawerBuilt = false;
 
-  // ---------- HELPERS ----------
   function loadCart() {
     try {
       const saved = JSON.parse(localStorage.getItem(CART_KEY) || '[]');
@@ -51,25 +49,15 @@
     return '$' + amount.toFixed(2);
   }
 
-  // ---------- BADGE ----------
   function updateBadge() {
     const total = cart.reduce((sum, item) => sum + item.qty, 0);
-    // Badge في الهيدر (إذا وجد)
-    const badges = document.querySelectorAll('.kb-cart-badge .count');
-    badges.forEach((b) => {
+    document.querySelectorAll('.kb-cart-badge .count').forEach((b) => {
       b.textContent = total;
       b.dataset.count = total;
       b.style.display = total > 0 ? 'flex' : 'none';
     });
-    // Badge في زر القائمة (إذا وجد)
-    const navBadge = document.querySelector('#kbCartBtn .badge');
-    if (navBadge) {
-      navBadge.textContent = total;
-      navBadge.style.display = total > 0 ? 'inline-flex' : 'none';
-    }
   }
 
-  // ---------- ADD ITEM ----------
   function addToCart(name, category, price) {
     const existing = cart.find((item) => item.name === name);
     if (existing) {
@@ -85,7 +73,6 @@
     saveCart();
     showAddToast(name);
 
-    // تأثير على الزر
     const btn = document.querySelector(`[data-cart-add="${name}"]`);
     if (btn) {
       btn.classList.add('added');
@@ -93,14 +80,12 @@
     }
   }
 
-  // ---------- REMOVE ITEM ----------
   function removeFromCart(name) {
     cart = cart.filter((item) => item.name !== name);
     saveCart();
     renderCart();
   }
 
-  // ---------- UPDATE QTY ----------
   function updateQty(name, delta) {
     const item = cart.find((i) => i.name === name);
     if (!item) return;
@@ -117,7 +102,6 @@
     renderCart();
   }
 
-  // ---------- TOAST ----------
   function showAddToast(name) {
     document.querySelector('.kb-cart-toast')?.remove();
 
@@ -139,10 +123,12 @@
     }, 2400);
   }
 
-  // ---------- DRAWER BUILD ----------
   function buildDrawer() {
-    const existing = document.getElementById('kbCartDrawer');
-    if (existing) return existing;
+    if (drawerBuilt) return;
+    if (document.getElementById('kbCartDrawer')) {
+      drawerBuilt = true;
+      return;
+    }
 
     const overlay = document.createElement('div');
     overlay.className = 'kb-cart-overlay';
@@ -162,19 +148,16 @@
 
     document.body.appendChild(overlay);
     document.body.appendChild(drawer);
+    drawerBuilt = true;
 
-    // Close handlers
     overlay.addEventListener('click', closeCart);
     drawer.querySelector('#kbCartClose').addEventListener('click', closeCart);
 
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') closeCart();
     });
-
-    return drawer;
   }
 
-  // ---------- RENDER CART ----------
   function renderCart() {
     const body = document.getElementById('kbCartBody');
     const footer = document.getElementById('kbCartFooter');
@@ -185,7 +168,6 @@
     const total = cart.reduce((sum, item) => sum + item.qty, 0);
     if (countBadge) countBadge.textContent = total;
 
-    // Body
     if (!cart.length) {
       body.innerHTML = `
         <div class="kb-cart-empty">
@@ -212,7 +194,6 @@
       </div>
     `).join('');
 
-    // Footer
     const subtotal = cart.reduce((sum, item) => sum + item.qty * item.price, 0);
     const sypTotal = subtotal * getExchangeRate();
 
@@ -256,7 +237,6 @@
       </form>
     `;
 
-    // Wire events
     body.querySelectorAll('[data-qty-plus]').forEach((btn) => {
       btn.addEventListener('click', () => updateQty(btn.dataset.qtyPlus, 1));
     });
@@ -276,7 +256,6 @@
     });
   }
 
-  // ---------- SUBMIT ORDER ----------
   function submitOrder(e) {
     e.preventDefault();
     const form = e.target;
@@ -295,7 +274,6 @@
 
     showStatus(status, 'جار الإرسال...', '');
 
-    // بناء الطلب بنفس تنسيق لوحة المحاسبة
     const total = cart.reduce((sum, item) => sum + item.qty * item.price, 0);
     const order = {
       id: Date.now(),
@@ -310,19 +288,17 @@
         price: item.price
       })),
       total: total,
-      source: 'online',      // ← يظهر في "طلبات الإنترنت" في لوحة المحاسبة
+      source: 'online',
       status: 'pending',
       paid: 0,
       location: null,
       ip: null
     };
 
-    // إضافة الموقع الجغرافي إن أمكن
     const finalize = (location, ip) => {
       order.location = location;
       order.ip = ip;
 
-      // حفظ في localStorage (نفس مفتاح لوحة المحاسبة)
       let orders = [];
       try {
         orders = JSON.parse(localStorage.getItem(ORDERS_KEY) || '[]');
@@ -330,16 +306,13 @@
       orders.push(order);
       localStorage.setItem(ORDERS_KEY, JSON.stringify(orders));
 
-      // إشعار التبويبات الأخرى
       window.dispatchEvent(new CustomEvent('kb:order:new', { detail: order }));
 
-      // نجاح
       cart = [];
       saveCart();
       showSuccess();
     };
 
-    // محاولة جلب الموقع والـ IP
     Promise.all([
       new Promise((resolve) => {
         if (!navigator.geolocation) return resolve(null);
@@ -356,7 +329,6 @@
     ]).then(([loc, ip]) => finalize(loc, ip));
   }
 
-  // ---------- SUCCESS SCREEN ----------
   function showSuccess() {
     const body = document.getElementById('kbCartBody');
     const footer = document.getElementById('kbCartFooter');
@@ -391,44 +363,50 @@
     }
   }
 
-  // ---------- OPEN / CLOSE ----------
   function openCart() {
     buildDrawer();
+    const overlay = document.getElementById('kbCartOverlay');
+    const drawer = document.getElementById('kbCartDrawer');
+    if (!overlay || !drawer) return;
+
     renderCart();
-    document.getElementById('kbCartOverlay').classList.add('open');
-    document.getElementById('kbCartDrawer').classList.add('open');
+    overlay.classList.add('open');
+    drawer.classList.add('open');
     document.body.style.overflow = 'hidden';
   }
 
   function closeCart() {
-    document.getElementById('kbCartOverlay')?.classList.remove('open');
-    document.getElementById('kbCartDrawer')?.classList.remove('open');
+    const overlay = document.getElementById('kbCartOverlay');
+    const drawer = document.getElementById('kbCartDrawer');
+    if (!overlay || !drawer) return;
+
+    overlay.classList.remove('open');
+    drawer.classList.remove('open');
     document.body.style.overflow = '';
   }
 
-  // ---------- GLOBAL EVENT DELEGATION ----------
   function initGlobalHandlers() {
-    // أزرار الإضافة إلى السلة
     document.addEventListener('click', (e) => {
       const addBtn = e.target.closest('[data-cart-add]');
       if (addBtn) {
         e.preventDefault();
+        e.stopPropagation();
         const name = addBtn.dataset.cartAdd;
         const category = addBtn.dataset.cartCategory || '';
         const price = parseFloat(addBtn.dataset.cartPrice) || getPriceFor(name);
         addToCart(name, category, price);
+        return;
       }
 
-      // زر فتح السلة
       const openBtn = e.target.closest('[data-cart-open]');
       if (openBtn) {
         e.preventDefault();
+        e.stopPropagation();
         openCart();
       }
     });
   }
 
-  // ---------- EXPOSE API ----------
   window.KBCart = {
     add: addToCart,
     remove: removeFromCart,
@@ -439,15 +417,10 @@
     clear: () => { cart = []; saveCart(); renderCart(); }
   };
 
-  // ---------- INIT ----------
   function init() {
     cart = loadCart();
     updateBadge();
     initGlobalHandlers();
-    buildDrawer();
-    renderCart();
-
-    console.log('%c🛒 katanbuild Cart Ready', 'color:#E87722;font-weight:bold;font-size:12px;');
   }
 
   if (document.readyState === 'loading') {
@@ -456,9 +429,9 @@
     init();
   }
 
-  // إعادة التحديث عند تغيير اللغة
   document.addEventListener('site:refresh', () => {
     updateBadge();
-    renderCart();
   });
+
+  console.log('%c🛒 katanbuild Cart Ready', 'color:#E87722;font-weight:bold;font-size:12px;');
 })();
