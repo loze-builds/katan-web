@@ -1151,16 +1151,20 @@ p {
    CUSTOM CURSOR (KERN Style)
    ========================================================= */
 
-@media (hover: hover) and (pointer: fine) {
-  html, body {
-    cursor: none;
-  }
-  
-  a, button, [data-cart-add], [data-cart-open], 
-  .product-card, .nav-link, .icon-btn, 
-  input, textarea, select, .kb-add-btn {
-    cursor: none;
-  }
+/* المؤشر المخصص — يُفعّل فقط عندما يكون الجافاسكربت جاهزاً */
+body.kb-cursor-ready,
+body.kb-cursor-ready a,
+body.kb-cursor-ready button,
+body.kb-cursor-ready [data-cart-add],
+body.kb-cursor-ready [data-cart-open],
+body.kb-cursor-ready .product-card,
+body.kb-cursor-ready .nav-link,
+body.kb-cursor-ready .icon-btn,
+body.kb-cursor-ready input,
+body.kb-cursor-ready textarea,
+body.kb-cursor-ready select,
+body.kb-cursor-ready .kb-add-btn {
+  cursor: none;
 }
 
 .kb-cursor {
