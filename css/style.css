@@ -204,7 +204,7 @@ p {
   margin-top: 24px;
 }
 
-/* ---------- HEADER (Horizontal Desktop) ---------- */
+/* ---------- HEADER ---------- */
 .site-header {
   position: fixed;
   top: 0;
@@ -233,7 +233,6 @@ p {
   gap: 24px;
 }
 
-/* Brand */
 .brand {
   display: inline-flex;
   align-items: center;
@@ -254,7 +253,6 @@ p {
   font-family: var(--font-sans);
 }
 
-/* Desktop Nav (horizontal) */
 .main-nav {
   display: flex;
   align-items: center;
@@ -298,7 +296,6 @@ p {
   to { transform: scaleX(1); }
 }
 
-/* Header actions */
 .header-actions {
   display: flex;
   align-items: center;
@@ -328,12 +325,11 @@ p {
   transform: translateY(-2px);
 }
 
-/* Mobile Menu Toggle */
 .menu-toggle {
   display: none;
 }
 
-/* ---------- MOBILE SIDEBAR DRAWER ---------- */
+/* ---------- MOBILE DRAWER ---------- */
 .mobile-overlay {
   position: fixed;
   inset: 0;
@@ -508,7 +504,7 @@ p {
   transform: translateX(-4px);
 }
 
-/* ---------- HERO (KERN Style) ---------- */
+/* ---------- HERO ---------- */
 .hero {
   position: relative;
   min-height: 100vh;
@@ -615,7 +611,6 @@ p {
   letter-spacing: 0.02em;
 }
 
-/* Scroll indicator */
 .hero-scroll {
   position: absolute;
   bottom: 40px;
@@ -991,7 +986,6 @@ p {
   font-weight: 500;
 }
 
-/* Sidebar */
 .sidebar {
   position: sticky;
   top: calc(var(--header-h) + 24px);
@@ -1037,7 +1031,6 @@ p {
   border-inline-start: 3px solid var(--accent);
 }
 
-/* Section products */
 .section-products {
   margin-top: 80px;
 }
@@ -1046,7 +1039,7 @@ p {
   margin-bottom: 32px;
 }
 
-/* ---------- ANIMATIONS (Reveal on scroll) ---------- */
+/* ---------- ANIMATIONS ---------- */
 .reveal {
   opacity: 0;
   transform: translateY(40px);
@@ -1065,7 +1058,6 @@ p {
 .reveal-delay-3 { transition-delay: 0.3s; }
 .reveal-delay-4 { transition-delay: 0.4s; }
 
-/* Stagger children */
 .stagger > * {
   opacity: 0;
   transform: translateY(30px);
@@ -1085,7 +1077,6 @@ p {
 .stagger.in-view > *:nth-child(5) { transition-delay: 0.4s; }
 .stagger.in-view > *:nth-child(6) { transition-delay: 0.5s; }
 
-/* Prefers reduced motion */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -1153,5 +1144,101 @@ p {
   .cta-band .row {
     flex-direction: column;
     align-items: flex-start;
+  }
+}
+
+/* =========================================================
+   CUSTOM CURSOR (KERN Style)
+   ========================================================= */
+
+@media (hover: hover) and (pointer: fine) {
+  html, body {
+    cursor: none;
+  }
+  
+  a, button, [data-cart-add], [data-cart-open], 
+  .product-card, .nav-link, .icon-btn, 
+  input, textarea, select, .kb-add-btn {
+    cursor: none;
+  }
+}
+
+.kb-cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 32px;
+  height: 32px;
+  border: 1.5px solid var(--accent, #E87722);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 99999;
+  transform: translate(-50%, -50%);
+  transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+              height 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+              background 0.3s ease,
+              border-color 0.3s ease;
+  mix-blend-mode: difference;
+  will-change: transform;
+}
+
+.kb-cursor-dot {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 5px;
+  height: 5px;
+  background: var(--accent, #E87722);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 100000;
+  transform: translate(-50%, -50%);
+  will-change: transform;
+}
+
+.kb-cursor.hover {
+  width: 64px;
+  height: 64px;
+  background: rgba(232, 119, 34, 0.15);
+  border-color: var(--accent, #E87722);
+}
+
+.kb-cursor.click {
+  width: 24px;
+  height: 24px;
+}
+
+.kb-cursor.text {
+  width: 4px;
+  height: 32px;
+  border-radius: 2px;
+  background: var(--accent, #E87722);
+  border-color: transparent;
+}
+
+@media (hover: none), (pointer: coarse) {
+  .kb-cursor,
+  .kb-cursor-dot {
+    display: none !important;
+  }
+}
+
+.no-js .reveal,
+.no-js .stagger > * {
+  opacity: 1 !important;
+  transform: none !important;
+}
+
+.site-header {
+  min-height: var(--header-h, 80px);
+}
+
+.hero-slide:first-child {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
   }
 }
