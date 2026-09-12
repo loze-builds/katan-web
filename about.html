@@ -6,6 +6,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>katanbuild — من نحن</title>
   <meta name="description" content="شركة سورية متخصصة بمواد البناء الكيميائية: الطينة، العزل، لواصق السيراميك." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900;1000&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css" />
   <link rel="stylesheet" href="css/admin.css" />
   <link rel="stylesheet" href="css/cart.css" />
@@ -13,7 +16,6 @@
 
 <body>
 
-  <!-- ========== HEADER ========== -->
   <header class="site-header" id="site-header">
     <div class="container header-inner">
       <a href="index.html" class="brand">
@@ -35,6 +37,9 @@
           🛒
           <span class="count" data-count="0">0</span>
         </button>
+        <button class="icon-btn" id="navToggleBtn" title="تصغير القائمة" type="button">
+          <span id="navToggleIcon">▼</span>
+        </button>
         <button class="icon-btn" id="langToggle" title="تغيير اللغة">EN</button>
         <button class="icon-btn" id="themeToggle" title="تغيير المظهر">☀</button>
         <button class="icon-btn menu-toggle" id="menuToggle" title="القائمة">☰</button>
@@ -42,7 +47,6 @@
     </div>
   </header>
 
-  <!-- ========== MOBILE DRAWER ========== -->
   <div class="mobile-overlay" id="mobileOverlay"></div>
   <aside class="mobile-drawer" id="mobileDrawer">
     <div class="drawer-header">
@@ -67,10 +71,7 @@
     </div>
   </aside>
 
-  <!-- ========== MAIN ========== -->
   <main>
-
-    <!-- PAGE HERO -->
     <section class="hero" style="min-height:auto;padding:calc(var(--header-h) + 100px) 0 80px;">
       <div class="hero-bg">
         <div class="hero-slide active" style="background-image:url('https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=1920&q=80')"></div>
@@ -89,7 +90,6 @@
       </div>
     </section>
 
-    <!-- PILLARS -->
     <section class="section section-alt">
       <div class="container">
         <div class="section-head reveal">
@@ -129,7 +129,6 @@
       </div>
     </section>
 
-    <!-- VALUES -->
     <section class="section">
       <div class="container">
         <div class="section-head reveal">
@@ -161,7 +160,6 @@
       </div>
     </section>
 
-    <!-- MILESTONES -->
     <section class="section section-alt">
       <div class="container">
         <div class="section-head reveal">
@@ -198,7 +196,6 @@
       </div>
     </section>
 
-    <!-- CONTACT -->
     <section class="cta-band" id="contact">
       <div class="container">
         <div class="row" style="display:grid;grid-template-columns:1.2fr 1fr;gap:60px;align-items:start;">
@@ -232,10 +229,8 @@
         </div>
       </div>
     </section>
-
   </main>
 
-  <!-- ========== FOOTER ========== -->
   <footer class="site-footer">
     <div class="container">
       <div class="footer-grid">
@@ -282,8 +277,9 @@
     </div>
   </footer>
 
-  <!-- ========== SCRIPTS ========== -->
   <script src="js/animations.js"></script>
+  <script src="js/cursor.js"></script>
+  <script src="js/nav-toggle.js"></script>
   <script src="js/cart-drawer.js"></script>
   <script src="js/admin-panel.js"></script>
   <script src="js/site-access-local.js"></script>
