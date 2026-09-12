@@ -16,7 +16,6 @@
   let clickTimer = null;
   let currentPanel = 'content';
 
-  // ---------- GET / SAVE ----------
   function getCustomization() {
     try {
       const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null');
@@ -59,7 +58,6 @@
     window.dispatchEvent(new CustomEvent('kb:customization', { detail: data }));
   }
 
-  // ---------- NOTICE ----------
   function getNotice() {
     try { return JSON.parse(localStorage.getItem(NOTICE_KEY) || 'null'); }
     catch (e) { return null; }
@@ -70,24 +68,20 @@
     window.dispatchEvent(new CustomEvent('kb:notice', { detail: data }));
   }
 
-  // ---------- TOAST ----------
   function toast(message, type = 'info') {
     const existing = document.querySelector('.kb-toast');
     if (existing) existing.remove();
-
     const el = document.createElement('div');
     el.className = `kb-toast ${type}`;
     el.textContent = message;
     document.body.appendChild(el);
     requestAnimationFrame(() => el.classList.add('show'));
-
     setTimeout(() => {
       el.classList.remove('show');
       setTimeout(() => el.remove(), 400);
     }, 3000);
   }
 
-  // ---------- PASSWORD PROMPT ----------
   function askPassword() {
     const prompt = document.createElement('div');
     prompt.className = 'kb-password-prompt';
@@ -132,7 +126,6 @@
     prompt.addEventListener('click', (e) => { if (e.target === prompt) prompt.remove(); });
   }
 
-  // ---------- ADMIN PANEL ----------
   function openAdminPanel() {
     const existing = document.querySelector('.kb-admin-overlay');
     if (existing) existing.remove();
@@ -608,21 +601,16 @@
   }
 
   // =========================================================
-  // LOGO CLICK HANDLER — يستهدف #brandTrigger أو .brand في الهيدر فقط
+  // LOGO CLICK HANDLER — يستهدف #brandTrigger فقط
   // =========================================================
   function getBrandElement() {
-    // أولوية 1: ID محدد
     const byId = document.getElementById('brandTrigger');
     if (byId) return byId;
-
-    // أولوية 2: .brand داخل .site-header فقط (وليس في الـ Footer)
     const header = document.getElementById('site-header');
     if (header) {
       const inHeader = header.querySelector('.brand');
       if (inHeader) return inHeader;
     }
-
-    // أولوية 3: أول .brand في الصفحة (احتياطي)
     return document.querySelector('.brand');
   }
 
@@ -650,12 +638,10 @@
       clickTimer = setTimeout(() => {
         clickCount = 0;
       }, CLICK_TIMEOUT);
-    }, true); // ← true = capture phase (يمنع propagation من عناصر أخرى)
+    }, true);
   }
 
-  function init() {
-    initLogoTrigger();
-  }
+  function init() { initLogoTrigger(); }
 
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', init);
@@ -663,18 +649,10 @@
     init();
   }
 
-  // Re-attach when DOM changes
   const observer = new MutationObserver(() => { initLogoTrigger(); });
   observer.observe(document.body, { childList: true, subtree: false });
 
-  window.KBAdmin = {
-    open: askPassword,
-    getCustomization,
-    saveCustomization,
-    getNotice,
-    saveNotice,
-    toast
-  };
+  window.KBAdmin = { open: askPassword, getCustomization, saveCustomization, getNotice, saveNotice, toast };
 
   console.log('%c🔐 katanbuild Admin', 'color:#E87722;font-weight:bold;font-size:14px;');
   console.log('%cانقر 5 مرات على الشعار + كلمة المرور: 1992', 'color:#8A8A8A;font-size:12px;');
