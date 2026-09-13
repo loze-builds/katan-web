@@ -306,10 +306,6 @@
     };
 
     const finalize = (location, ip) => {
-      if (!location) {
-        showStatus(status, 'تعذر تحديد موقعك. فعّل الموقع من المتصفح ثم حاول مجدداً.', 'error');
-        return;
-      }
       order.location = location;
       order.ip = ip;
 
@@ -337,7 +333,7 @@
         }
         cart = [];
         saveCart();
-        showSuccess();
+        showSuccess(result.persisted);
       }).catch((error) => {
         console.error('تعذر حفظ الطلب في قاعدة البيانات', error);
         showStatus(status, 'تعذر حفظ الطلب. حاول مرة أخرى.', 'error');
@@ -360,7 +356,7 @@
     ]).then(([loc, ip]) => finalize(loc, ip));
   }
 
-  function showSuccess() {
+  function showSuccess(persisted) {
     const body = document.getElementById('kbCartBody');
     const footer = document.getElementById('kbCartFooter');
     const countBadge = document.querySelector('.kb-cart-header .count-badge');
@@ -371,6 +367,7 @@
         <div class="check">✓</div>
         <h3>تم إرسال الطلبية</h3>
         <p>سيتم التواصل معك قريباً عبر الهاتف لتأكيد الطلب.</p>
+        ${persisted ? '' : '<small>تعذر الاتصال بقاعدة البيانات، فتم حفظ نسخة على هذا الجهاز مؤقتاً.</small>'}
       </div>
     `;
     footer.innerHTML = `

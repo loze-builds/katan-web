@@ -1,0 +1,128 @@
+.qr-page {
+  min-height: calc(100vh - var(--header-h));
+}
+
+.qr-hero {
+  padding: 8rem 0 4rem;
+  background:
+    radial-gradient(circle at 15% 25%, rgba(232, 119, 34, .22), transparent 35%),
+    linear-gradient(135deg, var(--surface), var(--bg));
+  border-bottom: 1px solid var(--line);
+}
+
+.qr-hero h1 {
+  margin: .35rem 0 .75rem;
+  font-size: clamp(2.4rem, 6vw, 5rem);
+  line-height: 1.15;
+}
+
+.qr-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 2rem;
+}
+
+.qr-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.25rem;
+  padding: clamp(1.5rem, 4vw, 3rem);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  text-align: center;
+  box-shadow: 0 1.5rem 4rem rgba(0, 0, 0, .18);
+}
+
+.qr-card-heading {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  width: 100%;
+  text-align: right;
+}
+
+.qr-index {
+  color: var(--accent);
+  font-family: var(--font-mono);
+  font-size: 1.15rem;
+  font-weight: 800;
+}
+
+.qr-card h2 {
+  margin-bottom: .25rem;
+  font-size: 1.55rem;
+}
+
+.qr-card p {
+  color: var(--text-muted);
+  font-size: .95rem;
+}
+
+.qr-code {
+  display: grid;
+  width: 264px;
+  height: 264px;
+  padding: 12px;
+  place-items: center;
+  background: #fff;
+  border: 8px solid #fff;
+}
+
+.qr-code img,
+.qr-code canvas {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+.qr-url {
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  color: var(--text-muted);
+  direction: ltr;
+  font-size: .78rem;
+}
+
+.qr-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: .75rem;
+}
+
+@media (max-width: 760px) {
+  .qr-hero {
+    padding-top: 6rem;
+  }
+
+  .qr-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media print {
+  .site-header,
+  .qr-hero,
+  .qr-actions,
+  .site-footer {
+    display: none !important;
+  }
+
+  .qr-page,
+  .section {
+    min-height: 0;
+    padding: 0;
+  }
+
+  .qr-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+
+  .qr-card {
+    border: 1px solid #111;
+    box-shadow: none;
+    break-inside: avoid;
+  }
+}

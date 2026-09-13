@@ -145,6 +145,7 @@
 
   <script src="js/data.js"></script>
   <script src="js/supabase-config.js"></script>
+  <script src="js/google-sheets-config.js"></script>
   <script src="js/backend.js"></script>
   <script src="js/opening.js"></script>
   <script src="js/animations.js"></script>
@@ -175,7 +176,11 @@
       document.getElementById("detailMain").innerHTML = `
         <span class="eyebrow">${product.category[lang] || product.category.ar}</span>
         <h1 style="margin-top:24px;">${product.title[lang] || product.title.ar}</h1>
-        <div class="thumb-lg" style="background-image:url('${S.media.productImages[S.products.indexOf(product)]}')"></div>
+        <div class="thumb-lg product-thumb">
+          <img src="${product.items[0]?.image || S.media.productImages[S.products.indexOf(product)] || S.media.background}"
+            alt="${product.title[lang] || product.title.ar}" referrerpolicy="no-referrer"
+            onerror="this.onerror=null;this.src='${S.media.background}';">
+        </div>
         <p class="lede">${product.short[lang] || product.short.ar}</p>
         <p style="margin-top:24px;color:var(--text-muted);line-height:1.7;">${product.details[lang] || product.details.ar}</p>
 
@@ -197,7 +202,10 @@
           <div class="product-grid stagger">
             ${product.items.map((item) => `
               <article class="product-card">
-                <div class="thumb" style="background-image:url('${S.media.productImages[item.imageIndex]}')">
+                <div class="thumb product-thumb">
+                  <img src="${item.image || S.media.productImages[item.imageIndex || 0] || S.media.background}"
+                    alt="${item.title[lang] || item.title.ar}" loading="lazy" referrerpolicy="no-referrer"
+                    onerror="this.onerror=null;this.src='${S.media.background}';">
                   <span class="cat">${product.category[lang] || product.category.ar}</span>
                 </div>
                 <div class="body">
@@ -228,7 +236,10 @@
         .map((p) => `
           <div class="product-card">
             <a href="product.html?slug=${p.slug}" style="display:contents;color:inherit;text-decoration:none;">
-              <div class="thumb" style="background-image:url('${S.media.productImages[S.products.indexOf(p)]}')">
+              <div class="thumb product-thumb">
+                <img src="${p.items[0]?.image || S.media.productImages[S.products.indexOf(p)] || S.media.background}"
+                  alt="${p.title[lang] || p.title.ar}" loading="lazy" referrerpolicy="no-referrer"
+                  onerror="this.onerror=null;this.src='${S.media.background}';">
                 <span class="cat">${p.category[lang] || p.category.ar}</span>
               </div>
               <div class="body">

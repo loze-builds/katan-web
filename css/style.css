@@ -715,6 +715,29 @@ p {
   position: relative;
   overflow: hidden;
   transition: transform var(--dur-slow) var(--ease-out);
+  border-radius: 0;
+  filter: saturate(.88) contrast(1.04);
+}
+
+.product-thumb img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  object-position: center;
+}
+
+.product-thumb img[src=""] {
+  display: none;
+}
+
+.product-card .thumb::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(145deg, rgba(0,0,0,.08), transparent 52%, rgba(232,119,34,.14));
+  mix-blend-mode: multiply;
 }
 
 .product-card:hover .thumb {
@@ -1013,8 +1036,13 @@ p {
   aspect-ratio: 16/9;
   background-size: cover;
   background-position: center;
-  border-radius: var(--radius-lg);
+  border-radius: 0;
   border: 1px solid var(--line);
+  filter: saturate(.88) contrast(1.04);
+}
+
+.detail-main .thumb-lg.product-thumb {
+  overflow: hidden;
 }
 
 .spec-list {

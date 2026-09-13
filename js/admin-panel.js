@@ -41,7 +41,7 @@
         saved.team = saved.team || { eyebrow: 'فريق العمل', title: 'أشخاص يصنعون الفرق.', description: 'فريق يجمع الخبرة الميدانية، التطوير، والتصميم.', members: [] };
         saved.opening = saved.opening || {
           enabled: true,
-          duration: 4000,
+          duration: 8000,
           image: 'https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=1920&q=85',
           kicker: 'katanbuild presents',
           title: 'كيمياء البناء تصنع الفرق.',
@@ -106,9 +106,9 @@
         title: "أشخاص يصنعون الفرق.",
         description: "فريق يجمع الخبرة الميدانية، التطوير، والتصميم ليبقى كل مشروع على المسار الصحيح.",
         members: [
-          { name: "اسم المبرمج", role: "المبرمج والمشرف التقني", bio: "أكتب هنا نبذة قصيرة عن المبرمج ودوره في تطوير المنصة.", image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=800&q=85", link: "" },
-          { name: "اسم عضو الفريق", role: "إدارة المشاريع", bio: "نبذة تعريفية مختصرة عن عضو الفريق ومسؤولياته.", image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=800&q=85", link: "" },
-          { name: "اسم عضو الفريق", role: "الدعم الفني", bio: "نبذة تعريفية مختصرة عن عضو الفريق ومسؤولياته.", image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&q=85", link: "" }
+          { name: "محمد الحسين", role: "المبرمج والمشرف التقني", bio: "أضف صورة ونبذة من لوحة الإدارة.", image: "", link: "" },
+          { name: "اسم عضو الفريق", role: "إدارة المشاريع", bio: "أضف صورة ونبذة من لوحة الإدارة.", image: "", link: "" },
+          { name: "اسم عضو الفريق", role: "الدعم الفني", bio: "أضف صورة ونبذة من لوحة الإدارة.", image: "", link: "" }
         ]
       },
       opening: {

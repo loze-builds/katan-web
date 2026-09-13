@@ -1,4 +1,10 @@
 /* katanbuild — content & translation data */
+const productItem = (name, image, slugPrefix) => ({
+  slug: `${slugPrefix || 'material'}-${name.replace(/\s+/g, '-').replace(/[^\u0600-\u06ff\w-]/g, '')}`,
+  title: { ar: name, en: name },
+  image
+});
+
 window.SITE = {
   brand: "katanbuild",
   logo: "assets/katanbuild-logo.png",
@@ -10,10 +16,18 @@ window.SITE = {
     ],
     background: "https://images.unsplash.com/photo-1541888946425-d81bb19240f5?w=1920&q=80",
     productImages: [
-      "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=1200&q=80",
-      "https://images.unsplash.com/photo-1591955506264-3f5a6834570a?w=1200&q=80",
-      "https://images.unsplash.com/photo-1600585152220-90363fe7e115?w=1200&q=80",
-      "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1200&q=80"
+      "https://i.ibb.co/k6P984Kj/1.png",
+      "https://i.ibb.co/mC8WrdpT/image.png",
+      "https://i.ibb.co/WNkdYrX0/Whats-App-Image-2026-08-02-at-1-22-48-PM-1.jpg",
+      "https://i.ibb.co/tM8PD5Zw/image.jpg",
+      "https://i.ibb.co/zhBVtmSV/image.png",
+      "https://i.ibb.co/DH4pxrKk/image.png",
+      "https://i.ibb.co/q3Dj4LT7/Whats-App-Image-2026-08-02-at-1-22-51-PM.jpg",
+      "https://i.ibb.co/ynhz7BSN/Whats-App-Image-2026-08-02-at-1-22-45-PM-1.jpg-3.jpg",
+      "https://i.ibb.co/hRf8F8f9/Whats-App-Image-2026-08-02-at-1-22-49-PM.jpg",
+      "https://i.ibb.co/MkXSdL7n/Whats-App-Image-2026-08-02-at-1-22-52-PM-3.jpg",
+      "https://i.ibb.co/FLLCTb61/Whats-App-Image-2026-08-02-at-1-22-48-PM-2.jpg",
+      "https://i.ibb.co/JRW6pYmv/image.png"
     ],
     projectImages: [
       "https://images.unsplash.com/photo-1591955506264-3f5a6834570a?w=1200&q=80",
@@ -30,8 +44,8 @@ window.SITE = {
   products: [
     {
       slug: "render-plaster-materials",
-      category: { ar: "مواد الطينة", en: "Render Materials" },
-      title: { ar: "طينة الديكور", en: "Render & Plaster" },
+      category: { ar: "لاصق ديكور", en: "Decorative Adhesives" },
+      title: { ar: "لاصق ديكور", en: "Decorative Adhesives" },
       short: {
         ar: "قسم مخصص لخلطات الطينة الجاهزة ومواد التسوية التي تمنح الجدران سطحاً قوياً ومتجانساً قبل التشطيب النهائي.",
         en: "Ready-mix render, plaster and leveling materials that create strong, uniform surfaces before final finishing."
@@ -47,15 +61,11 @@ window.SITE = {
         { ar: "التغليف", en: "Packaging", val: { ar: "أكياس ٢٥ كغ", en: "25 kg bags" } }
       ],
       items: [
-        "طينة إسمنتية داخلية",
-        "طينة خارجية مقاومة للعوامل",
-        "مادة تسوية الجدران",
-        "طينة ديكورية ناعمة"
-      ].map((name, index) => ({
-        slug: `render-${index + 1}`,
-        title: { ar: name, en: `Render material ${index + 1}` },
-        imageIndex: 0
-      }))
+        productItem("سيتي فيكس", "https://i.ibb.co/WNkdYrX0/Whats-App-Image-2026-08-02-at-1-22-48-PM-1.jpg", "decor"),
+        productItem("كارو فيكس", "https://i.ibb.co/k6P984Kj/1.png", "decor"),
+        productItem("كلايتور", "https://i.ibb.co/zhBVtmSV/image.png", "decor"),
+        productItem("لازورد", "https://i.ibb.co/DH4pxrKk/image.png", "decor")
+      ]
     },
     {
       slug: "waterproofing-materials",
@@ -76,15 +86,10 @@ window.SITE = {
         { ar: "التغليف", en: "Packaging", val: { ar: "دلاء ١٨ / ٥ كغ", en: "18 / 5 kg pails" } }
       ],
       items: [
-        "عزل أسطح مرن",
-        "عزل حمامات ومطابخ",
-        "عزل خزانات المياه",
-        "معالجة الرطوبة والشقوق"
-      ].map((name, index) => ({
-        slug: `waterproofing-${index + 1}`,
-        title: { ar: name, en: `Waterproofing material ${index + 1}` },
-        imageIndex: 1
-      }))
+        productItem("الترا بوند عازل حجر شفاف", "https://i.ibb.co/tpW85TQ7/image.png", "insulation"),
+        productItem("الترا بوند عازل بلاستيكي", "https://i.ibb.co/xw3DqkY/image.png", "insulation"),
+        productItem("عازل مزكين", "https://i.ibb.co/ycNqfQQF/image.png", "insulation")
+      ]
     },
     {
       slug: "ceramic-adhesive-grout",
@@ -105,22 +110,29 @@ window.SITE = {
         { ar: "التغليف", en: "Packaging", val: { ar: "أكياس ٢٥ كغ", en: "25 kg bags" } }
       ],
       items: [
-        "لاصق إسمنتي C1",
-        "لاصق إسمنتي C1T",
-        "لاصق إسمنتي C1TE",
-        "لاصق محسن C2",
-        "لاصق محسن C2T",
-        "لاصق محسن C2TE",
-        "لاصق مرن C2TES1",
-        "لاصق فائق المرونة C2TES2",
-        "روبة مطاطية",
-        "روبة إسمنتية مع السيليكون",
-        "برايمر تجهيز الأسطح"
-      ].map((name, index) => ({
-        slug: `ceramic-${index + 1}`,
-        title: { ar: name, en: `Ceramic system ${index + 1}` },
-        imageIndex: 2
-      }))
+        productItem("سيتي فيكس", "https://i.ibb.co/WNkdYrX0/Whats-App-Image-2026-08-02-at-1-22-48-PM-1.jpg", "ceramic"),
+        productItem("كرافت", "https://i.ibb.co/q3Dj4LT7/Whats-App-Image-2026-08-02-at-1-22-51-PM-3.jpg", "ceramic"),
+        productItem("ليث فيكس", "https://i.ibb.co/ynhz7BSN/Whats-App-Image-2026-08-02-at-1-22-45-PM-1.jpg", "ceramic"),
+        productItem("برايمير", "https://i.ibb.co/hRf8F8f9/Whats-App-Image-2026-08-02-at-1-22-49-PM.jpg", "ceramic"),
+        productItem("موزيك", "https://i.ibb.co/MkXSdL7n/Whats-App-Image-2026-08-02-at-1-22-52-PM-3.jpg", "ceramic"),
+        productItem("بروسيل الأخضر", "https://i.ibb.co/4wXPg9R5/Whats-App-Image-2026-08-02-at-1-22-49-PM-6.jpg", "ceramic"),
+        productItem("الترا غريب", "https://i.ibb.co/FLLCTb61/Whats-App-Image-2026-08-02-at-1-22-48-PM-2.jpg", "ceramic"),
+        productItem("الترا بوند الأخضر", "https://i.ibb.co/JRW6pYmv/image.png", "ceramic"),
+        productItem("توب فيكس لاصق سيراميك", "https://i.ibb.co/27ft38r6/Whats-App-Image-2026-08-02-at-1-22-50-PM-2.jpg", "ceramic"),
+        productItem("الشربجي لاصق سيراميك", "https://i.ibb.co/ccy8XFXy/shurbaji.png", "ceramic"),
+        productItem("روكي فيكس لاصق سيراميك", "https://i.ibb.co/CsbDvRsb/rocky.png", "ceramic"),
+        productItem("الرائد لاصق سيراميك", "https://i.ibb.co/BVXVzBmZ/raed.png", "ceramic"),
+        productItem("الرائد ذهبي لاصق سيراميك", "https://i.ibb.co/Cs08vYMV/raed-o.png", "ceramic"),
+        productItem("سولد فيكس روبة وطينة", "https://i.ibb.co/sv947RvN/sulid-mix.png", "ceramic"),
+        productItem("سولد طينة", "https://i.ibb.co/G4X1YytM/Paper-Bag-Mockup-Solid.png", "ceramic"),
+        productItem("أر بي", "https://i.ibb.co/DPCK57x1/r2b.png", "ceramic"),
+        productItem("القدس", "https://i.ibb.co/GQTn6NG1/qods.png", "ceramic"),
+        productItem("اونيرلو", "https://i.ibb.co/21g55pWv/onerlo.png", "ceramic"),
+        productItem("كويك فيكس لاصق سيراميك", "https://i.ibb.co/DDFN8TJF/image.png", "ceramic"),
+        productItem("الأقرع فيكس", "https://i.ibb.co/HDYtzRm5/image.png", "ceramic"),
+        productItem("الأقرع فيكس الأصفر", "https://i.ibb.co/Z6kqm8wt/image.png", "ceramic"),
+        productItem("الأقرع فيكس الأخضر", "https://i.ibb.co/d4YVhwZh/image.png", "ceramic")
+      ]
     },
     {
       slug: "thermal-insulation-materials",
@@ -148,8 +160,76 @@ window.SITE = {
       ].map((name, index) => ({
         slug: `thermal-${index + 1}`,
         title: { ar: name, en: `Thermal insulation material ${index + 1}` },
-        imageIndex: 3
+        image: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1200&q=80"
       }))
+    },
+    {
+      slug: "exterior-adhesives",
+      category: { ar: "لواصق خارجية", en: "Exterior Adhesives" },
+      title: { ar: "لاصق خارجي", en: "Exterior Adhesives" },
+      short: { ar: "لواصق ومواد تشطيب مخصصة للواجهات والأعمال الخارجية.", en: "Adhesives and finishing materials for facades and exterior works." },
+      details: { ar: "منتجات مناسبة للواجهات والأعمال المعرضة للعوامل الجوية.", en: "Products suitable for facades and weather-exposed applications." },
+      specs: [],
+      items: [
+        productItem("فلاكسو", "", "exterior"),
+        productItem("سينا فيكس", "https://i.ibb.co/vCcfQsPK/cera.jpg", "exterior"),
+        productItem("مانستر فيكس", "https://i.ibb.co/BmrZjjM/fixo100.jpg", "exterior"),
+        productItem("نجار", "https://i.ibb.co/4r8nz5J/njarnew.jpg", "exterior"),
+        productItem("الترا بوند الأحمر", "https://i.ibb.co/wNxgkS1g/image.jpg", "exterior"),
+        productItem("مارفيل", "https://i.ibb.co/YGXw03L/Whats-App-Image-2026-08-02-at-1-22-52-PM-6.jpg", "exterior"),
+        productItem("الترا بوند الذهبي", "https://i.ibb.co/39HgRdhD/image.jpg", "exterior"),
+        productItem("الترا بوند البرتقالي", "https://i.ibb.co/XrZFKs5W/image.jpg", "exterior"),
+        productItem("الباسل", "https://i.ibb.co/ym6VHp8x/njar.jpg", "exterior"),
+        productItem("الماسات فيكس", "https://i.ibb.co/HTk1jsNx/download.jpg", "exterior"),
+        productItem("أوني سبام", "https://i.ibb.co/Q3DBpnNX/span.png", "exterior"),
+        productItem("كلوبال فيكس", "https://i.ibb.co/Rkd2Mpkj/global.png", "exterior"),
+        productItem("فور ريفر فيكس", "https://i.ibb.co/1GZK0JGn/forever.png", "exterior"),
+        productItem("إيفريست", "https://i.ibb.co/GfkgJs03/everest.png", "exterior"),
+        productItem("أكوا بلس فيكس", "https://i.ibb.co/VcgQvT9k/aqua.png", "exterior"),
+        productItem("ألترا إكسترا", "https://i.ibb.co/DHdDTwtX/image.png", "exterior"),
+        productItem("عباس", "https://i.ibb.co/YBYF5nfm/image.png", "exterior")
+      ]
+    },
+    {
+      slug: "pool-adhesives",
+      category: { ar: "لاصق مسابح", en: "Pool Adhesives" },
+      title: { ar: "لاصق مسابح", en: "Pool Adhesives" },
+      short: { ar: "مواد لصق وعزل مخصصة للمسابح والمناطق المائية.", en: "Adhesive and waterproofing materials for pools and wet areas." },
+      details: { ar: "أنظمة مناسبة لتثبيت ومعالجة أسطح المسابح.", en: "Systems for bonding and treating pool surfaces." },
+      specs: [],
+      items: [
+        productItem("آن الأزرق", "https://i.ibb.co/mC8WrdpT/image.png", "pool"),
+        productItem("أوني فيكس", "https://i.ibb.co/HDYRR5vj/image.png", "pool"),
+        productItem("بروسيل الأزرق", "https://i.ibb.co/Ps6Djk1G/image.png", "pool"),
+        productItem("عباس", "https://i.ibb.co/YBYF5nfm/image.png", "pool"),
+        productItem("الترا بوند الأزرق", "https://i.ibb.co/fY6H9yrb/Whats-App-Image-2026-08-11-at-12-21-52-PM.jpg", "pool"),
+        productItem("الترا إكسترا", "https://i.ibb.co/sp1Rh8sM/image.png", "pool"),
+        productItem("أكوا فيكس", "https://i.ibb.co/GQvsVR32/image.png", "pool"),
+        productItem("الباسل", "https://i.ibb.co/93zmNBKD/image.png", "pool"),
+        productItem("بروسيل الأحمر", "https://i.ibb.co/hJDtVZWQ/mockup.png", "pool")
+      ]
+    },
+    {
+      slug: "paints-and-colors",
+      category: { ar: "الأصبغة والألوان", en: "Paints & Colors" },
+      title: { ar: "الأصبغة والألوان", en: "Paints & Colors" },
+      short: { ar: "ألوان وأصبغة التشطيبات النهائية للمشاريع.", en: "Colors and pigments for final project finishes." },
+      details: { ar: "قسم مخصص للأصبغة والألوان، ويمكن تحديث المواد من لوحة الإدارة.", en: "A dedicated section for pigments and colors, editable from the admin panel." },
+      specs: [],
+      items: [
+        productItem("الأصبغة والألوان", "https://i.ibb.co/Xfk7vCX7/image.jpg", "paint")
+      ]
+    },
+    {
+      slug: "stamped-concrete",
+      category: { ar: "الباطون المطبع", en: "Stamped Concrete" },
+      title: { ar: "الباطون المطبع", en: "Stamped Concrete" },
+      short: { ar: "حلول تشطيب للباطون المطبع والأرضيات الخارجية.", en: "Finishing solutions for stamped concrete and exterior floors." },
+      details: { ar: "مواد تشطيب تمنح الأسطح مظهراً متجانساً ومقاومة مناسبة للاستخدام الخارجي.", en: "Finishing materials for consistent, durable exterior surfaces." },
+      specs: [],
+      items: [
+        productItem("الباطون المطبع", "https://i.ibb.co/gZKm6B7S/image.jpg", "stamped")
+      ]
     }
   ],
   productTools: {

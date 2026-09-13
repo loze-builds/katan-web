@@ -2,7 +2,11 @@
   'use strict';
 
   const config = window.KB_SUPABASE_CONFIG || {};
-  const loaded = config.url && config.anonKey;
+  const sheets = window.KB_GOOGLE_SHEETS_CONFIG || {};
+  // Keep the storefront usable without a remote database. Orders and settings
+  // are handled by the existing localStorage adapters when remote mode is off.
+  const remoteEnabled = false;
+  const loaded = remoteEnabled && config.url && config.anonKey;
   let clientPromise;
 
   function getClient() {
@@ -20,22 +24,50 @@
   }
 
   async function insertOrder(order) {
+    if (sheets.endpoint) {
+      try {
+        const response = await fetch(sheets.endpoint, {
+          method: 'POST',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify({ action: 'createOrder', token: sheets.token || '', order })
+        });
+        if (!response.ok) throw new Error(`Google Sheets API returned ${response.status}`);
+        const result = await response.json();
+        if (!result.ok) throw new Error(result.error || 'تعذر حفظ الطلب في Google Sheets');
+        return { persisted: true, order: result.order || order };
+      } catch (error) {
+        console.error('تعذر حفظ الطلب في Google Sheets؛ سيتم حفظ نسخة محلية', error);
+        return { persisted: false, order, error };
+      }
+    }
     const client = await getClient();
     if (!client) return { persisted: false, order };
-    const { data, error } = await client.rpc('submit_online_order', {
-      p_customer_name: order.name,
-      p_phone: order.phone,
-      p_address: order.address || null,
-      p_customer_code: order.code || null,
-      p_items: order.items,
-      p_location: order.location || null,
-      p_ip: order.ip || null
-    });
-    if (error) throw error;
-    return { persisted: true, order: data };
+    try {
+      const { data, error } = await client.rpc('submit_online_order', {
+        p_customer_name: order.name,
+        p_phone: order.phone,
+        p_address: order.address || null,
+        p_customer_code: order.code || null,
+        p_items: order.items,
+        p_location: order.location || null,
+        p_ip: order.ip || null
+      });
+      if (error) throw error;
+      return { persisted: true, order: data };
+    } catch (error) {
+      console.error('تعذر حفظ الطلب في Supabase؛ سيتم حفظ نسخة محلية', error);
+      return { persisted: false, order, error };
+    }
   }
 
   async function loadCustomization() {
+    if (sheets.endpoint) {
+      const response = await fetch(`${sheets.endpoint}?action=getSetting&key=customization&token=${encodeURIComponent(sheets.token || '')}`);
+      if (!response.ok) throw new Error(`Google Sheets API returned ${response.status}`);
+      const result = await response.json();
+      if (!result.ok) throw new Error(result.error || 'تعذر تحميل إعدادات الموقع');
+      return result.value || null;
+    }
     const client = await getClient();
     if (!client) return null;
     const { data, error } = await client.from('site_settings').select('value').eq('key', 'customization').maybeSingle();
@@ -44,6 +76,11 @@
   }
 
   async function saveCustomization(value) {
+    if (sheets.endpoint) {
+      const prepared = await uploadDataImages(value);
+      await saveSheetSetting('customization', prepared);
+      return true;
+    }
     const client = await getClient();
     if (!client) return false;
     const { error } = await client.from('site_settings').upsert({ key: 'customization', value, updated_at: new Date().toISOString() });
@@ -52,11 +89,50 @@
   }
 
   async function saveNotice(value) {
+    if (sheets.endpoint) {
+      await saveSheetSetting('notice', value);
+      return true;
+    }
     const client = await getClient();
     if (!client) return false;
     const { error } = await client.from('site_settings').upsert({ key: 'notice', value, updated_at: new Date().toISOString() });
     if (error) throw error;
     return true;
+  }
+
+  async function postSheets(payload) {
+    const response = await fetch(sheets.endpoint, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify({ ...payload, token: sheets.token || '' })
+    });
+    if (!response.ok) throw new Error(`Google Sheets API returned ${response.status}`);
+    const result = await response.json();
+    if (!result.ok) throw new Error(result.error || 'تعذر حفظ إعدادات الموقع');
+    return result;
+  }
+
+  async function saveSheetSetting(key, value) {
+    return postSheets({ action: 'saveSettings', key, value });
+  }
+
+  async function uploadDataImage(dataUrl) {
+    const result = await postSheets({
+      action: 'uploadImage',
+      data: dataUrl,
+      name: `katanbuild-${Date.now()}.jpg`
+    });
+    return result.image;
+  }
+
+  async function uploadDataImages(value) {
+    if (typeof value === 'string') {
+      return value.startsWith('data:image/') ? uploadDataImage(value) : value;
+    }
+    if (Array.isArray(value)) return Promise.all(value.map(uploadDataImages));
+    if (!value || typeof value !== 'object') return value;
+    const entries = await Promise.all(Object.entries(value).map(async ([key, item]) => [key, await uploadDataImages(item)]));
+    return Object.fromEntries(entries);
   }
 
   async function loadExchangeRate() {
@@ -87,6 +163,13 @@
   }
 
   async function loadAccountingSnapshot(password) {
+    if (sheets.endpoint) {
+      const response = await fetch(`${sheets.endpoint}?action=snapshot&token=${encodeURIComponent(sheets.token || '')}`);
+      if (!response.ok) throw new Error(`Google Sheets API returned ${response.status}`);
+      const result = await response.json();
+      if (!result.ok) throw new Error(result.error || 'تعذر تحميل بيانات المحاسبة');
+      return result.snapshot;
+    }
     const client = await getClient();
     if (!client) return null;
     const { data, error } = await client.rpc('get_accounting_snapshot', { p_password: password });
@@ -148,7 +231,7 @@
   }
 
   window.KBBackend = {
-    configured: loaded,
+    configured: loaded || Boolean(sheets.endpoint),
     getClient,
     insertOrder,
     loadCustomization,

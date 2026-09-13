@@ -1,4 +1,58 @@
 -- Run after supabase-schema.sql. Adds currencies, payments, customer tracking and live staff presence.
+-- Compatibility repair: older projects may have customers.phone without a unique constraint.
+-- This implementation updates an existing customer explicitly and does not depend on ON CONFLICT.
+alter table public.orders add column if not exists customer_name text;
+alter table public.orders add column if not exists phone text;
+alter table public.orders add column if not exists address text;
+alter table public.orders add column if not exists customer_code text;
+alter table public.orders add column if not exists items jsonb not null default '[]'::jsonb;
+alter table public.orders add column if not exists total numeric(12,2) not null default 0;
+alter table public.orders add column if not exists paid numeric(12,2) not null default 0;
+alter table public.orders add column if not exists status text not null default 'pending';
+alter table public.orders add column if not exists source text not null default 'online';
+alter table public.orders add column if not exists location jsonb;
+alter table public.orders add column if not exists ip inet;
+alter table public.orders add column if not exists created_at timestamptz not null default now();
+alter table public.orders add column if not exists updated_at timestamptz not null default now();
+
+create or replace function public.submit_online_order(
+  p_customer_name text, p_phone text, p_address text, p_customer_code text,
+  p_items jsonb, p_location jsonb default null, p_ip text default null
+) returns jsonb language plpgsql security definer set search_path = public as $$
+declare
+  v_customer customers;
+  v_order orders;
+  v_total numeric := coalesce((
+    select sum((item->>'price')::numeric * (item->>'qty')::numeric)
+    from jsonb_array_elements(coalesce(p_items, '[]'::jsonb)) item
+  ), 0);
+begin
+  select * into v_customer from customers where phone = p_phone order by created_at asc limit 1;
+  if found then
+    update customers
+    set name = p_customer_name,
+        address = p_address,
+        customer_code = coalesce(p_customer_code, customer_code),
+        updated_at = now()
+    where id = v_customer.id
+    returning * into v_customer;
+  else
+    insert into customers(name, phone, address, customer_code)
+    values (p_customer_name, p_phone, p_address, p_customer_code)
+    returning * into v_customer;
+  end if;
+
+  insert into orders(customer_id, customer_name, phone, address, customer_code, items, total, location, ip)
+  values (v_customer.id, p_customer_name, p_phone, p_address, p_customer_code, coalesce(p_items, '[]'::jsonb),
+          v_total, p_location, nullif(p_ip, '')::inet)
+  returning * into v_order;
+
+  return jsonb_build_object('id', v_order.id, 'order_number', v_order.order_number, 'status', v_order.status);
+end $$;
+
+revoke all on function public.submit_online_order(text,text,text,text,jsonb,jsonb,text) from public;
+grant execute on function public.submit_online_order(text,text,text,text,jsonb,jsonb,text) to anon, authenticated;
+
 alter table public.orders add column if not exists currency text not null default 'USD' check (currency in ('USD', 'SYP'));
 alter table public.orders add column if not exists exchange_rate numeric(14,2) not null default 13000;
 alter table public.invoices add column if not exists currency text not null default 'USD' check (currency in ('USD', 'SYP'));

@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="ar" dir="rtl" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>رموز QR | katanbuild</title>
+  <meta name="description" content="رمز QR لفتح موقع katanbuild والبروشور مباشرة.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/qr-codes.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="index.html" class="brand">
+        <img src="assets/katanbuild-logo.png" alt="katanbuild">
+        <span class="brand-name">katanbuild</span>
+      </a>
+      <a class="btn btn-outline" href="index.html">العودة للموقع</a>
+    </div>
+  </header>
+
+  <main class="qr-page">
+    <section class="qr-hero">
+      <div class="container">
+        <span class="eyebrow">katanbuild · QR</span>
+        <h1>امسح وافتح مباشرة.</h1>
+        <p class="lede">رموز جاهزة للطباعة والمشاركة. كل رمز يفتح وجهته مباشرة من كاميرا الهاتف.</p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container qr-grid">
+        <article class="qr-card">
+          <div class="qr-card-heading">
+            <span class="qr-index">01</span>
+            <div>
+              <h2>موقع katanbuild</h2>
+              <p>يفتح الصفحة الرئيسية للموقع مباشرة.</p>
+            </div>
+          </div>
+          <div class="qr-code" data-qr data-value="https://redmimhmdov-dotcom-katan-bulid.vercel.app" aria-label="رمز QR لموقع katanbuild"></div>
+          <code class="qr-url">redmimhmdov-dotcom-katan-bulid.vercel.app</code>
+          <div class="qr-actions">
+            <a class="btn btn-primary" href="https://redmimhmdov-dotcom-katan-bulid.vercel.app" target="_blank" rel="noopener">فتح الموقع</a>
+            <button class="btn btn-outline" type="button" data-download-qr="موقع-katanbuild">تنزيل PNG</button>
+          </div>
+        </article>
+
+        <article class="qr-card">
+          <div class="qr-card-heading">
+            <span class="qr-index">02</span>
+            <div>
+              <h2>بروشور قطن</h2>
+              <p>يفتح ملف PDF الموجود على الموقع مباشرة.</p>
+            </div>
+          </div>
+          <div class="qr-code" data-qr data-value="https://redmimhmdov-dotcom-katan-bulid.vercel.app/assets/files/brochure-qattan.pdf" aria-label="رمز QR لبروشور قطن"></div>
+          <code class="qr-url">/assets/files/brochure-qattan.pdf</code>
+          <div class="qr-actions">
+            <a class="btn btn-primary" href="assets/files/brochure-qattan.pdf" target="_blank" rel="noopener">فتح البروشور</a>
+            <button class="btn btn-outline" type="button" data-download-qr="بروشور-قطن">تنزيل PNG</button>
+          </div>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <span>katanbuild</span>
+      <span>رموز QR رسمية للموقع والبروشورات</span>
+    </div>
+  </footer>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <script>
+    (() => {
+      const qrNodes = [...document.querySelectorAll('[data-qr]')];
+      qrNodes.forEach((node) => {
+        const value = node.dataset.value;
+        if (!value || typeof QRCode === 'undefined') return;
+        new QRCode(node, {
+          text: value,
+          width: 240,
+          height: 240,
+          colorDark: '#111111',
+          colorLight: '#ffffff',
+          correctLevel: QRCode.CorrectLevel.H
+        });
+      });
+
+      document.querySelectorAll('[data-download-qr]').forEach((button) => {
+        button.addEventListener('click', () => {
+          const card = button.closest('.qr-card');
+          const canvas = card?.querySelector('canvas');
+          if (!canvas) return;
+          const link = document.createElement('a');
+          link.download = `${button.dataset.downloadQr}.png`;
+          link.href = canvas.toDataURL('image/png');
+          link.click();
+        });
+      });
+    })();
+  </script>
+</body>
+</html>

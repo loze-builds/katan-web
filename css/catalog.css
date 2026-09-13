@@ -6,18 +6,20 @@
 .catalog-ticker-track { padding: 16px 0; font-size: .95rem; animation: catalogTicker 24s linear infinite; }
 @keyframes catalogTicker { from { transform: translateX(30%); } to { transform: translateX(-100%); } }
 .catalog-gallery { display: grid; grid-template-columns: repeat(12, 1fr); grid-auto-rows: 120px; gap: 14px; }
-.catalog-tile { position: relative; overflow: hidden; min-height: 100%; background: var(--surface-2); border-radius: var(--radius-lg); }
+.catalog-tile { position: relative; overflow: hidden; min-height: 100%; background: var(--surface-2); border-radius: 0; }
 .catalog-tile:nth-child(1), .catalog-tile:nth-child(6) { grid-column: span 7; grid-row: span 4; }
 .catalog-tile:nth-child(2), .catalog-tile:nth-child(4), .catalog-tile:nth-child(8) { grid-column: span 5; grid-row: span 3; }
 .catalog-tile:nth-child(3), .catalog-tile:nth-child(5), .catalog-tile:nth-child(7), .catalog-tile:nth-child(9), .catalog-tile:nth-child(10) { grid-column: span 4; grid-row: span 3; }
-.catalog-tile img { width: 100%; height: 100%; object-fit: cover; transition: transform .7s var(--ease-out), filter .7s var(--ease-out); }
-.catalog-tile:hover img { transform: scale(1.06); filter: saturate(1.15); }
+.catalog-tile img { width: 100%; height: 100%; object-fit: cover; display: block; mix-blend-mode: luminosity; opacity: .94; transition: transform .7s var(--ease-out), filter .7s var(--ease-out), opacity .7s var(--ease-out); }
+.catalog-tile::after { content: ""; position: absolute; inset: 0; pointer-events: none; background: linear-gradient(145deg, rgba(0,0,0,.12), transparent 45%, rgba(232,119,34,.12)); mix-blend-mode: multiply; }
+.catalog-tile:hover img { transform: scale(1.06); filter: saturate(1.15); opacity: 1; }
 .catalog-tile figcaption { position: absolute; inset-inline: 16px; bottom: 14px; color: #fff; font-size: .85rem; text-shadow: 0 2px 12px #000; }
 .team-section { border-top: 1px solid var(--line); }
 .team-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; }
-.team-card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-lg); overflow: hidden; }
+.team-card { background: var(--surface); border: 1px solid var(--line); border-radius: 0; overflow: hidden; }
 .team-card-image { aspect-ratio: 4 / 5; background: var(--surface-2); overflow: hidden; }
-.team-card-image img { width: 100%; height: 100%; object-fit: cover; transition: transform .6s var(--ease-out); }
+.team-card-image img { width: 100%; height: 100%; object-fit: cover; display: block; mix-blend-mode: luminosity; opacity: .94; transition: transform .6s var(--ease-out), opacity .6s var(--ease-out); }
+.team-card-placeholder { display: grid; place-items: center; height: 100%; padding: 24px; color: var(--text-muted); text-align: center; font-size: .9rem; }
 .team-card:hover img { transform: scale(1.04); }
 .team-card-body { padding: 22px; }
 .team-card-body h3 { font-size: 1.35rem; }

@@ -101,6 +101,7 @@
     <footer class="footer">© 2026 مؤسسة قطان التجارية</footer>
 
     <script src="js/supabase-config.js"></script>
+    <script src="js/google-sheets-config.js"></script>
     <script src="js/backend.js"></script>
     <script>
         const PRODUCTS = {
@@ -184,11 +185,6 @@
             if ('Notification' in window && Notification.permission === 'default') Notification.requestPermission();
 
             getLocationAndIP().then(({ location, ip }) => {
-                if (!location) {
-                    overlay.classList.remove('active');
-                    alert('تعذر تحديد موقعك. فعّل الموقع من المتصفح ثم حاول مرة أخرى.');
-                    return;
-                }
                 const order = {
                     id: Date.now(),
                     date: new Date().toLocaleString('ar-SY'),
@@ -196,7 +192,7 @@
                     items: items.map(i => ({ name: i.name, qty: i.qty, price: i.price })),
                     total: items.reduce((s,i) => s + i.qty * i.price, 0),
                     source: 'online', status: 'pending', paid: 0,
-                    location, ip
+                    location: location || null, ip
                 };
                 const persist = window.KBBackend?.insertOrder
                     ? window.KBBackend.insertOrder(order)
@@ -209,8 +205,10 @@
                     }
                     overlay.classList.add('success');
                     items = []; renderSelected(); updateSummary();
-                    document.getElementById('orderNote').textContent = '';
-                    setTimeout(() => { window.location.href = '/'; }, 2000);
+                    document.getElementById('orderNote').textContent = result.persisted
+                        ? 'تم استلام طلبك بنجاح وسيتم التواصل معك قريباً.'
+                        : 'تم حفظ الطلب محلياً مؤقتاً لتعذر الاتصال بقاعدة البيانات. سيتم التواصل معك، ويجب مزامنة قاعدة البيانات لاحقاً.';
+                    setTimeout(() => { window.location.assign('/'); }, 2000);
                 }).catch((error) => {
                     console.error('تعذر حفظ الطلب', error);
                     overlay.classList.remove('active');

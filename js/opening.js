@@ -3,7 +3,7 @@
   const STORAGE_KEY = 'kb-site-customization';
   const defaults = {
     enabled: true,
-    duration: 4000,
+    duration: 8000,
     image: 'https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=1920&q=85',
     kicker: 'katanbuild presents',
     title: 'كيمياء البناء تصنع الفرق.',
@@ -22,7 +22,7 @@
   }
   function show(config) {
     if (!config.enabled || sessionStorage.getItem('kb-opening-seen') === '1') return;
-    showScreen(config);
+    showScreen({ ...config, duration: 8000 });
   }
   function showScreen(config) {
     const screen = document.createElement('div');
@@ -47,7 +47,7 @@
         window.KBOpeningPreview = function (config) {
           const existing = document.querySelector('.kb-opening');
           if (existing) existing.remove();
-          showScreen({ ...defaults, ...config, enabled: true });
+          showScreen({ ...defaults, ...config, enabled: true, duration: 8000 });
         };
       }).catch(error => console.error('تعذر تحميل إعدادات الافتتاحية', error));
     }

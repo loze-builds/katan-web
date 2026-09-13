@@ -83,11 +83,11 @@
         <div class="hero-content reveal">
           <span class="eyebrow">دليل المنتجات</span>
           <h1>
-            الأقسام<br />
-            <span class="accent">الأربعة.</span>
+            أقسام<br />
+            <span class="accent">المواد.</span>
           </h1>
           <p class="lede">
-            استعرض الأقسام الأربعة، وادخل لأي قسم للاطلاع على المواصفة الكاملة والمواد المتخصصة داخله.
+            استعرض جميع أقسام المواد، وادخل لأي قسم للاطلاع على الصور والمواد المتخصصة داخله.
           </p>
         </div>
       </div>
@@ -95,7 +95,7 @@
 
     <section class="section">
       <div class="container">
-        <div class="product-grid stagger">
+        <div class="product-grid stagger" id="productCategories">
 
           <div class="product-card">
             <a href="product.html?slug=render-plaster-materials" style="display:contents;color:inherit;text-decoration:none;">
@@ -234,6 +234,7 @@
 
   <script src="js/data.js"></script>
   <script src="js/supabase-config.js"></script>
+  <script src="js/google-sheets-config.js"></script>
   <script src="js/backend.js"></script>
   <script src="js/opening.js"></script>
   <script src="js/animations.js"></script>
@@ -244,12 +245,53 @@
   <script src="js/site-access-local.js"></script>
   <script src="js/apply-customization.js"></script>
   <script>
+    function categoryImage(product, index) {
+      const firstItem = product.items?.find((item) => item.image || item.imageIndex !== undefined);
+      return firstItem?.image || window.SITE.media.productImages[firstItem?.imageIndex ?? index] || window.SITE.media.background;
+    }
+
+    function renderProductCategories() {
+      const grid = document.getElementById('productCategories');
+      if (!grid || !window.SITE?.products) return;
+      const lang = document.documentElement.lang || 'ar';
+      grid.innerHTML = window.SITE.products.map((product, index) => {
+        const title = product.title[lang] || product.title.ar;
+        const category = product.category[lang] || product.category.ar;
+        const description = product.short[lang] || product.short.ar;
+        const image = categoryImage(product, index);
+        const count = product.items?.length || 0;
+        return `
+          <div class="product-card">
+            <a href="product.html?slug=${encodeURIComponent(product.slug)}" style="display:contents;color:inherit;text-decoration:none;">
+              <div class="thumb product-thumb">
+                <img src="${image}" alt="${title}" loading="lazy" referrerpolicy="no-referrer"
+                  onerror="this.onerror=null;this.src='${window.SITE.media.background}';">
+                <span class="cat">${category}</span>
+              </div>
+              <div class="body">
+                <h3>${title}</h3>
+                <p>${description}</p>
+                <span class="go">عرض القسم (${count} مواد) <span class="arrow">←</span></span>
+              </div>
+            </a>
+            <button class="kb-add-btn" type="button"
+              data-cart-add="${title}"
+              data-cart-category="${category}"
+              aria-label="أضف للسلة">+</button>
+          </div>
+        `;
+      }).join('');
+    }
+
+    document.addEventListener('DOMContentLoaded', renderProductCategories);
+
     document.getElementById('langToggle')?.addEventListener('click', function () {
       const html = document.documentElement;
       const newLang = html.lang === 'ar' ? 'en' : 'ar';
       html.lang = newLang;
       html.dir = newLang === 'ar' ? 'rtl' : 'ltr';
       this.textContent = newLang === 'ar' ? 'EN' : 'AR';
+      renderProductCategories();
     });
 
     document.getElementById('themeToggle')?.addEventListener('click', function () {
