@@ -223,6 +223,11 @@
           <label>الكود الخاص (إذا كنت زبوناً دائماً)</label>
           <input type="text" name="code" placeholder="أدخل الكود" />
         </div>
+        <label class="kb-cart-location-consent">
+          <input type="checkbox" name="locationConsent" required />
+          أوافق على مشاركة موقعي المباشر مع فريق التوصيل لمعالجة الطلب
+        </label>
+        <div class="kb-cart-location-status" id="kbCartLocationStatus">سيطلب المتصفح تحديد موقعك عند الإرسال.</div>
 
         <div class="kb-cart-actions">
           <button type="submit" class="kb-btn kb-btn-primary">
@@ -272,7 +277,12 @@
       return;
     }
 
-    showStatus(status, 'جار الإرسال...', '');
+    if (!values.locationConsent) {
+      showStatus(status, 'يجب الموافقة على مشاركة الموقع لإرسال الطلب.', 'error');
+      return;
+    }
+
+    showStatus(status, 'جار تحديد الموقع وإرسال الطلب...', '');
 
     const total = cart.reduce((sum, item) => sum + item.qty * item.price, 0);
     const order = {
@@ -296,21 +306,42 @@
     };
 
     const finalize = (location, ip) => {
+      if (!location) {
+        showStatus(status, 'تعذر تحديد موقعك. فعّل الموقع من المتصفح ثم حاول مجدداً.', 'error');
+        return;
+      }
       order.location = location;
       order.ip = ip;
 
-      let orders = [];
-      try {
-        orders = JSON.parse(localStorage.getItem(ORDERS_KEY) || '[]');
-      } catch (e) { orders = []; }
-      orders.push(order);
-      localStorage.setItem(ORDERS_KEY, JSON.stringify(orders));
-
-      window.dispatchEvent(new CustomEvent('kb:order:new', { detail: order }));
-
-      cart = [];
-      saveCart();
-      showSuccess();
+      const persist = window.KBBackend?.insertOrder
+        ? window.KBBackend.insertOrder(order)
+        : Promise.resolve({ persisted: false });
+      persist.then((result) => {
+        let orders = [];
+        try { orders = JSON.parse(localStorage.getItem(ORDERS_KEY) || '[]'); }
+        catch (error) { console.error('تعذر قراءة الطلبات المحلية', error); }
+        if (!result.persisted) {
+          orders.push(order);
+          localStorage.setItem(ORDERS_KEY, JSON.stringify(orders));
+        }
+        window.dispatchEvent(new CustomEvent('kb:order:new', { detail: result.order || order }));
+        if (result.persisted && result.order?.id && navigator.geolocation && window.KBBackend?.recordCustomerLocation) {
+          let lastSent = 0;
+          const trackingId = navigator.geolocation.watchPosition((position) => {
+            if (Date.now() - lastSent < 30000) return;
+            lastSent = Date.now();
+            window.KBBackend.recordCustomerLocation(result.order.id, position.coords.latitude, position.coords.longitude, position.coords.accuracy)
+              .catch((error) => console.error('تعذر تحديث موقع الطلب', error));
+          }, (error) => console.warn('توقف تتبع موقع الطلب', error), { enableHighAccuracy: true, maximumAge: 10000, timeout: 15000 });
+          setTimeout(() => navigator.geolocation.clearWatch(trackingId), 30 * 60 * 1000);
+        }
+        cart = [];
+        saveCart();
+        showSuccess();
+      }).catch((error) => {
+        console.error('تعذر حفظ الطلب في قاعدة البيانات', error);
+        showStatus(status, 'تعذر حفظ الطلب. حاول مرة أخرى.', 'error');
+      });
     };
 
     Promise.all([
@@ -421,6 +452,11 @@
     cart = loadCart();
     updateBadge();
     initGlobalHandlers();
+    if (window.KBBackend?.loadExchangeRate) {
+      window.KBBackend.loadExchangeRate().then((rate) => {
+        if (rate) localStorage.setItem(EXCHANGE_KEY, String(rate));
+      }).catch((error) => console.error('تعذر تحميل سعر الصرف', error));
+    }
   }
 
   if (document.readyState === 'loading') {

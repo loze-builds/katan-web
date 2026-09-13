@@ -12,6 +12,7 @@
   <link rel="stylesheet" href="css/style.css" />
   <link rel="stylesheet" href="css/admin.css" />
   <link rel="stylesheet" href="css/cart.css" />
+  <link rel="stylesheet" href="css/opening.css" />
 </head>
 
 <body>
@@ -27,6 +28,7 @@
         <a href="index.html" class="nav-link">الرئيسية</a>
         <a href="products.html" class="nav-link">المنتجات</a>
         <a href="projects.html" class="nav-link active">المشاريع</a>
+        <a href="catalog.html" class="nav-link">الكتالوج والفريق</a>
         <a href="about.html" class="nav-link">من نحن</a>
         <a href="#" class="nav-link" data-cart-open style="color:var(--accent);">اطلب منتج</a>
         <a href="payment.html" class="nav-link">الدفع</a>
@@ -37,7 +39,7 @@
           🛒
           <span class="count" data-count="0">0</span>
         </button>
-        <button class="icon-btn" id="navToggleBtn" title="تصغير القائمة" type="button">
+        <button class="icon-btn" id="navToggleBtn" title="تصغير القائمة" type="button" aria-expanded="false" aria-controls="mainNav">
           <span id="navToggleIcon">▼</span>
         </button>
         <button class="icon-btn" id="langToggle" title="تغيير اللغة">EN</button>
@@ -60,6 +62,7 @@
       <a href="index.html">الرئيسية <span class="arrow">←</span></a>
       <a href="products.html">المنتجات <span class="arrow">←</span></a>
       <a href="projects.html" class="active">المشاريع <span class="arrow">←</span></a>
+      <a href="catalog.html">الكتالوج والفريق <span class="arrow">←</span></a>
       <a href="about.html">من نحن <span class="arrow">←</span></a>
       <a href="#" data-cart-open style="color:var(--accent);">اطلب منتج <span class="arrow">←</span></a>
       <a href="payment.html">الدفع <span class="arrow">←</span></a>
@@ -252,6 +255,9 @@
     </div>
   </footer>
 
+  <script src="js/supabase-config.js"></script>
+  <script src="js/backend.js"></script>
+  <script src="js/opening.js"></script>
   <script src="js/animations.js"></script>
   <script src="js/cursor.js"></script>
   <script src="js/nav-toggle.js"></script>

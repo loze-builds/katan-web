@@ -11,6 +11,7 @@
   <link rel="stylesheet" href="css/style.css" />
   <link rel="stylesheet" href="css/admin.css" />
   <link rel="stylesheet" href="css/cart.css" />
+  <link rel="stylesheet" href="css/opening.css" />
 </head>
 
 <body>
@@ -36,7 +37,7 @@
           🛒
           <span class="count" data-count="0">0</span>
         </button>
-        <button class="icon-btn" id="navToggleBtn" title="تصغير القائمة" type="button">
+        <button class="icon-btn" id="navToggleBtn" title="تصغير القائمة" type="button" aria-expanded="false" aria-controls="mainNav">
           <span id="navToggleIcon">▼</span>
         </button>
         <button class="icon-btn" id="langToggle" title="تغيير اللغة">EN</button>
@@ -143,6 +144,9 @@
   </footer>
 
   <script src="js/data.js"></script>
+  <script src="js/supabase-config.js"></script>
+  <script src="js/backend.js"></script>
+  <script src="js/opening.js"></script>
   <script src="js/animations.js"></script>
   <script src="js/cursor.js"></script>
   <script src="js/nav-toggle.js"></script>

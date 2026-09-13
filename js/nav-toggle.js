@@ -39,6 +39,7 @@
     const btn = getToggleBtn();
     if (btn) {
       btn.title = collapsed ? 'توسيع القائمة' : 'تصغير القائمة';
+      btn.setAttribute('aria-expanded', collapsed && header.classList.contains('nav-open') ? 'true' : 'false');
     }
   }
 
@@ -78,11 +79,15 @@
       } else {
         header.classList.add('nav-open');
       }
+      const btn = getToggleBtn();
+      if (btn) btn.setAttribute('aria-expanded', header.classList.contains('nav-open') ? 'true' : 'false');
     } else {
       manualOverride = true;
       localStorage.setItem(STORAGE_KEY, 'true');
       setCollapsed(true);
       requestAnimationFrame(() => header.classList.add('nav-open'));
+      const btn = getToggleBtn();
+      if (btn) btn.setAttribute('aria-expanded', 'true');
     }
   }
 

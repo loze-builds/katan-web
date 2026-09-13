@@ -93,8 +93,21 @@
     applyWhyUs(data);
   }
 
+  async function loadRemote() {
+    if (!window.KBBackend?.configured) return;
+    try {
+      const data = await window.KBBackend.loadCustomization();
+      if (!data) return;
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+      applyAll();
+    } catch (error) {
+      console.error('تعذر تحميل إعدادات الموقع', error);
+    }
+  }
+
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', applyAll);
   else applyAll();
+  loadRemote();
 
   window.addEventListener('kb:customization', applyAll);
   window.addEventListener('storage', (e) => { if (e.key === STORAGE_KEY) applyAll(); });

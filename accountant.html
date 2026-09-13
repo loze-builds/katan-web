@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="ar" dir="rtl" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>لوحة المحاسبة | katanbuild</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
+  <style>
+    .accounting-app { min-height: 100vh; background: var(--bg); padding: 32px 0; }
+    .accounting-shell { display: grid; grid-template-columns: 230px minmax(0, 1fr); gap: 24px; }
+    .accounting-sidebar, .accounting-card { border: 1px solid var(--line); background: var(--surface); border-radius: var(--radius-lg); }
+    .accounting-sidebar { padding: 20px; height: fit-content; position: sticky; top: 24px; }
+    .accounting-brand { display: flex; align-items: center; gap: 10px; margin-bottom: 24px; }
+    .accounting-brand img { width: 38px; height: 38px; object-fit: contain; content: url("assets/katanbuild-logo-dark.png"); }
+    [data-theme="light"] .accounting-brand img { content: url("assets/katanbuild-logo.png"); }
+    .accounting-nav { display: grid; gap: 6px; }
+    .accounting-nav button { padding: 12px; border: 1px solid transparent; border-radius: var(--radius); text-align: right; color: var(--text-muted); }
+    .accounting-nav button:hover, .accounting-nav button.active { color: var(--text); border-color: var(--line); background: var(--surface-2); }
+    .accounting-main { min-width: 0; }
+    .accounting-topbar { display: flex; justify-content: space-between; align-items: center; gap: 16px; margin-bottom: 24px; }
+    .accounting-topbar h1 { font-size: clamp(1.8rem, 4vw, 3rem); margin: 0; }
+    .accounting-muted { color: var(--text-muted); }
+    .accounting-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; margin-bottom: 18px; }
+    .accounting-stat { padding: 18px; }
+    .accounting-stat strong { display: block; font-size: 1.8rem; margin-top: 6px; }
+    .accounting-card { padding: 20px; margin-bottom: 18px; }
+    .accounting-card h2 { font-size: 1.25rem; margin: 0 0 16px; }
+    .accounting-table { width: 100%; border-collapse: collapse; min-width: 700px; }
+    .accounting-table th, .accounting-table td { padding: 11px 8px; border-bottom: 1px solid var(--line); text-align: right; vertical-align: top; }
+    .accounting-table th { color: var(--text-muted); font-weight: 700; }
+    .accounting-table-wrap { overflow-x: auto; }
+    .accounting-form { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; align-items: end; }
+    .accounting-field { display: grid; gap: 5px; }
+    .accounting-field input, .accounting-field select { width: 100%; padding: 10px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface-2); color: var(--text); }
+    .accounting-button { padding: 10px 14px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface-2); color: var(--text); }
+    .accounting-button.primary { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+    .accounting-button.danger { color: #f87171; }
+    .accounting-badge { display: inline-block; padding: 3px 8px; border-radius: 99px; background: var(--surface-2); font-size: .8rem; }
+    .accounting-map { min-height: 420px; border-radius: var(--radius); overflow: hidden; border: 1px solid var(--line); }
+    .accounting-alert { position: fixed; top: 20px; inset-inline-end: 20px; z-index: 1000; padding: 14px 18px; border: 1px solid var(--accent); border-radius: var(--radius); background: var(--surface); box-shadow: 0 15px 40px rgba(0,0,0,.35); }
+    .accounting-login { width: min(420px, 100%); margin: 12vh auto; }
+    .accounting-login .accounting-card { padding: 28px; }
+    .accounting-login form { display: grid; gap: 12px; }
+    .accounting-error { color: #f87171; min-height: 24px; }
+    @media (max-width: 900px) { .accounting-shell { grid-template-columns: 1fr; } .accounting-sidebar { position: static; } .accounting-nav { grid-template-columns: repeat(4, 1fr); } .accounting-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 560px) { .accounting-nav { grid-template-columns: repeat(2, 1fr); } .accounting-grid, .accounting-form { grid-template-columns: 1fr; } .accounting-topbar { align-items: flex-start; flex-direction: column; } }
+    @media print { .accounting-sidebar, .accounting-topbar .accounting-button, .accounting-form { display: none !important; } .accounting-shell { display: block; } .accounting-card { border: 0; } }
+  </style>
+</head>
+<body>
+  <main id="accountingRoot" class="accounting-app"></main>
+  <script src="js/supabase-config.js"></script>
+  <script src="js/backend.js"></script>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+  <script src="js/accounting-dashboard.js"></script>
+</body>
+</html>

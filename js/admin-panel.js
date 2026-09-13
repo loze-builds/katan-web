@@ -19,7 +19,36 @@
   function getCustomization() {
     try {
       const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null');
-      if (saved && typeof saved === 'object') return saved;
+      if (saved && typeof saved === 'object') {
+        saved.catalogImages = saved.catalogImages || [
+          "https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=1200&q=85",
+          "https://images.unsplash.com/photo-1541888946425-d81bb19240f5?w=1200&q=85",
+          "https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=1200&q=85",
+          "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=1200&q=85",
+          "https://images.unsplash.com/photo-1591955506264-3f5a6834570a?w=1200&q=85",
+          "https://images.unsplash.com/photo-1600585152220-90363fe7e115?w=1200&q=85",
+          "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1200&q=85",
+          "https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=1200&q=85",
+          "https://images.unsplash.com/photo-1497366811353-6870744d04b2?w=1200&q=85",
+          "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1200&q=85"
+        ];
+        saved.catalog = saved.catalog || {
+          eyebrow: 'كتالوج katanbuild',
+          title: 'صور من موقع العمل.',
+          description: 'اكتشف المواد والتفاصيل التي تصنع فرقاً حقيقياً في كل مشروع.',
+          ticker: 'أهلاً بك في كتالوج katanbuild · حلول بناء تُرى وتُلمس · جودة تبدأ من الموقع'
+        };
+        saved.team = saved.team || { eyebrow: 'فريق العمل', title: 'أشخاص يصنعون الفرق.', description: 'فريق يجمع الخبرة الميدانية، التطوير، والتصميم.', members: [] };
+        saved.opening = saved.opening || {
+          enabled: true,
+          duration: 4000,
+          image: 'https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=1920&q=85',
+          kicker: 'katanbuild presents',
+          title: 'كيمياء البناء تصنع الفرق.',
+          subtitle: 'مواد تبني نتائج تدوم.'
+        };
+        return saved;
+      }
     } catch (e) { }
     return {
       productImages: [
@@ -52,13 +81,56 @@
       catalogues: [
         { id: 'cat-1', name: 'cove .pdf', url: 'assets/files/cove.pdf', type: 'pdf' },
         { id: 'cat-2', name: 'بروشور قطان', url: 'assets/files/brochure-qattan.pdf', type: 'pdf' }
-      ]
+      ],
+      catalogImages: [
+        "https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=1200&q=85",
+        "https://images.unsplash.com/photo-1541888946425-d81bb19240f5?w=1200&q=85",
+        "https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=1200&q=85",
+        "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=1200&q=85",
+        "https://images.unsplash.com/photo-1591955506264-3f5a6834570a?w=1200&q=85",
+        "https://images.unsplash.com/photo-1600585152220-90363fe7e115?w=1200&q=85",
+        "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1200&q=85",
+        "https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=1200&q=85",
+        "https://images.unsplash.com/photo-1497366811353-6870744d04b2?w=1200&q=85",
+        "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1200&q=85"
+      ],
+      catalog: {
+        eyebrow: "كتالوج katanbuild",
+        title: "صور من موقع العمل.",
+        description: "اكتشف المواد والتفاصيل التي تصنع فرقاً حقيقياً في كل مشروع، من الخلطة الأولى حتى التسليم.",
+        ticker: "أهلاً بك في كتالوج katanbuild · حلول بناء تُرى وتُلمس · جودة تبدأ من الموقع",
+        imageLabels: ["حلول الموقع", "تفاصيل التنفيذ", "مواد العزل", "الخلطات الجاهزة", "مشاريعنا", "لمسة نهائية"]
+      },
+      team: {
+        eyebrow: "فريق العمل",
+        title: "أشخاص يصنعون الفرق.",
+        description: "فريق يجمع الخبرة الميدانية، التطوير، والتصميم ليبقى كل مشروع على المسار الصحيح.",
+        members: [
+          { name: "اسم المبرمج", role: "المبرمج والمشرف التقني", bio: "أكتب هنا نبذة قصيرة عن المبرمج ودوره في تطوير المنصة.", image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=800&q=85", link: "" },
+          { name: "اسم عضو الفريق", role: "إدارة المشاريع", bio: "نبذة تعريفية مختصرة عن عضو الفريق ومسؤولياته.", image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=800&q=85", link: "" },
+          { name: "اسم عضو الفريق", role: "الدعم الفني", bio: "نبذة تعريفية مختصرة عن عضو الفريق ومسؤولياته.", image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&q=85", link: "" }
+        ]
+      },
+      opening: {
+        enabled: true,
+        duration: 4000,
+        image: "https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=1920&q=85",
+        kicker: "katanbuild presents",
+        title: "كيمياء البناء تصنع الفرق.",
+        subtitle: "مواد تبني نتائج تدوم."
+      }
     };
   }
 
   function saveCustomization(data) {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
     window.dispatchEvent(new CustomEvent('kb:customization', { detail: data }));
+    if (window.KBBackend?.configured) {
+      window.KBBackend.saveCustomization(data).catch((error) => {
+        console.error('تعذر حفظ إعدادات الموقع في قاعدة البيانات', error);
+        toast('تم الحفظ محلياً، لكن تعذر مزامنة قاعدة البيانات', 'error');
+      });
+    }
   }
 
   function getNotice() {
@@ -69,6 +141,12 @@
   function saveNotice(data) {
     localStorage.setItem(NOTICE_KEY, JSON.stringify(data));
     window.dispatchEvent(new CustomEvent('kb:notice', { detail: data }));
+    if (window.KBBackend?.configured) {
+      window.KBBackend.saveNotice(data).catch((error) => {
+        console.error('تعذر حفظ الإشعار في قاعدة البيانات', error);
+        toast('تم حفظ الإشعار محلياً، لكن تعذر مزامنته', 'error');
+      });
+    }
   }
 
   function toast(message, type = 'info') {
@@ -150,6 +228,8 @@
             <button data-panel="images"><span class="icon">🖼</span> الصور</button>
             <button data-panel="categories"><span class="icon">📦</span> الأقسام</button>
             <button data-panel="catalogues"><span class="icon">📚</span> الكتالوجات</button>
+            <button data-panel="catalogTeam"><span class="icon">🧑‍💻</span> الكتالوج والفريق</button>
+            <button data-panel="opening"><span class="icon">🎬</span> شاشة الافتتاح</button>
             <button data-panel="notice"><span class="icon">🔔</span> الإشعار</button>
             <button data-panel="settings"><span class="icon">⚙</span> الإعدادات</button>
           </nav>
@@ -201,6 +281,8 @@
       images: ['الصور', 'غيّر صور الأقسام و Hero'],
       categories: ['الأقسام', 'أضف، عدّل، أو احذف الأقسام'],
       catalogues: ['الكتالوجات', 'أضف ملفات PDF وباركود'],
+      catalogTeam: ['الكتالوج والفريق', 'عدّل الصور ومعلومات فريق العمل'],
+      opening: ['شاشة الافتتاح', 'تحكم بالمقدمة السينمائية قبل الموقع'],
       notice: ['الإشعار', 'إرسال إشعار 24 ساعة للموقع'],
       settings: ['الإعدادات', 'نسخ احتياطي وإعادة الضبط']
     };
@@ -212,6 +294,8 @@
     else if (currentPanel === 'images') renderImagesPanel(body, data);
     else if (currentPanel === 'categories') renderCategoriesPanel(body, data);
     else if (currentPanel === 'catalogues') renderCataloguesPanel(body, data);
+    else if (currentPanel === 'catalogTeam') renderCatalogTeamPanel(body, data);
+    else if (currentPanel === 'opening') renderOpeningPanel(body, data);
     else if (currentPanel === 'notice') renderNoticePanel(body, data);
     else if (currentPanel === 'settings') renderSettingsPanel(body, data);
   }
@@ -350,6 +434,135 @@
       saveCustomization(newData);
       showStatus(body.querySelector('#kbImagesStatus'), 'تم حفظ الصور', 'success');
       toast('تم حفظ الصور', 'success');
+    });
+  }
+
+  /* ============ CATALOG + TEAM ============ */
+  function renderCatalogTeamPanel(body, data) {
+    const catalog = data.catalog || {};
+    const team = data.team || { members: [] };
+    const images = data.catalogImages || [];
+    body.innerHTML = `
+      <h2>الكتالوج المرئي</h2>
+      <p class="hint">يمكنك وضع رابط مباشر للصورة أو رفعها من جهازك. الحد الأقصى 10 صور.</p>
+      <div class="kb-field"><label>العنوان التعريفي</label><input id="kbCatalogEyebrow" value="${escapeHtml(catalog.eyebrow || '')}"></div>
+      <div class="kb-field"><label>العنوان الرئيسي</label><input id="kbCatalogTitle" value="${escapeHtml(catalog.title || '')}"></div>
+      <div class="kb-field"><label>الوصف</label><textarea id="kbCatalogDescription">${escapeHtml(catalog.description || '')}</textarea></div>
+      <div class="kb-field"><label>الشريط الترحيبي</label><input id="kbCatalogTicker" value="${escapeHtml(catalog.ticker || '')}"></div>
+      <div id="kbCatalogImageList"></div>
+      <h2 style="margin-top:40px;">معلومات فريق العمل</h2>
+      <p class="hint">خصص معلومات المبرمج وأعضاء الفريق والصور والروابط.</p>
+      <div id="kbTeamList"></div>
+      <button class="kb-btn kb-btn-outline" id="kbAddTeam">+ إضافة عضو</button>
+      <div style="margin-top:24px;"><button class="kb-btn kb-btn-primary" id="kbSaveCatalogTeam">حفظ الكتالوج والفريق</button></div>
+      <div class="kb-status" id="kbCatalogTeamStatus"></div>
+    `;
+    const imageList = body.querySelector('#kbCatalogImageList');
+    for (let i = 0; i < 10; i++) {
+      const card = document.createElement('div');
+      card.className = 'kb-card';
+      card.innerHTML = `<div class="kb-card-header"><h3>صورة ${i + 1}</h3></div>
+        <div class="kb-image-preview" style="background-image:url('${escapeHtml(images[i] || '')}')"></div>
+        <div class="kb-field"><label>رابط مباشر للصورة</label><input data-catalog-image="${i}" value="${escapeHtml(images[i] || '')}" placeholder="https://example.com/image.jpg"></div>
+        <div class="kb-file-input"><span class="icon">📷</span><div class="text"><strong>رفع صورة</strong><span>JPG, PNG · حد أقصى 2MB</span></div><input type="file" accept="image/*" data-catalog-upload="${i}"></div>`;
+      imageList.appendChild(card);
+    }
+    body.querySelectorAll('[data-catalog-upload]').forEach(input => input.addEventListener('change', event => {
+      const file = event.target.files[0];
+      if (!file) return;
+      if (file.size > 2 * 1024 * 1024) { toast('حجم الصورة يجب ألا يتجاوز 2MB', 'error'); return; }
+      const reader = new FileReader();
+      reader.addEventListener('load', () => {
+        const index = input.dataset.catalogUpload;
+        body.querySelector(`[data-catalog-image="${index}"]`).value = reader.result;
+        input.closest('.kb-card').querySelector('.kb-image-preview').style.backgroundImage = `url('${reader.result}')`;
+      });
+      reader.readAsDataURL(file);
+    }));
+    const teamList = body.querySelector('#kbTeamList');
+    const renderMembers = () => {
+      teamList.innerHTML = '';
+      (team.members || []).forEach((member, i) => {
+        const card = document.createElement('div');
+        card.className = 'kb-card';
+        card.dataset.teamIndex = i;
+        card.innerHTML = `<div class="kb-card-header"><h3>عضو ${i + 1}</h3><button class="kb-btn kb-btn-danger kb-btn-sm" data-remove-team="${i}">حذف</button></div>
+          <div class="kb-field"><label>الاسم</label><input data-team-name="${i}" value="${escapeHtml(member.name || '')}"></div>
+          <div class="kb-field"><label>المسمى والدور</label><input data-team-role="${i}" value="${escapeHtml(member.role || '')}"></div>
+          <div class="kb-field"><label>النبذة</label><textarea data-team-bio="${i}">${escapeHtml(member.bio || '')}</textarea></div>
+          <div class="kb-field"><label>رابط الصورة</label><input data-team-image="${i}" value="${escapeHtml(member.image || '')}"></div>
+          <div class="kb-field"><label>رابط التواصل الاختياري</label><input data-team-link="${i}" value="${escapeHtml(member.link || '')}"></div>`;
+        teamList.appendChild(card);
+      });
+      teamList.querySelectorAll('[data-remove-team]').forEach(button => button.addEventListener('click', () => {
+        team.members.splice(Number(button.dataset.removeTeam), 1);
+        renderMembers();
+      }));
+    };
+    renderMembers();
+    body.querySelector('#kbAddTeam').addEventListener('click', () => {
+      team.members.push({ name: 'عضو جديد', role: 'الدور', bio: '', image: '', link: '' });
+      renderMembers();
+    });
+    body.querySelector('#kbSaveCatalogTeam').addEventListener('click', () => {
+      const newData = getCustomization();
+      newData.catalog = {
+        eyebrow: body.querySelector('#kbCatalogEyebrow').value,
+        title: body.querySelector('#kbCatalogTitle').value,
+        description: body.querySelector('#kbCatalogDescription').value,
+        ticker: body.querySelector('#kbCatalogTicker').value,
+        imageLabels: catalog.imageLabels || []
+      };
+      newData.catalogImages = Array.from(body.querySelectorAll('[data-catalog-image]')).map(input => input.value.trim()).filter(Boolean);
+      newData.team = { ...team, members: Array.from(body.querySelectorAll('[data-team-name]')).map((input, i) => {
+        const card = input.closest('[data-team-index]');
+        return {
+          name: input.value,
+          role: card.querySelector(`[data-team-role="${i}"]`).value,
+          bio: card.querySelector(`[data-team-bio="${i}"]`).value,
+          image: card.querySelector(`[data-team-image="${i}"]`).value,
+          link: card.querySelector(`[data-team-link="${i}"]`).value
+        };
+      }) };
+      saveCustomization(newData);
+      showStatus(body.querySelector('#kbCatalogTeamStatus'), 'تم حفظ الكتالوج وفريق العمل', 'success');
+      toast('تم حفظ الكتالوج والفريق', 'success');
+    });
+  }
+
+  function renderOpeningPanel(body, data) {
+    const opening = data.opening || {};
+    body.innerHTML = `
+      <h2>شاشة الافتتاح السينمائية</h2>
+      <p class="hint">تظهر مرة واحدة لكل جلسة لمدة 4 ثوانٍ افتراضياً، ويمكن للزائر تخطيها.</p>
+      <label class="kb-check"><input type="checkbox" id="kbOpeningEnabled" ${opening.enabled !== false ? 'checked' : ''}> تشغيل شاشة الافتتاح</label>
+      <div class="kb-field"><label>المدة بالميلي ثانية</label><input type="number" min="1500" max="15000" step="500" id="kbOpeningDuration" value="${Number(opening.duration || 4000)}"></div>
+      <div class="kb-field"><label>رابط صورة الخلفية</label><input type="url" id="kbOpeningImage" value="${escapeHtml(opening.image || '')}" placeholder="https://example.com/hero.jpg"></div>
+      <div class="kb-field"><label>السطر العلوي</label><input type="text" id="kbOpeningKicker" value="${escapeHtml(opening.kicker || '')}"></div>
+      <div class="kb-field"><label>العنوان الكبير</label><input type="text" id="kbOpeningTitle" value="${escapeHtml(opening.title || '')}"></div>
+      <div class="kb-field"><label>السطر التعريفي</label><input type="text" id="kbOpeningSubtitle" value="${escapeHtml(opening.subtitle || '')}"></div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;"><button class="kb-btn kb-btn-primary" id="kbSaveOpening">حفظ الافتتاحية</button><button class="kb-btn kb-btn-outline" id="kbPreviewOpening">معاينة</button></div>
+      <div class="kb-status" id="kbOpeningStatus"></div>
+    `;
+    const readForm = () => ({
+      enabled: body.querySelector('#kbOpeningEnabled').checked,
+      duration: Math.min(15000, Math.max(1500, Number(body.querySelector('#kbOpeningDuration').value) || 4000)),
+      image: body.querySelector('#kbOpeningImage').value.trim(),
+      kicker: body.querySelector('#kbOpeningKicker').value.trim(),
+      title: body.querySelector('#kbOpeningTitle').value.trim(),
+      subtitle: body.querySelector('#kbOpeningSubtitle').value.trim()
+    });
+    body.querySelector('#kbSaveOpening').addEventListener('click', () => {
+      const newData = getCustomization();
+      newData.opening = readForm();
+      saveCustomization(newData);
+      showStatus(body.querySelector('#kbOpeningStatus'), 'تم حفظ إعدادات شاشة الافتتاح', 'success');
+      toast('تم حفظ الافتتاحية', 'success');
+    });
+    body.querySelector('#kbPreviewOpening').addEventListener('click', () => {
+      const preview = readForm();
+      preview.duration = 4000;
+      window.KBOpeningPreview?.(preview);
     });
   }
 
@@ -703,16 +916,29 @@
       <div class="kb-status" id="kbSettingsStatus"></div>
     `;
 
-    body.querySelector('#kbExport').addEventListener('click', () => {
-      const all = { customization: getCustomization(), notice: getNotice(), exportedAt: new Date().toISOString() };
-      const blob = new Blob([JSON.stringify(all, null, 2)], { type: 'application/json' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `katanbuild-backup-${Date.now()}.json`;
-      a.click();
-      URL.revokeObjectURL(url);
-      toast('تم تصدير الملف', 'success');
+    body.querySelector('#kbExport').addEventListener('click', async () => {
+      try {
+        const accounting = window.KBBackend?.configured
+          ? await window.KBBackend.exportBackup('1992')
+          : {};
+        const all = {
+          ...accounting,
+          customization: getCustomization(),
+          notice: getNotice(),
+          exportedAt: new Date().toISOString()
+        };
+        const blob = new Blob([JSON.stringify(all, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `katanbuild-backup-${Date.now()}.json`;
+        a.click();
+        URL.revokeObjectURL(url);
+        toast('تم تصدير النسخة الاحتياطية', 'success');
+      } catch (error) {
+        console.error('تعذر تصدير النسخة الاحتياطية', error);
+        toast('تعذر تصدير النسخة الاحتياطية من قاعدة البيانات', 'error');
+      }
     });
 
     body.querySelector('#kbImport').addEventListener('change', (e) => {

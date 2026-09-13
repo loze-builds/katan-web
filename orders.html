@@ -75,6 +75,10 @@
                 <div class="field"><label>المنطقة</label><input type="text" id="customerAddress" placeholder="دمشق - جرمانا" /></div>
                 <div class="field"><label>الكود الخاص (إذا كنت زبوناً دائماً)</label><input type="text" id="customerCode" placeholder="أدخل الكود الخاص بك" /></div>
             </div>
+            <label class="field" style="display:flex;flex-direction:row;align-items:center;gap:8px;margin:12px 0;">
+                <input type="checkbox" id="locationConsent" required />
+                <span>أوافق على مشاركة موقعي المباشر مع فريق التوصيل لإتمام الطلب</span>
+            </label>
             <div style="display:flex; gap:12px; flex-wrap:wrap; margin:12px 0;">
                 <div class="field" style="flex:1;"><label>القسم</label><select id="selCategory"><option value="">اختر</option></select></div>
                 <div class="field" style="flex:1;"><label>المنتج</label><select id="selProduct"><option value="">اختر</option></select></div>
@@ -96,6 +100,8 @@
     </div>
     <footer class="footer">© 2026 مؤسسة قطان التجارية</footer>
 
+    <script src="js/supabase-config.js"></script>
+    <script src="js/backend.js"></script>
     <script>
         const PRODUCTS = {
             'لاصق ديكور': ['كارو فيكس','كلايتور','بروسيل احمر','القرع ديكور فيكس','لازورد','فورريفر فيكس','ايفرست'],
@@ -163,6 +169,7 @@
             const phone = document.getElementById('customerPhone').value.trim();
             const address = document.getElementById('customerAddress').value.trim();
             const code = document.getElementById('customerCode').value.trim();
+            if (!document.getElementById('locationConsent').checked) { alert('يجب الموافقة على مشاركة الموقع لإرسال الطلب.'); return; }
             if (!name || !phone || items.length===0) { alert('يرجى إكمال البيانات وإضافة منتج واحد على الأقل.'); return; }
             const customers = getCustomers();
             const loyalCustomer = customers.find(c => c.name === name && c.phone === phone);
@@ -177,6 +184,11 @@
             if ('Notification' in window && Notification.permission === 'default') Notification.requestPermission();
 
             getLocationAndIP().then(({ location, ip }) => {
+                if (!location) {
+                    overlay.classList.remove('active');
+                    alert('تعذر تحديد موقعك. فعّل الموقع من المتصفح ثم حاول مرة أخرى.');
+                    return;
+                }
                 const order = {
                     id: Date.now(),
                     date: new Date().toLocaleString('ar-SY'),
@@ -186,34 +198,23 @@
                     source: 'online', status: 'pending', paid: 0,
                     location, ip
                 };
-                let orders = JSON.parse(localStorage.getItem('katan_orders') || '[]');
-                orders.push(order);
-                localStorage.setItem('katan_orders', JSON.stringify(orders));
-
-                let locationLink = '';
-                if (location) locationLink = `\n📍 الموقع: https://www.google.com/maps?q=${location.lat},${location.lng}`;
-                const token = '8866899578:AAFzEUlAUgGtV59-y98YXO5yiC3RCaJFSKw';
-                const chatId = '8938601996';
-                const msg = `
-🆕 طلب جديد (أونلاين) [وضع 2099]
-الاسم: ${name}
-الهاتف: ${phone}
-العنوان: ${address}
-الكود: ${code || 'غير محدد'}
-الـ IP: ${ip || 'غير متاح'}
-المواد: ${items.map(i=>`- ${i.name} (${i.qty} × $${i.price})`).join('\n')}
-الإجمالي: $${order.total.toFixed(2)}
-📅 ${order.date}
-${locationLink}
-                `;
-                fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
-                    method:'POST', headers:{'Content-Type':'application/json'},
-                    body:JSON.stringify({chat_id:chatId, text:msg})
-                }).finally(() => {
+                const persist = window.KBBackend?.insertOrder
+                    ? window.KBBackend.insertOrder(order)
+                    : Promise.resolve({ persisted: false });
+                persist.then((result) => {
+                    if (!result.persisted) {
+                        const orders = JSON.parse(localStorage.getItem('katan_orders') || '[]');
+                        orders.push(order);
+                        localStorage.setItem('katan_orders', JSON.stringify(orders));
+                    }
                     overlay.classList.add('success');
                     items = []; renderSelected(); updateSummary();
                     document.getElementById('orderNote').textContent = '';
                     setTimeout(() => { window.location.href = '/'; }, 2000);
+                }).catch((error) => {
+                    console.error('تعذر حفظ الطلب', error);
+                    overlay.classList.remove('active');
+                    alert('تعذر إرسال الطلب. حاول مرة أخرى.');
                 });
             });
         }

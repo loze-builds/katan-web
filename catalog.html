@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="ar" dir="rtl" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>الكتالوج وفريق العمل | katanbuild</title>
+  <meta name="description" content="كتالوج katanbuild المرئي وفريق العمل.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900;1000&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/cart.css">
+  <link rel="stylesheet" href="css/catalog.css">
+  <link rel="stylesheet" href="css/opening.css">
+</head>
+<body>
+  <header class="site-header" id="site-header">
+    <div class="container header-inner">
+      <a href="index.html" class="brand" id="brandTrigger"><img src="assets/katanbuild-logo.png" alt="katanbuild"><span class="brand-name">katanbuild</span></a>
+      <nav class="main-nav" id="mainNav">
+        <a href="index.html" class="nav-link">الرئيسية</a>
+        <a href="products.html" class="nav-link">المنتجات</a>
+        <a href="projects.html" class="nav-link">المشاريع</a>
+        <a href="catalog.html" class="nav-link active">الكتالوج والفريق</a>
+        <a href="about.html" class="nav-link">من نحن</a>
+        <a href="#" class="nav-link" data-cart-open style="color:var(--accent);">اطلب منتج</a>
+      </nav>
+      <div class="header-actions">
+        <button class="icon-btn kb-cart-badge" data-cart-open title="الطلبية" type="button">🛒<span class="count" data-count="0">0</span></button>
+        <button class="icon-btn" id="navToggleBtn" title="القائمة" type="button" aria-expanded="false" aria-controls="mainNav"><span id="navToggleIcon">▼</span></button>
+        <button class="icon-btn" id="themeToggle" title="تغيير المظهر">☀</button>
+        <button class="icon-btn menu-toggle" id="menuToggle" title="القائمة">☰</button>
+      </div>
+    </div>
+  </header>
+  <div class="mobile-overlay" id="mobileOverlay"></div>
+  <aside class="mobile-drawer" id="mobileDrawer">
+    <div class="drawer-header"><a href="index.html" class="brand"><img src="assets/katanbuild-logo.png" alt="katanbuild"><span class="brand-name">katanbuild</span></a><button class="drawer-close" id="drawerClose" aria-label="إغلاق">✕</button></div>
+    <nav class="drawer-nav">
+      <a href="index.html">الرئيسية <span class="arrow">←</span></a>
+      <a href="products.html">المنتجات <span class="arrow">←</span></a>
+      <a href="projects.html">المشاريع <span class="arrow">←</span></a>
+      <a href="catalog.html" class="active">الكتالوج والفريق <span class="arrow">←</span></a>
+      <a href="about.html">من نحن <span class="arrow">←</span></a>
+      <a href="#" data-cart-open style="color:var(--accent);">اطلب منتج <span class="arrow">←</span></a>
+    </nav>
+  </aside>
+
+  <main id="catalogPage" class="catalog-page">
+    <section class="catalog-hero">
+      <div class="container">
+        <span class="eyebrow" data-catalog-eyebrow>كتالوج katanbuild</span>
+        <h1 data-catalog-title>صور من موقع العمل.</h1>
+        <p class="lede" data-catalog-description>اكتشف المواد والتفاصيل التي تصنع فرقاً حقيقياً في كل مشروع.</p>
+      </div>
+    </section>
+    <div class="catalog-ticker" role="status"><div class="catalog-ticker-track" data-catalog-ticker>أهلاً بك في كتالوج katanbuild · حلول بناء تُرى وتُلمس · جودة تبدأ من الموقع</div></div>
+    <section class="section catalog-gallery-section">
+      <div class="container">
+        <div class="catalog-gallery" data-catalog-gallery></div>
+      </div>
+    </section>
+    <section class="section section-alt team-section">
+      <div class="container">
+        <div class="section-head"><span class="eyebrow" data-team-eyebrow>فريق العمل</span><h2 data-team-title>أشخاص يصنعون الفرق.</h2><p class="lede" data-team-description>فريق يجمع الخبرة الميدانية، التطوير، والتصميم.</p></div>
+        <div class="team-grid" data-team-grid></div>
+      </div>
+    </section>
+  </main>
+  <footer class="site-footer"><div class="container"><span>katanbuild</span><span>مواد تبني نتائج تدوم.</span></div></footer>
+  <script src="js/supabase-config.js"></script>
+  <script src="js/backend.js"></script>
+  <script src="js/opening.js"></script>
+  <script src="js/nav-toggle.js"></script>
+  <script src="js/cart-drawer.js"></script>
+  <script src="js/admin-panel.js"></script>
+  <script src="js/catalog-team.js"></script>
+</body>
+</html>

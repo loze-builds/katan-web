@@ -247,6 +247,11 @@ p {
   height: 40px;
   width: auto;
   object-fit: contain;
+  content: url("../assets/katanbuild-logo-dark.png");
+}
+
+[data-theme="light"] .brand img {
+  content: url("../assets/katanbuild-logo.png");
 }
 
 .brand-name {
@@ -258,6 +263,41 @@ p {
   display: flex;
   align-items: center;
   gap: 4px;
+}
+
+.site-header.nav-collapsed .main-nav {
+  position: absolute;
+  top: calc(100% + 10px);
+  inset-inline-end: clamp(20px, 4vw, 48px);
+  display: none;
+  min-width: 220px;
+  padding: 10px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, .3);
+}
+
+.site-header.nav-collapsed.nav-open .main-nav {
+  display: grid;
+}
+
+.site-header.nav-collapsed .nav-link {
+  width: 100%;
+  padding: 12px 14px;
+}
+
+.site-header.nav-collapsed .nav-link.active::after {
+  display: none;
+}
+
+.site-header.nav-collapsed #navToggleIcon {
+  display: inline-block;
+  transition: transform var(--dur-fast) var(--ease-out);
+}
+
+.site-header.nav-collapsed.nav-open #navToggleIcon {
+  transform: rotate(180deg);
 }
 
 .nav-link {
