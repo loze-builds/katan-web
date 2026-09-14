@@ -204,7 +204,7 @@
               <article class="product-card">
                 <div class="thumb product-thumb">
                   <img src="${item.image || S.media.productImages[item.imageIndex || 0] || S.media.background}"
-                    alt="${item.title[lang] || item.title.ar}" loading="lazy" referrerpolicy="no-referrer"
+                    alt="${item.title[lang] || item.title.ar}" decoding="async" referrerpolicy="no-referrer"
                     onerror="this.onerror=null;this.src='${S.media.background}';">
                   <span class="cat">${product.category[lang] || product.category.ar}</span>
                 </div>
@@ -238,7 +238,7 @@
             <a href="product.html?slug=${p.slug}" style="display:contents;color:inherit;text-decoration:none;">
               <div class="thumb product-thumb">
                 <img src="${p.items[0]?.image || S.media.productImages[S.products.indexOf(p)] || S.media.background}"
-                  alt="${p.title[lang] || p.title.ar}" loading="lazy" referrerpolicy="no-referrer"
+                  alt="${p.title[lang] || p.title.ar}" decoding="async" referrerpolicy="no-referrer"
                   onerror="this.onerror=null;this.src='${S.media.background}';">
                 <span class="cat">${p.category[lang] || p.category.ar}</span>
               </div>

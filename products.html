@@ -264,7 +264,7 @@
           <div class="product-card">
             <a href="product.html?slug=${encodeURIComponent(product.slug)}" style="display:contents;color:inherit;text-decoration:none;">
               <div class="thumb product-thumb">
-                <img src="${image}" alt="${title}" loading="lazy" referrerpolicy="no-referrer"
+                <img src="${image}" alt="${title}" decoding="async" referrerpolicy="no-referrer"
                   onerror="this.onerror=null;this.src='${window.SITE.media.background}';">
                 <span class="cat">${category}</span>
               </div>
