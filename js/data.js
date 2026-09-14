@@ -294,4 +294,84 @@ window.SITE = {
   ]
 };
 
+// Product catalog override: keep the published catalog aligned with the
+// verified product groups and image URLs.
+window.SITE.products = [
+  {
+    slug: "render-plaster-materials",
+    category: { ar: "لاصق ديكور", en: "Decorative Adhesives" },
+    title: { ar: "لاصق ديكور", en: "Decorative Adhesives" },
+    short: { ar: "مواد لاصق ديكور وتشطيبات جاهزة.", en: "Decorative adhesive and finishing materials." },
+    details: { ar: "مجموعة مواد لاصق ديكور للاستخدام في أعمال التشطيب.", en: "Decorative adhesive materials for finishing work." },
+    specs: [],
+    items: [
+      productItem("كارو فيكس", "https://iili.io/nBQKeKN.jpg", "decor"),
+      productItem("كلايتور", "https://iili.io/nBQKjov.jpg", "decor"),
+      productItem("بروسيل احمر", "https://iili.io/nBQKXDJ.jpg", "decor"),
+      productItem("القرع ديكور فيكس", "https://iili.io/nBQKVAg.jpg", "decor"),
+      productItem("لازورد", "https://iili.io/nBQKES1.jpg", "decor"),
+      productItem("فورريفر فيكس", "https://iili.io/nBQK1cP.jpg", "decor"),
+      productItem("ايفرست", "https://iili.io/nBQKnP2.jpg", "decor")
+    ]
+  },
+  {
+    slug: "pool-adhesives",
+    category: { ar: "لاصق مسبح", en: "Pool Adhesives" },
+    title: { ar: "لاصق مسبح", en: "Pool Adhesives" },
+    short: { ar: "مواد لصق وعزل مخصصة للمسابح.", en: "Adhesive and waterproofing materials for pools." },
+    details: { ar: "مواد مخصصة لأعمال المسابح والمناطق المائية.", en: "Materials for pools and wet areas." },
+    specs: [],
+    items: [
+      productItem("آن ازرق", "https://iili.io/nBQKftf.jpg", "pool"),
+      productItem("الباسل", "https://iili.io/nBQKFus.jpg", "pool"),
+      productItem("عباس", "https://iili.io/nBQKHFI.jpg", "pool"),
+      productItem("اونكس", "https://iili.io/nBQFw37.jpg", "pool"),
+      productItem("الترا غريب اكسترا", "https://iili.io/nBQF0ps.jpg", "pool"),
+      productItem("اكوا فيكس بلس", "https://iili.io/nBQFcYX.jpg", "pool"),
+      productItem("بروسيل مسابح", "https://iili.io/nBQFa2t.jpg", "pool"),
+      productItem("الترا بوند ازرق", "https://iili.io/nBQFuQR.jpg", "pool")
+    ]
+  },
+  {
+    slug: "granite-adhesives",
+    category: { ar: "لاصق غرانيت", en: "Granite Adhesives" },
+    title: { ar: "لاصق غرانيت", en: "Granite Adhesives" },
+    short: { ar: "مواد لصق الغرانيت والحجر.", en: "Granite and stone adhesive materials." },
+    details: { ar: "مجموعة لواصق للغرانيت والحجر وأعمال الإكساء.", en: "Adhesives for granite, stone, and cladding." },
+    specs: [],
+    items: [
+      productItem("ليث ازرق", "https://iili.io/nBQFnYF.jpg", "granite"),
+      productItem("الترا جريب", "https://iili.io/nBQFfEB.jpg", "granite"),
+      productItem("كلوبال فيكس", "https://iili.io/nBQ3D1S.jpg", "granite"),
+      productItem("توب فيكس", "https://iili.io/nBQ3sIf.jpg", "granite"),
+      productItem("ناولو", "https://iili.io/nBQ3PmG.jpg", "granite"),
+      productItem("سلامات فكس", "https://iili.io/nBQ36es.jpg", "granite"),
+      productItem("سبان فيكس", "https://iili.io/nBQ38qN.jpg", "granite"),
+      productItem("شربجي", "https://iili.io/nBQ3ox4.jpg", "granite"),
+      productItem("نجار فيكس", "https://iili.io/nBQ3Cbf.jpg", "granite"),
+      productItem("الترا بوند اخضر", "https://iili.io/nBQ3BOG.jpg", "granite"),
+      productItem("بروسيل اخضر", "https://iili.io/nBQ3fJn.jpg", "granite")
+    ]
+  },
+  {
+    slug: "ceramic-adhesive-grout",
+    category: { ar: "لاصق سيراميك", en: "Ceramic Adhesives" },
+    title: { ar: "لاصق سيراميك", en: "Ceramic Adhesives" },
+    short: { ar: "مواد لصق السيراميك والروبة.", en: "Ceramic adhesive and grout materials." },
+    details: { ar: "مجموعة لواصق سيراميك ومواد تعبئة للفواصل.", en: "Ceramic adhesives and joint-filling materials." },
+    specs: [],
+    items: [
+      productItem("سيتي فيكس", "https://iili.io/nBQ32fI.jpg", "ceramic"),
+      productItem("كرافت الترافيكس", "https://iili.io/nBQ3JiN.jpg", "ceramic"),
+      productItem("لايت فيكس", "https://iili.io/nBQ39xR.jpg", "ceramic"),
+      productItem("بريمير فيكس", "https://iili.io/nBQ2bRa.jpg", "ceramic"),
+      productItem("موسيك فيكس", "https://iili.io/nBQ2DHg.jpg", "ceramic"),
+      productItem("سيرا فيكس", "https://iili.io/nBQ2ZUF.jpg", "ceramic"),
+      productItem("منستر فيكس 100", "https://iili.io/nBQ2Ql1.jpg", "ceramic"),
+      productItem("فيكسو", "https://iili.io/nBQ2PVV.jpg", "ceramic"),
+      productItem("الترا بوند احمر", "https://iili.io/nBQ26oQ.jpg", "ceramic"),
+      productItem("بروسيل رمادي", "https://iili.io/nBQ2kl9.jpg", "ceramic")
+    ]
+  }
+];
 
