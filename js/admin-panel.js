@@ -16,6 +16,17 @@
   let clickTimer = null;
   let currentPanel = 'content';
 
+  function defaultProducts() {
+    return (window.SITE?.products || []).map((product) => ({
+      slug: product.slug,
+      title: product.title?.ar || product.slug,
+      items: (product.items || []).map((item) => ({
+        name: item.title?.ar || '',
+        image: item.image || ''
+      }))
+    }));
+  }
+
   function getCustomization() {
     try {
       const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null');
@@ -38,6 +49,7 @@
           description: 'اكتشف المواد والتفاصيل التي تصنع فرقاً حقيقياً في كل مشروع.',
           ticker: 'أهلاً بك في كتالوج katanbuild · حلول بناء تُرى وتُلمس · جودة تبدأ من الموقع'
         };
+        saved.products = saved.products || defaultProducts();
         saved.team = saved.team || { eyebrow: 'فريق العمل', title: 'أشخاص يصنعون الفرق.', description: 'فريق يجمع الخبرة الميدانية، التطوير، والتصميم.', members: [] };
         saved.opening = saved.opening || {
           enabled: true,
@@ -118,7 +130,8 @@
         kicker: "katanbuild presents",
         title: "كيمياء البناء تصنع الفرق.",
         subtitle: "مواد تبني نتائج تدوم."
-      }
+      },
+      products: defaultProducts()
     };
   }
 
@@ -234,6 +247,7 @@
           <nav class="kb-admin-nav">
             <button data-panel="content" class="active"><span class="icon">📝</span> المحتوى</button>
             <button data-panel="images"><span class="icon">🖼</span> الصور</button>
+            <button data-panel="products"><span class="icon">🧱</span> مواد المنتجات</button>
             <button data-panel="categories"><span class="icon">📦</span> الأقسام</button>
             <button data-panel="catalogues"><span class="icon">📚</span> الكتالوجات</button>
             <button data-panel="catalogTeam"><span class="icon">🧑‍💻</span> الكتالوج والفريق</button>
@@ -287,6 +301,7 @@
     const panelTitles = {
       content: ['المحتوى', 'عدّل النصوص والمسميات'],
       images: ['الصور', 'غيّر صور الأقسام و Hero'],
+      products: ['مواد المنتجات', 'عدّل أسماء وصور المواد الفردية'],
       categories: ['الأقسام', 'أضف، عدّل، أو احذف الأقسام'],
       catalogues: ['الكتالوجات', 'أضف ملفات PDF وباركود'],
       catalogTeam: ['الكتالوج والفريق', 'عدّل الصور ومعلومات فريق العمل'],
@@ -300,6 +315,7 @@
 
     if (currentPanel === 'content') renderContentPanel(body, data);
     else if (currentPanel === 'images') renderImagesPanel(body, data);
+    else if (currentPanel === 'products') renderProductsPanel(body, data);
     else if (currentPanel === 'categories') renderCategoriesPanel(body, data);
     else if (currentPanel === 'catalogues') renderCataloguesPanel(body, data);
     else if (currentPanel === 'catalogTeam') renderCatalogTeamPanel(body, data);
@@ -442,6 +458,93 @@
       saveCustomization(newData);
       showStatus(body.querySelector('#kbImagesStatus'), 'تم حفظ الصور', 'success');
       toast('تم حفظ الصور', 'success');
+    });
+  }
+
+  /* ============ PRODUCTS ============ */
+  function renderProductsPanel(body, data) {
+    const products = data.products || defaultProducts();
+    body.innerHTML = `
+      <h2>مواد المنتجات</h2>
+      <p class="hint">غيّر اسم أو صورة أي مادة. ستظهر التعديلات لجميع الزوار بعد الحفظ.</p>
+      <div id="kbProductsList"></div>
+      <div style="margin-top:32px;display:flex;gap:12px;">
+        <button class="kb-btn kb-btn-primary" id="kbSaveProducts">حفظ مواد المنتجات</button>
+      </div>
+      <div class="kb-status" id="kbProductsStatus"></div>
+    `;
+
+    const list = body.querySelector('#kbProductsList');
+    products.forEach((product) => {
+      const card = document.createElement('div');
+      card.className = 'kb-card';
+      card.innerHTML = `
+        <div class="kb-card-header"><h3>${escapeHtml(product.title)}</h3></div>
+        <div class="kb-field">
+          <label>اسم القسم</label>
+          <input type="text" data-product-title="${escapeHtml(product.slug)}" value="${escapeHtml(product.title)}" />
+        </div>
+        <div data-product-items="${escapeHtml(product.slug)}"></div>
+      `;
+      const items = card.querySelector(`[data-product-items="${CSS.escape(product.slug)}"]`);
+      (product.items || []).forEach((item, index) => {
+        const row = document.createElement('div');
+        row.className = 'kb-card';
+        row.innerHTML = `
+          <div class="kb-card-header"><h4>مادة ${index + 1}</h4></div>
+          <div class="kb-field">
+            <label>اسم المادة</label>
+            <input type="text" data-product-name="${escapeHtml(product.slug)}-${index}" value="${escapeHtml(item.name)}" />
+          </div>
+          <div class="kb-field">
+            <label>رابط صورة المادة</label>
+            <input type="text" data-product-image="${escapeHtml(product.slug)}-${index}" value="${escapeHtml(item.image)}" />
+          </div>
+          <div class="kb-field">
+            <label>أو ارفع صورة من جهازك</label>
+            <input type="file" accept="image/*" data-product-upload="${escapeHtml(product.slug)}-${index}" />
+          </div>
+        `;
+        items.appendChild(row);
+      });
+      list.appendChild(card);
+    });
+
+    body.querySelectorAll('[data-product-upload]').forEach((input) => {
+      input.addEventListener('change', (event) => {
+        const file = event.target.files[0];
+        if (!file) return;
+        if (file.size > 2 * 1024 * 1024) {
+          toast('حجم الصورة يجب ألا يتجاوز 2MB', 'error');
+          return;
+        }
+        const reader = new FileReader();
+        reader.addEventListener('load', () => {
+          const target = body.querySelector(`[data-product-image="${input.dataset.productUpload}"]`);
+          if (target) target.value = reader.result;
+          toast('تم رفع صورة المادة', 'success');
+        });
+        reader.readAsDataURL(file);
+      });
+    });
+
+    body.querySelector('#kbSaveProducts').addEventListener('click', async () => {
+      const newData = getCustomization();
+      newData.products = products.map((product) => ({
+        slug: product.slug,
+        title: body.querySelector(`[data-product-title="${CSS.escape(product.slug)}"]`).value,
+        items: (product.items || []).map((item, index) => ({
+          name: body.querySelector(`[data-product-name="${CSS.escape(`${product.slug}-${index}`)}"]`).value,
+          image: body.querySelector(`[data-product-image="${CSS.escape(`${product.slug}-${index}`)}"]`).value
+        }))
+      }));
+      try {
+        await saveCustomization(newData);
+        showStatus(body.querySelector('#kbProductsStatus'), 'تم حفظ مواد المنتجات ومزامنتها', 'success');
+        toast('تم حفظ مواد المنتجات', 'success');
+      } catch (error) {
+        showStatus(body.querySelector('#kbProductsStatus'), 'تعذر مزامنة المواد مع Google Sheets', 'error');
+      }
     });
   }
 

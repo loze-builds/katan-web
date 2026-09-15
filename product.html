@@ -257,7 +257,35 @@
         .join("");
     }
 
-    document.addEventListener("DOMContentLoaded", renderDetail);
+    function applyProductCustomization(data) {
+      if (!data?.products) return;
+      data.products.forEach((customProduct) => {
+        const product = window.SITE.products.find((item) => item.slug === customProduct.slug);
+        if (!product || !Array.isArray(customProduct.items)) return;
+        customProduct.items.forEach((customItem, index) => {
+          const item = product.items[index];
+          if (!item) return;
+          if (customItem.name) item.title.ar = customItem.name;
+          if (customItem.image) item.image = customItem.image;
+        });
+      });
+    }
+
+    async function hydrateProductCustomization() {
+      if (!window.KBBackend?.configured) return;
+      try {
+        const data = await window.KBBackend.loadCustomization();
+        applyProductCustomization(data);
+        renderDetail();
+      } catch (error) {
+        console.error("تعذر تحميل تخصيصات مواد المنتجات", error);
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      renderDetail();
+      hydrateProductCustomization();
+    });
 
     document.getElementById('langToggle')?.addEventListener('click', function () {
       const html = document.documentElement;
