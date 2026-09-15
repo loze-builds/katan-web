@@ -122,15 +122,19 @@
     };
   }
 
-  function saveCustomization(data) {
+  async function saveCustomization(data) {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
     window.dispatchEvent(new CustomEvent('kb:customization', { detail: data }));
     if (window.KBBackend?.configured) {
-      window.KBBackend.saveCustomization(data).catch((error) => {
+      try {
+        await window.KBBackend.saveCustomization(data);
+      } catch (error) {
         console.error('تعذر حفظ إعدادات الموقع في قاعدة البيانات', error);
         toast('تم الحفظ محلياً، لكن تعذر مزامنة قاعدة البيانات', 'error');
-      });
+        throw error;
+      }
     }
+    return true;
   }
 
   function getNotice() {
@@ -138,15 +142,19 @@
     catch (e) { return null; }
   }
 
-  function saveNotice(data) {
+  async function saveNotice(data) {
     localStorage.setItem(NOTICE_KEY, JSON.stringify(data));
     window.dispatchEvent(new CustomEvent('kb:notice', { detail: data }));
     if (window.KBBackend?.configured) {
-      window.KBBackend.saveNotice(data).catch((error) => {
+      try {
+        await window.KBBackend.saveNotice(data);
+      } catch (error) {
         console.error('تعذر حفظ الإشعار في قاعدة البيانات', error);
         toast('تم حفظ الإشعار محلياً، لكن تعذر مزامنته', 'error');
-      });
+        throw error;
+      }
     }
+    return true;
   }
 
   function toast(message, type = 'info') {
